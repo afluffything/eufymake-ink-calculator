@@ -2,7 +2,7 @@
 
 A free, browser-based ink cost calculator for the **eufyMake E1 UV printer**. No sign-up, no app, no ads — just open it and start calculating.
 
-🔗 **[Open the calculator](https://yourusername.github.io/eufymake-ink-calculator)**
+🔗 **[Open the calculator](https://afluffything.github.io/eufymake-ink-calculator)**
 
 ---
 
