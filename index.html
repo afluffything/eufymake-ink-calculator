@@ -7,532 +7,545 @@
   <meta name="description" content="Free ink cost calculator for the eufyMake E1 UV printer. Calculate cost per print, per item, and suggested sell price." />
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      background: #0a0a0a;
-      color: #ffffff;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
-      min-height: 100vh;
-    }
+    body { background: #0a0a0a; color: #fff; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; min-height: 100vh; }
     a { color: #7ee83a; }
 
-    /* ── Header ── */
-    .em-header {
-      background: #0a0a0a;
-      border-bottom: 1px solid #1e1e1e;
-      padding: 1.25rem 1.5rem;
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      position: sticky;
-      top: 0;
-      z-index: 10;
-    }
-    .em-logo-mark {
-      width: 38px; height: 38px;
-      background: #7ee83a;
-      border-radius: 8px;
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0;
-    }
+    .em-header { background: #0a0a0a; border-bottom: 1px solid #1e1e1e; padding: 1.25rem 1.5rem; display: flex; align-items: center; gap: 14px; position: sticky; top: 0; z-index: 10; }
+    .em-logo-mark { width: 38px; height: 38px; background: #7ee83a; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
     .em-logo-text { display: flex; flex-direction: column; line-height: 1.1; }
-    .em-logo-brand { font-size: 15px; font-weight: 700; color: #ffffff; letter-spacing: -0.01em; }
+    .em-logo-brand { font-size: 15px; font-weight: 700; color: #fff; letter-spacing: -0.01em; }
     .em-logo-sub { font-size: 11px; color: #7ee83a; font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; }
-    .em-badge {
-      margin-left: auto;
-      background: #7ee83a; color: #0a0a0a;
-      font-size: 10px; font-weight: 700;
-      padding: 3px 10px; border-radius: 20px;
-      letter-spacing: 0.06em; text-transform: uppercase;
-    }
+    .em-badge { margin-left: auto; background: #7ee83a; color: #0a0a0a; font-size: 10px; font-weight: 700; padding: 3px 10px; border-radius: 20px; letter-spacing: 0.06em; text-transform: uppercase; }
 
-    /* ── Layout ── */
     .em-body { padding: 1.25rem 1.5rem 3rem; max-width: 640px; margin: 0 auto; }
+    .em-section { background: #141414; border: 1px solid #222; border-radius: 12px; padding: 1.25rem; margin-bottom: 1rem; }
+    .em-section-title { font-size: 10px; font-weight: 600; color: #7ee83a; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 1rem; }
 
-    /* ── Sections ── */
-    .em-section {
-      background: #141414;
-      border: 1px solid #222;
-      border-radius: 12px;
-      padding: 1.25rem;
-      margin-bottom: 1rem;
-    }
-    .em-section-title {
-      font-size: 10px; font-weight: 600;
-      color: #7ee83a;
-      text-transform: uppercase; letter-spacing: 0.08em;
-      margin-bottom: 1rem;
-    }
-
-    /* ── Kit info bar ── */
-    .kit-info {
-      background: #1a1a1a; border: 1px solid #2a2a2a;
-      border-radius: 8px; padding: 0.75rem 1rem;
-      margin-bottom: 1rem;
-      display: flex; gap: 1.5rem; flex-wrap: wrap;
-    }
+    .kit-info { background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 8px; padding: 0.75rem 1rem; margin-bottom: 1rem; display: flex; gap: 1.5rem; flex-wrap: wrap; }
     .kit-stat { display: flex; flex-direction: column; gap: 2px; }
     .kit-stat-label { font-size: 10px; color: #555; text-transform: uppercase; letter-spacing: 0.05em; }
     .kit-stat-value { font-size: 14px; font-weight: 600; color: #7ee83a; }
 
-    /* ── Fields ── */
     .em-field { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
     .em-field:last-child { margin-bottom: 0; }
     .em-field label { font-size: 13px; color: #aaa; min-width: 160px; }
-    .em-field input[type=number], .em-field input[type=text] {
-      width: 90px; background: #1e1e1e;
-      border: 1px solid #2a2a2a; border-radius: 6px;
-      color: #fff; font-size: 13px; padding: 7px 8px; outline: none;
-    }
+    .em-field input[type=number], .em-field input[type=text] { width: 90px; background: #1e1e1e; border: 1px solid #2a2a2a; border-radius: 6px; color: #fff; font-size: 13px; padding: 7px 8px; outline: none; }
     .em-field input:focus { border-color: #7ee83a; }
     .em-field .unit { font-size: 12px; color: #555; }
 
-    /* ── Tabs ── */
+    select#currencySelect { flex: 1; background: #1e1e1e; border: 1px solid #2a2a2a; border-radius: 6px; color: #fff; font-size: 13px; padding: 7px 8px; outline: none; cursor: pointer; }
+    select#currencySelect:focus { border-color: #7ee83a; }
+
+    .fx-row { display: flex; align-items: flex-end; gap: 10px; margin-top: 10px; }
+    .fx-rate-block { flex: 1; }
+    .fx-label { font-size: 12px; color: #aaa; display: block; margin-bottom: 6px; }
+    .fx-label span { color: #555; }
+    .fx-input-row { display: flex; align-items: center; gap: 8px; }
+    .fx-input-row input { width: 100px; background: #1e1e1e; border: 1px solid #2a2a2a; border-radius: 6px; color: #fff; font-size: 14px; font-weight: 600; padding: 7px 8px; outline: none; }
+    .fx-input-row input:focus { border-color: #7ee83a; }
+    .fx-symbol { font-size: 18px; font-weight: 700; color: #7ee83a; min-width: 28px; }
+    .fx-per { font-size: 12px; color: #444; }
+    .fx-source { font-size: 11px; color: #444; margin-top: 5px; }
+    .fx-source.live { color: #4a9a1a; }
+    .fx-source.loading { color: #888; }
+    .fx-source.error { color: #9a3a1a; }
+
+    .refresh-btn { background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 8px; color: #888; font-size: 12px; font-weight: 500; padding: 9px 12px; cursor: pointer; display: flex; align-items: center; gap: 6px; white-space: nowrap; transition: all 0.15s; flex-shrink: 0; }
+    .refresh-btn:hover:not(:disabled) { border-color: #7ee83a; color: #7ee83a; }
+    .refresh-btn:disabled { opacity: 0.4; cursor: default; }
+    .refresh-btn svg { flex-shrink: 0; }
+    .refresh-btn.spinning svg { animation: spin 0.8s linear infinite; }
+    @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+    .usd-note { background: #111a0a; border: 1px solid #2a3a1a; border-radius: 8px; padding: 0.75rem 1rem; margin-top: 10px; font-size: 12px; color: #6a9a4a; line-height: 1.6; display: flex; gap: 8px; align-items: flex-start; }
+
     .em-tabs { display: flex; gap: 6px; margin-bottom: 1rem; }
-    .em-tab {
-      flex: 1; padding: 9px; text-align: center;
-      font-size: 12px; font-weight: 500;
-      border: 1px solid #2a2a2a; border-radius: 8px;
-      cursor: pointer; background: #1a1a1a; color: #888;
-      transition: all 0.15s;
-    }
+    .em-tab { flex: 1; padding: 9px; text-align: center; font-size: 12px; font-weight: 500; border: 1px solid #2a2a2a; border-radius: 8px; cursor: pointer; background: #1a1a1a; color: #888; }
     .em-tab.active { background: #7ee83a; color: #0a0a0a; border-color: #7ee83a; font-weight: 700; }
 
-    /* ── Colour cards ── */
     .colour-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-    .colour-card {
-      background: #1a1a1a; border: 1px solid #242424;
-      border-radius: 10px; padding: 0.75rem;
-    }
+    .colour-card { background: #1a1a1a; border: 1px solid #242424; border-radius: 10px; padding: 0.75rem; }
     .colour-header { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
     .swatch { width: 11px; height: 11px; border-radius: 50%; flex-shrink: 0; }
     .colour-name { font-size: 12px; font-weight: 600; color: #eee; }
     .colour-row { display: flex; align-items: center; gap: 6px; margin-bottom: 5px; }
     .colour-row:last-child { margin-bottom: 0; }
     .colour-row label { font-size: 11px; color: #666; flex: 1; }
-    .colour-row input {
-      width: 64px; background: #111;
-      border: 1px solid #2a2a2a; border-radius: 5px;
-      color: #fff; font-size: 12px; padding: 4px 6px; outline: none;
-    }
+    .colour-row input { width: 64px; background: #111; border: 1px solid #2a2a2a; border-radius: 5px; color: #fff; font-size: 12px; padding: 4px 6px; outline: none; }
     .colour-row input:focus { border-color: #7ee83a; }
     .colour-row .unit { font-size: 10px; color: #444; min-width: 16px; }
-    .colour-cost {
-      font-size: 11px; color: #7ee83a;
-      margin-top: 6px; padding-top: 6px;
-      border-top: 1px solid #222;
-    }
-    .cleaner-card {
-      background: #1a1a1a; border: 1px solid #242424;
-      border-radius: 10px; padding: 0.75rem; margin-top: 8px;
-    }
-
-    /* ── Avg panel ── */
-    .avg-card {
-      background: #1a1a1a; border: 1px solid #242424;
-      border-radius: 10px; padding: 1rem;
-    }
+    .colour-cost { font-size: 11px; color: #7ee83a; margin-top: 6px; padding-top: 6px; border-top: 1px solid #222; }
+    .cleaner-card { background: #1a1a1a; border: 1px solid #242424; border-radius: 10px; padding: 0.75rem; margin-top: 8px; }
+    .avg-card { background: #1a1a1a; border: 1px solid #242424; border-radius: 10px; padding: 1rem; }
     .avg-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
     .avg-row:last-child { margin-bottom: 0; }
     .avg-row label { font-size: 13px; color: #aaa; flex: 1; }
-    .avg-row input {
-      width: 80px; background: #111;
-      border: 1px solid #2a2a2a; border-radius: 6px;
-      color: #fff; font-size: 13px; padding: 6px 8px; outline: none;
-    }
+    .avg-row input { width: 80px; background: #111; border: 1px solid #2a2a2a; border-radius: 6px; color: #fff; font-size: 13px; padding: 6px 8px; outline: none; }
     .avg-row input:focus { border-color: #7ee83a; }
     .avg-row .unit { font-size: 12px; color: #555; }
-    .avg-breakdown {
-      font-size: 11px; color: #555;
-      margin-top: 10px; padding-top: 10px;
-      border-top: 1px solid #222; line-height: 1.9;
-    }
+    .avg-breakdown { font-size: 11px; color: #555; margin-top: 10px; padding-top: 10px; border-top: 1px solid #222; line-height: 1.9; }
+    .static-val { font-size: 13px; font-weight: 600; color: #eee; }
 
-    /* ── Summary metrics ── */
     .results { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 8px; margin-bottom: 1rem; }
-    .metric {
-      background: #141414; border: 1px solid #222;
-      border-radius: 10px; padding: 0.85rem 1rem;
-    }
+    .metric { background: #141414; border: 1px solid #222; border-radius: 10px; padding: 0.85rem 1rem; }
     .metric-label { font-size: 10px; color: #555; margin: 0 0 4px; text-transform: uppercase; letter-spacing: 0.05em; }
     .metric-value { font-size: 19px; font-weight: 700; color: #7ee83a; margin: 0; }
     .metric-sub { font-size: 10px; color: #444; margin: 2px 0 0; }
 
-    /* ── Per item ── */
     .item-name-row { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
     .item-name-row label { font-size: 13px; color: #aaa; min-width: 160px; }
-    .item-name-row input {
-      flex: 1; background: #1e1e1e;
-      border: 1px solid #2a2a2a; border-radius: 6px;
-      color: #fff; font-size: 13px; padding: 7px 8px; outline: none;
-    }
+    .item-name-row input { flex: 1; background: #1e1e1e; border: 1px solid #2a2a2a; border-radius: 6px; color: #fff; font-size: 13px; padding: 7px 8px; outline: none; }
     .item-name-row input:focus { border-color: #7ee83a; }
     .item-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; }
-    .item-card {
-      background: #1e1e1e; border: 1px solid #2a2a2a;
-      border-radius: 10px; padding: 1rem;
-    }
+    .item-card { background: #1e1e1e; border: 1px solid #2a2a2a; border-radius: 10px; padding: 1rem; }
     .item-card-label { font-size: 10px; color: #555; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; }
     .item-card-value { font-size: 22px; font-weight: 700; color: #7ee83a; }
     .item-card-sub { font-size: 11px; color: #444; margin-top: 2px; }
-    .item-breakdown {
-      background: #1a1a1a; border: 1px solid #242424;
-      border-radius: 10px; padding: 1rem;
-    }
+    .item-breakdown { background: #1a1a1a; border: 1px solid #242424; border-radius: 10px; padding: 1rem; }
     .item-breakdown-title { font-size: 11px; color: #555; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 10px; }
-    .breakdown-row {
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 5px 0; border-bottom: 1px solid #1e1e1e;
-    }
+    .breakdown-row { display: flex; justify-content: space-between; align-items: center; padding: 5px 0; border-bottom: 1px solid #1e1e1e; }
     .breakdown-row:last-child { border-bottom: none; }
     .breakdown-label { font-size: 12px; color: #888; display: flex; align-items: center; gap: 6px; }
     .breakdown-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
     .breakdown-val { font-size: 12px; color: #ccc; }
     .breakdown-val span { color: #7ee83a; font-weight: 600; }
 
-    /* ── Sell price ── */
+    .material-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 7px; margin-bottom: 10px; }
+    .material-btn { background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 8px; padding: 8px 8px 6px; font-size: 12px; color: #888; cursor: pointer; text-align: center; line-height: 1.3; transition: all 0.15s; }
+    .material-btn span { display: block; font-size: 11px; color: #555; margin-top: 2px; }
+    .material-btn:hover { border-color: #7ee83a; color: #ccc; }
+    .material-btn.active { background: #1a2e0f; border-color: #7ee83a; color: #7ee83a; }
+    .material-btn.active span { color: #4a9a1a; }
+
+    .cost-breakdown-bar { background: #1a1a1a; border: 1px solid #242424; border-radius: 10px; padding: 0.85rem 1rem; margin-bottom: 14px; }
+    .cost-bar-row { display: flex; justify-content: space-between; align-items: center; padding: 5px 0; border-bottom: 1px solid #1e1e1e; }
+    .cost-bar-row:last-child { border-bottom: none; border-top: 1px solid #333; padding-top: 8px; margin-top: 4px; }
+    .cost-bar-label { font-size: 12px; color: #666; }
+    .cost-bar-row:last-child .cost-bar-label { font-size: 13px; font-weight: 600; color: #aaa; }
+    .cost-bar-val { font-size: 12px; color: #ccc; }
+    .green-val { font-size: 15px !important; font-weight: 700; color: #7ee83a !important; }
+
     .markup-row { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
     .markup-row label { font-size: 13px; color: #aaa; min-width: 160px; }
-    .markup-row input[type=range] { flex: 1; accent-color: #7ee83a; height: 4px; }
+    .markup-row input[type=range] { flex: 1; accent-color: #7ee83a; }
     .markup-val { font-size: 13px; font-weight: 600; color: #7ee83a; min-width: 44px; text-align: right; }
     .em-divider { border: none; border-top: 1px solid #1e1e1e; margin: 1rem 0; }
     .price-label { font-size: 11px; color: #555; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px; }
     .price-big { font-size: 36px; font-weight: 700; color: #7ee83a; margin-bottom: 10px; }
     .sell-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-    .sell-card {
-      background: #1e1e1e; border: 1px solid #2a2a2a;
-      border-radius: 10px; padding: 1rem;
-    }
+    .sell-card { background: #1e1e1e; border: 1px solid #2a2a2a; border-radius: 10px; padding: 1rem; }
     .sell-card-label { font-size: 10px; color: #555; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px; }
     .sell-card-value { font-size: 20px; font-weight: 700; color: #fff; }
     .sell-card-value.green { color: #7ee83a; }
-    .static-val { font-size: 13px; font-weight: 600; color: #eee; }
 
-    /* ── Footer ── */
-    .em-footer {
-      text-align: center; padding: 1.5rem;
-      font-size: 11px; color: #333;
-      border-top: 1px solid #1a1a1a;
-      margin-top: 1rem;
-    }
+    .em-footer { text-align: center; padding: 1.5rem; font-size: 11px; color: #333; border-top: 1px solid #1a1a1a; margin-top: 1rem; }
 
-    /* ── Responsive ── */
     @media (max-width: 480px) {
       .colour-grid { grid-template-columns: 1fr; }
       .results { grid-template-columns: 1fr 1fr; }
       .sell-grid { grid-template-columns: 1fr; }
+      .material-grid { grid-template-columns: repeat(2,1fr); }
       .kit-info { gap: 1rem; }
     }
   </style>
 </head>
 <body>
 
-  <header class="em-header">
-    <div class="em-logo-mark">
-      <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="11" cy="11" r="4.5" fill="#0a0a0a"/>
-        <path d="M11 2 L13 8 L11 7 L9 8 Z" fill="#0a0a0a"/>
-        <path d="M11 20 L13 14 L11 15 L9 14 Z" fill="#0a0a0a"/>
-        <path d="M2 11 L8 9 L7 11 L8 13 Z" fill="#0a0a0a"/>
-        <path d="M20 11 L14 9 L15 11 L14 13 Z" fill="#0a0a0a"/>
-        <circle cx="11" cy="11" r="1.2" fill="#7ee83a"/>
-      </svg>
-    </div>
-    <div class="em-logo-text">
-      <span class="em-logo-brand">eufyMake</span>
-      <span class="em-logo-sub">Ink Cost Calculator</span>
-    </div>
-    <span class="em-badge">E1</span>
-  </header>
+<header class="em-header">
+  <div class="em-logo-mark">
+    <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+      <circle cx="11" cy="11" r="4.5" fill="#0a0a0a"/>
+      <path d="M11 2 L13 8 L11 7 L9 8 Z" fill="#0a0a0a"/>
+      <path d="M11 20 L13 14 L11 15 L9 14 Z" fill="#0a0a0a"/>
+      <path d="M2 11 L8 9 L7 11 L8 13 Z" fill="#0a0a0a"/>
+      <path d="M20 11 L14 9 L15 11 L14 13 Z" fill="#0a0a0a"/>
+      <circle cx="11" cy="11" r="1.2" fill="#7ee83a"/>
+    </svg>
+  </div>
+  <div class="em-logo-text">
+    <span class="em-logo-brand">eufyMake</span>
+    <span class="em-logo-sub">Ink Cost Calculator</span>
+  </div>
+  <span class="em-badge">E1</span>
+</header>
 
-  <main class="em-body">
+<main class="em-body">
 
-    <div class="em-section">
-      <p class="em-section-title">Settings</p>
-      <div class="kit-info">
-        <div class="kit-stat"><span class="kit-stat-label">Kit cost (6 inks)</span><span class="kit-stat-value">$299.00</span></div>
-        <div class="kit-stat"><span class="kit-stat-label">Each cartridge</span><span class="kit-stat-value">$42.99 / 100ml</span></div>
-        <div class="kit-stat"><span class="kit-stat-label">Cleaner</span><span class="kit-stat-value">$42.99 / 100ml</span></div>
-        <div class="kit-stat"><span class="kit-stat-label">Cost per ml</span><span class="kit-stat-value">$0.4299</span></div>
-      </div>
-      <div class="em-field">
-        <label>USD → GBP rate</label>
-        <input type="number" id="fxRate" value="1.29" min="0.5" max="3" step="0.01" />
-        <span class="unit">$/£</span>
-      </div>
+  <div class="em-section">
+    <p class="em-section-title">Settings</p>
+    <div class="kit-info">
+      <div class="kit-stat"><span class="kit-stat-label">Kit cost (6 inks)</span><span class="kit-stat-value">$299.00</span></div>
+      <div class="kit-stat"><span class="kit-stat-label">Each cartridge</span><span class="kit-stat-value">$42.99 / 100ml</span></div>
+      <div class="kit-stat"><span class="kit-stat-label">Cleaner</span><span class="kit-stat-value">$42.99 / 100ml</span></div>
+      <div class="kit-stat"><span class="kit-stat-label">Cost per ml</span><span class="kit-stat-value">$0.4299</span></div>
     </div>
 
-    <div class="em-section">
-      <p class="em-section-title">Ink cost mode</p>
-      <div class="em-tabs">
-        <div class="em-tab active" id="tab-detail" onclick="switchTab('detail')">Per colour</div>
-        <div class="em-tab" id="tab-avg" onclick="switchTab('avg')">Total ml average</div>
-      </div>
+    <div class="em-field">
+      <label>Your currency</label>
+      <select id="currencySelect" onchange="onCurrencyChange()">
+        <option value="GBP" data-symbol="£"   data-rate="1.29">🇬🇧 GBP — British Pound</option>
+        <option value="USD" data-symbol="$"   data-rate="1.00">🇺🇸 USD — US Dollar</option>
+        <option value="EUR" data-symbol="€"   data-rate="1.08">🇪🇺 EUR — Euro</option>
+        <option value="AUD" data-symbol="A$"  data-rate="0.65">🇦🇺 AUD — Australian Dollar</option>
+        <option value="CAD" data-symbol="C$"  data-rate="0.74">🇨🇦 CAD — Canadian Dollar</option>
+        <option value="NZD" data-symbol="NZ$" data-rate="0.61">🇳🇿 NZD — New Zealand Dollar</option>
+        <option value="CHF" data-symbol="Fr"  data-rate="1.13">🇨🇭 CHF — Swiss Franc</option>
+        <option value="SEK" data-symbol="kr"  data-rate="0.096">🇸🇪 SEK — Swedish Krona</option>
+        <option value="NOK" data-symbol="kr"  data-rate="0.094">🇳🇴 NOK — Norwegian Krone</option>
+        <option value="DKK" data-symbol="kr"  data-rate="0.145">🇩🇰 DKK — Danish Krone</option>
+        <option value="JPY" data-symbol="¥"   data-rate="0.0067">🇯🇵 JPY — Japanese Yen</option>
+        <option value="SGD" data-symbol="S$"  data-rate="0.75">🇸🇬 SGD — Singapore Dollar</option>
+        <option value="ZAR" data-symbol="R"   data-rate="0.055">🇿🇦 ZAR — South African Rand</option>
+      </select>
+    </div>
 
-      <div id="panel-detail">
-        <div class="colour-grid" id="colourGrid"></div>
-        <div class="cleaner-card">
-          <div class="colour-header">
-            <div class="swatch" style="background:#444; border:1px solid #666;"></div>
-            <span class="colour-name">Cleaning cartridge</span>
-          </div>
-          <div class="colour-row">
-            <label>Cartridge cost</label>
-            <span class="static-val">$42.99 / 100ml</span>
-          </div>
-          <div class="colour-row">
-            <label>Used per print</label>
-            <input type="number" id="ml-cleaner" value="0" min="0" step="0.1" />
-            <span class="unit">ml</span>
-          </div>
-          <div class="colour-cost" id="linecost-cleaner">not used</div>
+    <div class="fx-row">
+      <div class="fx-rate-block">
+        <label class="fx-label">Exchange rate <span id="fxLabel">(1 GBP = ? USD)</span></label>
+        <div class="fx-input-row">
+          <input type="number" id="fxRate" value="1.29" min="0.001" max="9999" step="0.001" oninput="calc()" />
+          <span class="fx-symbol" id="fxSymbol">£</span>
+          <span class="fx-per">per $1 USD</span>
         </div>
+        <p class="fx-source" id="fxSource">Preset rate — click refresh for today's live rate</p>
       </div>
-
-      <div id="panel-avg" style="display:none;">
-        <div class="avg-card">
-          <div class="avg-row">
-            <label>Total ml used per print</label>
-            <input type="number" id="avg-total-ml" value="12" min="0" step="0.1" />
-            <span class="unit">ml</span>
-          </div>
-          <div class="avg-row">
-            <label>Cost per ml (all cartridges)</label>
-            <span class="static-val">$0.4299</span>
-          </div>
-          <div class="avg-breakdown">
-            All cartridges are $42.99 / 100ml — every ml costs the same regardless of colour.<br>
-            7 cartridges × 100ml = 700ml total kit capacity.
-          </div>
-        </div>
-      </div>
+      <button class="refresh-btn" id="refreshBtn" onclick="fetchLiveRate()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+        Live rate
+      </button>
     </div>
 
-    <div class="results">
-      <div class="metric">
-        <p class="metric-label">Ink cost</p>
-        <p class="metric-value" id="totalGBP">—</p>
-        <p class="metric-sub" id="totalUSD">—</p>
-      </div>
-      <div class="metric">
-        <p class="metric-label">Total ml used</p>
-        <p class="metric-value" id="totalMlUsed">—</p>
-        <p class="metric-sub">per print</p>
-      </div>
-      <div class="metric">
-        <p class="metric-label">Prints / kit</p>
-        <p class="metric-value" id="printsPerKit">—</p>
-        <p class="metric-sub">before bottle runs out</p>
+    <div class="usd-note" id="usdNote" style="display:none;">
+      <span>🇺🇸</span>&nbsp;You've selected USD — ink prices are already in USD so no conversion needed. All figures show in dollars.
+    </div>
+  </div>
+
+  <div class="em-section">
+    <p class="em-section-title">Ink cost mode</p>
+    <div class="em-tabs">
+      <div class="em-tab active" id="tab-detail" onclick="switchTab('detail')">Per colour</div>
+      <div class="em-tab" id="tab-avg" onclick="switchTab('avg')">Total ml average</div>
+    </div>
+    <div id="panel-detail">
+      <div class="colour-grid" id="colourGrid"></div>
+      <div class="cleaner-card">
+        <div class="colour-header">
+          <div class="swatch" style="background:#444;border:1px solid #666;"></div>
+          <span class="colour-name">Cleaning cartridge</span>
+        </div>
+        <div class="colour-row"><label>Cartridge cost</label><span class="static-val">$42.99 / 100ml</span></div>
+        <div class="colour-row">
+          <label>Used per print</label>
+          <input type="number" id="ml-cleaner" value="0" min="0" step="0.1" />
+          <span class="unit">ml</span>
+        </div>
+        <div class="colour-cost" id="linecost-cleaner">not used</div>
       </div>
     </div>
-
-    <div class="em-section">
-      <p class="em-section-title">Per item / sticker breakdown</p>
-      <div class="item-name-row">
-        <label>Item name</label>
-        <input type="text" id="itemName" value="Sticker" placeholder="e.g. Sticker, Mug, Phone case..." />
-      </div>
-      <div class="em-field" style="margin-bottom:14px;">
-        <label>Items per print sheet</label>
-        <input type="number" id="itemsPerSheet" value="1" min="1" step="1" />
-        <span class="unit">items</span>
-      </div>
-      <div class="item-grid">
-        <div class="item-card">
-          <p class="item-card-label">Ink cost per item</p>
-          <p class="item-card-value" id="inkPerItem">—</p>
-          <p class="item-card-sub" id="inkPerItemUSD">—</p>
+    <div id="panel-avg" style="display:none;">
+      <div class="avg-card">
+        <div class="avg-row">
+          <label>Total ml used per print</label>
+          <input type="number" id="avg-total-ml" value="12" min="0" step="0.1" />
+          <span class="unit">ml</span>
         </div>
-        <div class="item-card">
-          <p class="item-card-label">Ml of ink per item</p>
-          <p class="item-card-value" id="mlPerItem">—</p>
-          <p class="item-card-sub">ml used</p>
-        </div>
-      </div>
-      <div class="item-breakdown" style="margin-top:10px;">
-        <p class="item-breakdown-title">Ink breakdown per item</p>
-        <div id="breakdownRows"></div>
+        <div class="avg-row"><label>Cost per ml</label><span class="static-val">$0.4299</span></div>
+        <div class="avg-breakdown">All cartridges $42.99 / 100ml — same cost per ml regardless of colour.<br>7 × 100ml = 700ml total kit capacity.</div>
       </div>
     </div>
+  </div>
 
-    <div class="em-section">
-      <p class="em-section-title">Sell price calculator — per <span id="itemNameLabel">item</span></p>
-      <div class="em-field" style="margin-bottom:12px;">
-        <label>Other costs per item</label>
-        <input type="number" id="otherCosts" value="0" min="0" step="0.01" />
-        <span class="unit">£</span>
+  <div class="results">
+    <div class="metric">
+      <p class="metric-label">Ink cost</p>
+      <p class="metric-value" id="totalLocal">—</p>
+      <p class="metric-sub" id="totalUSD">—</p>
+    </div>
+    <div class="metric">
+      <p class="metric-label">Total ml used</p>
+      <p class="metric-value" id="totalMlUsed">—</p>
+      <p class="metric-sub">per print</p>
+    </div>
+    <div class="metric">
+      <p class="metric-label">Prints / kit</p>
+      <p class="metric-value" id="printsPerKit">—</p>
+      <p class="metric-sub">before bottle runs out</p>
+    </div>
+  </div>
+
+  <div class="em-section">
+    <p class="em-section-title">Per item / sticker breakdown</p>
+    <div class="item-name-row">
+      <label>Item name</label>
+      <input type="text" id="itemName" value="Sticker" placeholder="e.g. Sticker, Mug, Phone case..." />
+    </div>
+    <div class="em-field" style="margin-bottom:14px;">
+      <label>Items per print sheet</label>
+      <input type="number" id="itemsPerSheet" value="1" min="1" step="1" />
+      <span class="unit">items</span>
+    </div>
+    <div class="item-grid">
+      <div class="item-card">
+        <p class="item-card-label">Ink cost per item</p>
+        <p class="item-card-value" id="inkPerItem">—</p>
+        <p class="item-card-sub" id="inkPerItemUSD">—</p>
       </div>
-      <div class="markup-row">
-        <label>Markup</label>
-        <input type="range" id="markup" min="10" max="500" value="200" step="10" />
-        <span class="markup-val" id="markupOut">200%</span>
-      </div>
-      <div class="em-divider"></div>
-      <p class="price-label">Suggested sell price</p>
-      <p class="price-big" id="sellPrice">—</p>
-      <div class="sell-grid">
-        <div class="sell-card">
-          <p class="sell-card-label">Profit per item</p>
-          <p class="sell-card-value green" id="profitPerItem">—</p>
-        </div>
-        <div class="sell-card">
-          <p class="sell-card-label">Total cost per item</p>
-          <p class="sell-card-value" id="totalCostPerItem">—</p>
-        </div>
+      <div class="item-card">
+        <p class="item-card-label">Ml of ink per item</p>
+        <p class="item-card-value" id="mlPerItem">—</p>
+        <p class="item-card-sub">ml used</p>
       </div>
     </div>
+    <div class="item-breakdown" style="margin-top:10px;">
+      <p class="item-breakdown-title">Ink breakdown per item</p>
+      <div id="breakdownRows"></div>
+    </div>
+  </div>
 
-  </main>
+  <div class="em-section">
+    <p class="em-section-title">Material cost</p>
+    <p style="font-size:12px;color:#555;margin-bottom:12px;line-height:1.6;">Select a common item or enter your own cost in your chosen currency.</p>
+    <div class="material-grid">
+      <div class="material-btn active" onclick="selectMaterial(this,0)">None</div>
+      <div class="material-btn" onclick="selectMaterial(this,1.50)">Sticker<span>~1.50</span></div>
+      <div class="material-btn" onclick="selectMaterial(this,3.50)">Metal sign A5<span>~3.50</span></div>
+      <div class="material-btn" onclick="selectMaterial(this,5.00)">Metal sign A4<span>~5.00</span></div>
+      <div class="material-btn" onclick="selectMaterial(this,4.00)">Tumbler<span>~4.00</span></div>
+      <div class="material-btn" onclick="selectMaterial(this,3.00)">Mug<span>~3.00</span></div>
+      <div class="material-btn" onclick="selectMaterial(this,6.00)">Phone case<span>~6.00</span></div>
+      <div class="material-btn" onclick="selectMaterial(this,2.50)">Keyring<span>~2.50</span></div>
+      <div class="material-btn" onclick="selectMaterial(this,8.00)">Slate tile<span>~8.00</span></div>
+      <div class="material-btn" onclick="selectMaterial(this,2.00)">Coaster<span>~2.00</span></div>
+    </div>
+    <div class="em-field">
+      <label>Custom material cost</label>
+      <input type="number" id="materialCost" value="0" min="0" step="0.01" oninput="clearMaterialBtns()" />
+      <span class="unit" id="currSymbolMat">£</span>
+    </div>
+    <div class="em-field">
+      <label>Other costs per item</label>
+      <input type="number" id="otherCosts" value="0" min="0" step="0.01" />
+      <span class="unit" id="currSymbolOther">£</span>
+    </div>
+    <p style="font-size:11px;color:#444;margin-top:4px;">Other costs = postage, packaging, labour etc.</p>
+  </div>
 
-  <footer class="em-footer">
-    eufyMake E1 Ink Cost Calculator &mdash; not affiliated with Anker / eufyMake &mdash; use figures as a guide only
-  </footer>
+  <div class="em-section">
+    <p class="em-section-title">Sell price — per <span id="itemNameLabel">item</span></p>
+    <div class="cost-breakdown-bar">
+      <div class="cost-bar-row"><span class="cost-bar-label">Ink cost</span><span class="cost-bar-val" id="barInk">—</span></div>
+      <div class="cost-bar-row"><span class="cost-bar-label">Material</span><span class="cost-bar-val" id="barMaterial">—</span></div>
+      <div class="cost-bar-row"><span class="cost-bar-label">Other costs</span><span class="cost-bar-val" id="barOther">—</span></div>
+      <div class="cost-bar-row"><span class="cost-bar-label">Total cost</span><span class="cost-bar-val green-val" id="barTotal">—</span></div>
+    </div>
+    <div class="markup-row">
+      <label>Markup</label>
+      <input type="range" id="markup" min="10" max="500" value="200" step="10" />
+      <span class="markup-val" id="markupOut">200%</span>
+    </div>
+    <div class="em-divider"></div>
+    <p class="price-label">Suggested sell price</p>
+    <p class="price-big" id="sellPrice">—</p>
+    <div class="sell-grid">
+      <div class="sell-card">
+        <p class="sell-card-label">Profit per item</p>
+        <p class="sell-card-value green" id="profitPerItem">—</p>
+      </div>
+      <div class="sell-card">
+        <p class="sell-card-label">Total cost per item</p>
+        <p class="sell-card-value" id="totalCostPerItem">—</p>
+      </div>
+    </div>
+  </div>
 
-  <script>
-    const CART_COST_USD = 42.99;
-    const BOTTLE_SIZE_ML = 100;
-    const COST_PER_ML = CART_COST_USD / BOTTLE_SIZE_ML;
-    const TOTAL_KIT_ML = 7 * BOTTLE_SIZE_ML;
+</main>
 
-    const colours = [
-      { id: 'cyan',    name: 'Cyan',    swatch: '#00AEEF' },
-      { id: 'magenta', name: 'Magenta', swatch: '#EC008C' },
-      { id: 'yellow',  name: 'Yellow',  swatch: '#FFD700', swatchBorder: true },
-      { id: 'black',   name: 'Black',   swatch: '#333333', swatchBorder: true },
-      { id: 'white',   name: 'White',   swatch: '#eeeeee', swatchBorder: true },
-      { id: 'gloss',   name: 'Gloss',   swatch: '#7ee83a' },
-    ];
+<footer class="em-footer">
+  eufyMake E1 Ink Cost Calculator &mdash; not affiliated with Anker / eufyMake &mdash; use figures as a guide only
+</footer>
 
-    const grid = document.getElementById('colourGrid');
-    colours.forEach(c => {
-      const border = c.swatchBorder ? 'border:1px solid #555;' : '';
-      grid.innerHTML += `
-        <div class="colour-card">
-          <div class="colour-header">
-            <div class="swatch" style="background:${c.swatch};${border}"></div>
-            <span class="colour-name">${c.name}</span>
-          </div>
-          <div class="colour-row">
-            <label>Bottle cost</label>
-            <span class="static-val">$${CART_COST_USD.toFixed(2)} / 100ml</span>
-          </div>
-          <div class="colour-row">
-            <label>Used per print</label>
-            <input type="number" id="ml-${c.id}" value="0" min="0" step="0.1" />
-            <span class="unit">ml</span>
-          </div>
-          <div class="colour-cost" id="linecost-${c.id}">not used</div>
-        </div>`;
-    });
+<script>
+  const CART_COST_USD = 42.99;
+  const BOTTLE_SIZE_ML = 100;
+  const COST_PER_ML = CART_COST_USD / BOTTLE_SIZE_ML;
+  const TOTAL_KIT_ML = 7 * BOTTLE_SIZE_ML;
 
-    const $ = id => document.getElementById(id);
-    const fmtGBP = n => '£' + n.toFixed(2);
-    const fmtUSD = n => '$' + n.toFixed(2);
-    const fmtML  = n => n.toFixed(2) + 'ml';
-    let currentTab = 'detail';
+  const colours = [
+    { id:'cyan',    name:'Cyan',    swatch:'#00AEEF' },
+    { id:'magenta', name:'Magenta', swatch:'#EC008C' },
+    { id:'yellow',  name:'Yellow',  swatch:'#FFD700', swatchBorder:true },
+    { id:'black',   name:'Black',   swatch:'#333333', swatchBorder:true },
+    { id:'white',   name:'White',   swatch:'#eeeeee', swatchBorder:true },
+    { id:'gloss',   name:'Gloss',   swatch:'#7ee83a' },
+  ];
 
-    function switchTab(tab) {
-      currentTab = tab;
-      $('panel-detail').style.display = tab === 'detail' ? '' : 'none';
-      $('panel-avg').style.display    = tab === 'avg'    ? '' : 'none';
-      $('tab-detail').classList.toggle('active', tab === 'detail');
-      $('tab-avg').classList.toggle('active',    tab === 'avg');
-      calc();
-    }
+  const cGrid = document.getElementById('colourGrid');
+  colours.forEach(c => {
+    const b = c.swatchBorder ? 'border:1px solid #555;' : '';
+    cGrid.innerHTML += `<div class="colour-card">
+      <div class="colour-header"><div class="swatch" style="background:${c.swatch};${b}"></div><span class="colour-name">${c.name}</span></div>
+      <div class="colour-row"><label>Bottle cost</label><span class="static-val">$${CART_COST_USD.toFixed(2)} / 100ml</span></div>
+      <div class="colour-row"><label>Used per print</label><input type="number" id="ml-${c.id}" value="0" min="0" step="0.1"/><span class="unit">ml</span></div>
+      <div class="colour-cost" id="linecost-${c.id}">not used</div>
+    </div>`;
+  });
 
-    function calc() {
-      const fx           = parseFloat($('fxRate').value)       || 1.29;
-      const markupPct    = parseFloat($('markup').value)        || 200;
-      const otherCosts   = parseFloat($('otherCosts').value)    || 0;
-      const itemsPerSheet = Math.max(1, parseInt($('itemsPerSheet').value) || 1);
-      const itemName     = $('itemName').value || 'item';
+  const $ = id => document.getElementById(id);
+  let currentTab = 'detail';
 
-      $('markupOut').textContent    = markupPct + '%';
-      $('itemNameLabel').textContent = itemName.toLowerCase();
+  function getSymbol() {
+    const s = $('currencySelect');
+    return s.options[s.selectedIndex].dataset.symbol || '£';
+  }
+  function isUSD() { return $('currencySelect').value === 'USD'; }
+  function getFX() { return isUSD() ? 1 : (parseFloat($('fxRate').value) || 1); }
+  function fmt(n) { return getSymbol() + n.toFixed(2); }
+  const fmtUSD = n => '$' + n.toFixed(2);
 
-      let totalUSD = 0, totalMl = 0, minPrints = Infinity;
-      let channelData = [];
-
-      if (currentTab === 'detail') {
-        colours.forEach(c => {
-          const mlUsed     = parseFloat($('ml-' + c.id).value) || 0;
-          const lineCostUSD = COST_PER_ML * mlUsed;
-          const lineCostGBP = lineCostUSD / fx;
-          totalUSD += lineCostUSD;
-          totalMl  += mlUsed;
-          if (mlUsed > 0) {
-            $('linecost-' + c.id).textContent = fmtGBP(lineCostGBP) + ' (' + fmtUSD(lineCostUSD) + ')';
-            channelData.push({ name: c.name, swatch: c.swatch, swatchBorder: c.swatchBorder, ml: mlUsed, costGBP: lineCostGBP });
-            const p = Math.floor(BOTTLE_SIZE_ML / mlUsed);
-            if (p < minPrints) minPrints = p;
-          } else {
-            $('linecost-' + c.id).textContent = 'not used';
-          }
-        });
-        const cml      = parseFloat($('ml-cleaner').value) || 0;
-        const ccostUSD = COST_PER_ML * cml;
-        const ccostGBP = ccostUSD / fx;
-        totalUSD += ccostUSD;
-        totalMl  += cml;
-        if (cml > 0) {
-          $('linecost-cleaner').textContent = fmtGBP(ccostGBP) + ' (' + fmtUSD(ccostUSD) + ')';
-          channelData.push({ name: 'Cleaner', swatch: '#444', swatchBorder: true, ml: cml, costGBP: ccostGBP });
-          const cp = Math.floor(BOTTLE_SIZE_ML / cml);
-          if (cp < minPrints) minPrints = cp;
-        } else {
-          $('linecost-cleaner').textContent = 'not used';
-        }
-        $('printsPerKit').textContent = isFinite(minPrints) ? minPrints : '—';
-      } else {
-        totalMl  = parseFloat($('avg-total-ml').value) || 0;
-        totalUSD = COST_PER_ML * totalMl;
-        channelData.push({ name: 'All channels', swatch: '#7ee83a', ml: totalMl, costGBP: totalUSD / fx });
-        $('printsPerKit').textContent = totalMl > 0 ? Math.floor(TOTAL_KIT_ML / totalMl) : '—';
-      }
-
-      const totalGBP = totalUSD / fx;
-      $('totalGBP').textContent   = fmtGBP(totalGBP);
-      $('totalUSD').textContent   = fmtUSD(totalUSD);
-      $('totalMlUsed').textContent = totalMl.toFixed(2) + 'ml';
-
-      const inkPerItemGBP = totalGBP / itemsPerSheet;
-      const inkPerItemUSD = totalUSD / itemsPerSheet;
-      const mlPerItem     = totalMl  / itemsPerSheet;
-
-      $('inkPerItem').textContent    = fmtGBP(inkPerItemGBP);
-      $('inkPerItemUSD').textContent = fmtUSD(inkPerItemUSD);
-      $('mlPerItem').textContent     = fmtML(mlPerItem);
-
-      let rows = '';
-      if (channelData.length > 0) {
-        channelData.forEach(ch => {
-          const border  = ch.swatchBorder ? 'border:1px solid #666;' : '';
-          const itemMl  = (ch.ml / itemsPerSheet).toFixed(2);
-          const itemCost = fmtGBP(ch.costGBP / itemsPerSheet);
-          rows += `<div class="breakdown-row">
-            <span class="breakdown-label">
-              <span class="breakdown-dot" style="background:${ch.swatch};${border}"></span>
-              ${ch.name}
-            </span>
-            <span class="breakdown-val">${itemMl}ml &nbsp;<span>${itemCost}</span></span>
-          </div>`;
-        });
-      } else {
-        rows = '<div style="font-size:12px;color:#444;padding:4px 0;">Enter ml values above to see breakdown</div>';
-      }
-      $('breakdownRows').innerHTML = rows;
-
-      const totalCostPerItem = inkPerItemGBP + otherCosts;
-      const sellPrice        = totalCostPerItem * (1 + markupPct / 100);
-      const profit           = sellPrice - totalCostPerItem;
-
-      $('sellPrice').textContent       = fmtGBP(sellPrice);
-      $('profitPerItem').textContent   = fmtGBP(profit);
-      $('totalCostPerItem').textContent = fmtGBP(totalCostPerItem);
-    }
-
-    document.querySelectorAll('input').forEach(el => el.addEventListener('input', calc));
+  function onCurrencyChange() {
+    const s = $('currencySelect');
+    const o = s.options[s.selectedIndex];
+    const code = o.value;
+    const sym  = o.dataset.symbol;
+    const rate = o.dataset.rate;
+    $('fxRate').value = rate;
+    $('fxSymbol').textContent = sym;
+    $('fxLabel').textContent  = `(1 ${code} = ? USD)`;
+    $('currSymbolMat').textContent   = sym;
+    $('currSymbolOther').textContent = sym;
+    $('fxSource').textContent = "Preset rate — click refresh for today's live rate";
+    $('fxSource').className   = 'fx-source';
+    const usd = code === 'USD';
+    $('usdNote').style.display = usd ? 'flex' : 'none';
+    $('fxRate').disabled       = usd;
+    $('refreshBtn').disabled   = usd;
     calc();
-  </script>
+  }
 
+  async function fetchLiveRate() {
+    const code = $('currencySelect').value;
+    if (code === 'USD') return;
+    const btn = $('refreshBtn');
+    btn.classList.add('spinning');
+    $('fxSource').textContent = 'Fetching live rate...';
+    $('fxSource').className   = 'fx-source loading';
+    try {
+      const res  = await fetch('https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/usd.json');
+      const data = await res.json();
+      const rate = data.usd[code.toLowerCase()];
+      if (!rate) throw new Error();
+      $('fxRate').value = rate.toFixed(4);
+      const t = new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
+      $('fxSource').textContent = `Live rate fetched at ${t}`;
+      $('fxSource').className   = 'fx-source live';
+      calc();
+    } catch(e) {
+      $('fxSource').textContent = 'Could not fetch live rate — using preset';
+      $('fxSource').className   = 'fx-source error';
+    }
+    btn.classList.remove('spinning');
+  }
+
+  function switchTab(tab) {
+    currentTab = tab;
+    $('panel-detail').style.display = tab === 'detail' ? '' : 'none';
+    $('panel-avg').style.display    = tab === 'avg'    ? '' : 'none';
+    $('tab-detail').classList.toggle('active', tab === 'detail');
+    $('tab-avg').classList.toggle('active',    tab === 'avg');
+    calc();
+  }
+
+  function calc() {
+    const fx            = getFX();
+    const usd           = isUSD();
+    const markupPct     = parseFloat($('markup').value)       || 200;
+    const materialCost  = parseFloat($('materialCost').value) || 0;
+    const otherCosts    = parseFloat($('otherCosts').value)   || 0;
+    const itemsPerSheet = Math.max(1, parseInt($('itemsPerSheet').value) || 1);
+    const itemName      = $('itemName').value || 'item';
+    $('markupOut').textContent    = markupPct + '%';
+    $('itemNameLabel').textContent = itemName.toLowerCase();
+
+    let totalUSD = 0, totalMl = 0, minPrints = Infinity, channels = [];
+
+    if (currentTab === 'detail') {
+      colours.forEach(c => {
+        const ml  = parseFloat($('ml-' + c.id).value) || 0;
+        const cu  = COST_PER_ML * ml;
+        const cl  = cu * fx;
+        totalUSD += cu; totalMl += ml;
+        if (ml > 0) {
+          $('linecost-' + c.id).textContent = fmt(cl) + (usd ? '' : ' (' + fmtUSD(cu) + ')');
+          channels.push({ name:c.name, swatch:c.swatch, sb:c.swatchBorder, ml, cl });
+          const p = Math.floor(BOTTLE_SIZE_ML / ml);
+          if (p < minPrints) minPrints = p;
+        } else { $('linecost-' + c.id).textContent = 'not used'; }
+      });
+      const cml = parseFloat($('ml-cleaner').value) || 0;
+      const ccu = COST_PER_ML * cml, ccl = ccu * fx;
+      totalUSD += ccu; totalMl += cml;
+      if (cml > 0) {
+        $('linecost-cleaner').textContent = fmt(ccl) + (usd ? '' : ' (' + fmtUSD(ccu) + ')');
+        channels.push({ name:'Cleaner', swatch:'#444', sb:true, ml:cml, cl:ccl });
+        const cp = Math.floor(BOTTLE_SIZE_ML / cml);
+        if (cp < minPrints) minPrints = cp;
+      } else { $('linecost-cleaner').textContent = 'not used'; }
+      $('printsPerKit').textContent = isFinite(minPrints) ? minPrints : '—';
+    } else {
+      totalMl  = parseFloat($('avg-total-ml').value) || 0;
+      totalUSD = COST_PER_ML * totalMl;
+      channels.push({ name:'All channels', swatch:'#7ee83a', ml:totalMl, cl:totalUSD * fx });
+      $('printsPerKit').textContent = totalMl > 0 ? Math.floor(TOTAL_KIT_ML / totalMl) : '—';
+    }
+
+    const totalLoc = totalUSD * fx;
+    $('totalLocal').textContent   = fmt(totalLoc);
+    $('totalUSD').textContent     = usd ? '' : fmtUSD(totalUSD);
+    $('totalMlUsed').textContent  = totalMl.toFixed(2) + 'ml';
+
+    const inkPerItem = totalLoc / itemsPerSheet;
+    const inkUSD     = totalUSD / itemsPerSheet;
+    const mlPerItem  = totalMl  / itemsPerSheet;
+    $('inkPerItem').textContent    = fmt(inkPerItem);
+    $('inkPerItemUSD').textContent = usd ? '' : fmtUSD(inkUSD);
+    $('mlPerItem').textContent     = mlPerItem.toFixed(2) + 'ml';
+
+    let rows = channels.length ? '' : '<div style="font-size:12px;color:#444;padding:4px 0;">Enter ml values above to see breakdown</div>';
+    channels.forEach(ch => {
+      const b  = ch.sb ? 'border:1px solid #666;' : '';
+      rows += `<div class="breakdown-row">
+        <span class="breakdown-label"><span class="breakdown-dot" style="background:${ch.swatch};${b}"></span>${ch.name}</span>
+        <span class="breakdown-val">${(ch.ml/itemsPerSheet).toFixed(2)}ml &nbsp;<span>${fmt(ch.cl/itemsPerSheet)}</span></span>
+      </div>`;
+    });
+    $('breakdownRows').innerHTML = rows;
+
+    const totalCost = inkPerItem + materialCost + otherCosts;
+    const sell      = totalCost * (1 + markupPct / 100);
+    const profit    = sell - totalCost;
+
+    $('barInk').textContent      = fmt(inkPerItem);
+    $('barMaterial').textContent = materialCost > 0 ? fmt(materialCost) : '—';
+    $('barOther').textContent    = otherCosts   > 0 ? fmt(otherCosts)   : '—';
+    $('barTotal').textContent    = fmt(totalCost);
+    $('sellPrice').textContent        = fmt(sell);
+    $('profitPerItem').textContent    = fmt(profit);
+    $('totalCostPerItem').textContent = fmt(totalCost);
+  }
+
+  function selectMaterial(el, cost) {
+    document.querySelectorAll('.material-btn').forEach(b => b.classList.remove('active'));
+    el.classList.add('active');
+    $('materialCost').value = cost;
+    calc();
+  }
+  function clearMaterialBtns() {
+    document.querySelectorAll('.material-btn').forEach(b => b.classList.remove('active'));
+    calc();
+  }
+
+  document.querySelectorAll('input').forEach(el => el.addEventListener('input', calc));
+  calc();
+</script>
 </body>
 </html>
