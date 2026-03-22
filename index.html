@@ -20,49 +20,36 @@
     .em-section { background: #141414; border: 1px solid #222; border-radius: 12px; padding: 1.25rem; margin-bottom: 1rem; }
     .em-section-title { font-size: 10px; font-weight: 600; color: #7ee83a; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 1rem; }
 
+    /* Kit summary bar */
     .kit-info { background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 8px; padding: 0.75rem 1rem; margin-bottom: 1rem; display: flex; gap: 1.5rem; flex-wrap: wrap; }
     .kit-stat { display: flex; flex-direction: column; gap: 2px; }
     .kit-stat-label { font-size: 10px; color: #555; text-transform: uppercase; letter-spacing: 0.05em; }
     .kit-stat-value { font-size: 13px; font-weight: 600; color: #7ee83a; }
 
+    /* Currency row */
+    .currency-row { display: flex; align-items: center; gap: 12px; }
+    .currency-row label { font-size: 13px; color: #aaa; min-width: 160px; }
+    .currency-sym-input { width: 56px; background: #1e1e1e; border: 1px solid #2a2a2a; border-radius: 6px; color: #7ee83a; font-size: 18px; font-weight: 700; padding: 6px 8px; outline: none; text-align: center; }
+    .currency-sym-input:focus { border-color: #7ee83a; }
+    .currency-hint { font-size: 12px; color: #444; }
+
+    /* Fields */
     .em-field { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
     .em-field:last-child { margin-bottom: 0; }
     .em-field label { font-size: 13px; color: #aaa; min-width: 160px; }
-    .em-field input[type=number], .em-field input[type=text] { width: 90px; background: #1e1e1e; border: 1px solid #2a2a2a; border-radius: 6px; color: #fff; font-size: 13px; padding: 7px 8px; outline: none; }
+    .em-field input[type=number], .em-field input[type=text] { width: 100px; background: #1e1e1e; border: 1px solid #2a2a2a; border-radius: 6px; color: #fff; font-size: 13px; padding: 7px 8px; outline: none; }
     .em-field input:focus { border-color: #7ee83a; }
+    .em-field .sym { font-size: 13px; color: #7ee83a; font-weight: 600; min-width: 20px; }
     .em-field .unit { font-size: 12px; color: #555; }
 
-    select#currencySelect { flex: 1; background: #1e1e1e; border: 1px solid #2a2a2a; border-radius: 6px; color: #fff; font-size: 13px; padding: 7px 8px; outline: none; cursor: pointer; }
-    select#currencySelect:focus { border-color: #7ee83a; }
-
-    .fx-row { display: flex; align-items: flex-end; gap: 10px; margin-top: 10px; }
-    .fx-rate-block { flex: 1; }
-    .fx-label { font-size: 12px; color: #aaa; display: block; margin-bottom: 6px; }
-    .fx-label span { color: #555; }
-    .fx-input-row { display: flex; align-items: center; gap: 8px; }
-    .fx-input-row input { width: 100px; background: #1e1e1e; border: 1px solid #2a2a2a; border-radius: 6px; color: #fff; font-size: 14px; font-weight: 600; padding: 7px 8px; outline: none; }
-    .fx-input-row input:focus { border-color: #7ee83a; }
-    .fx-symbol { font-size: 18px; font-weight: 700; color: #7ee83a; min-width: 28px; }
-    .fx-per { font-size: 12px; color: #444; }
-    .fx-source { font-size: 11px; color: #444; margin-top: 5px; }
-    .fx-source.live { color: #4a9a1a; }
-    .fx-source.loading { color: #888; }
-    .fx-source.error { color: #9a3a1a; }
-    .refresh-btn { background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 8px; color: #888; font-size: 12px; font-weight: 500; padding: 9px 12px; cursor: pointer; display: flex; align-items: center; gap: 6px; white-space: nowrap; transition: all 0.15s; flex-shrink: 0; }
-    .refresh-btn:hover:not(:disabled) { border-color: #7ee83a; color: #7ee83a; }
-    .refresh-btn:disabled { opacity: 0.4; cursor: default; }
-    .refresh-btn.spinning svg { animation: spin 0.8s linear infinite; }
-    @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-    .usd-note { background: #111a0a; border: 1px solid #2a3a1a; border-radius: 8px; padding: 0.75rem 1rem; margin-top: 10px; font-size: 12px; color: #6a9a4a; line-height: 1.6; display: flex; gap: 8px; align-items: flex-start; }
-
     /* Cartridge prices */
-    .global-price-row { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; padding-bottom: 14px; border-bottom: 1px solid #222; flex-wrap: wrap; }
-    .global-price-row label { font-size: 13px; color: #aaa; flex: 1; min-width: 140px; }
-    .global-price-row input { width: 90px; background: #1e1e1e; border: 1px solid #2a2a2a; border-radius: 6px; color: #fff; font-size: 14px; font-weight: 600; padding: 7px 8px; outline: none; }
-    .global-price-row input:focus { border-color: #7ee83a; }
-    .global-price-row .unit { font-size: 12px; color: #555; }
+    .global-row { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; padding-bottom: 14px; border-bottom: 1px solid #222; flex-wrap: wrap; }
+    .global-row label { font-size: 13px; color: #aaa; flex: 1; min-width: 140px; }
+    .global-row input { width: 100px; background: #1e1e1e; border: 1px solid #2a2a2a; border-radius: 6px; color: #fff; font-size: 14px; font-weight: 600; padding: 7px 8px; outline: none; }
+    .global-row input:focus { border-color: #7ee83a; }
     .apply-btn { background: #1a2e0f; border: 1px solid #7ee83a; border-radius: 6px; color: #7ee83a; font-size: 12px; font-weight: 600; padding: 7px 14px; cursor: pointer; white-space: nowrap; transition: all 0.15s; }
     .apply-btn:hover { background: #7ee83a; color: #0a0a0a; }
+
     .cart-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
     .cart-card { background: #1a1a1a; border: 1px solid #242424; border-radius: 10px; padding: 0.75rem; }
     .cart-card.overridden { border-color: #3a5a2a; }
@@ -73,14 +60,13 @@
     .cart-row { display: flex; align-items: center; gap: 6px; margin-bottom: 5px; }
     .cart-row:last-child { margin-bottom: 0; }
     .cart-row label { font-size: 11px; color: #666; flex: 1; }
-    .cart-row input { width: 72px; background: #111; border: 1px solid #2a2a2a; border-radius: 5px; color: #fff; font-size: 12px; padding: 4px 6px; outline: none; }
+    .cart-row input { width: 80px; background: #111; border: 1px solid #2a2a2a; border-radius: 5px; color: #fff; font-size: 12px; padding: 4px 6px; outline: none; }
     .cart-row input:focus { border-color: #7ee83a; }
     .cart-row input.custom { border-color: #7ee83a; background: #0d1a08; color: #7ee83a; }
-    .cart-row .unit { font-size: 10px; color: #444; min-width: 28px; }
+    .cart-row .unit { font-size: 10px; color: #444; }
     .cart-cpm { font-size: 11px; color: #555; margin-top: 6px; padding-top: 6px; border-top: 1px solid #222; }
-    .reset-link { font-size: 10px; color: #555; cursor: pointer; text-decoration: underline; margin-left: 6px; }
-    .reset-link:hover { color: #7ee83a; }
 
+    /* Ink tabs */
     .em-tabs { display: flex; gap: 6px; margin-bottom: 1rem; }
     .em-tab { flex: 1; padding: 9px; text-align: center; font-size: 12px; font-weight: 500; border: 1px solid #2a2a2a; border-radius: 8px; cursor: pointer; background: #1a1a1a; color: #888; }
     .em-tab.active { background: #7ee83a; color: #0a0a0a; border-color: #7ee83a; font-weight: 700; }
@@ -107,12 +93,14 @@
     .avg-row .unit { font-size: 12px; color: #555; }
     .avg-breakdown { font-size: 11px; color: #555; margin-top: 10px; padding-top: 10px; border-top: 1px solid #222; line-height: 1.9; }
 
+    /* Summary metrics */
     .results { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 8px; margin-bottom: 1rem; }
     .metric { background: #141414; border: 1px solid #222; border-radius: 10px; padding: 0.85rem 1rem; }
     .metric-label { font-size: 10px; color: #555; margin: 0 0 4px; text-transform: uppercase; letter-spacing: 0.05em; }
     .metric-value { font-size: 19px; font-weight: 700; color: #7ee83a; margin: 0; }
     .metric-sub { font-size: 10px; color: #444; margin: 2px 0 0; }
 
+    /* Per item */
     .item-name-row { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
     .item-name-row label { font-size: 13px; color: #aaa; min-width: 160px; }
     .item-name-row input { flex: 1; background: #1e1e1e; border: 1px solid #2a2a2a; border-radius: 6px; color: #fff; font-size: 13px; padding: 7px 8px; outline: none; }
@@ -131,21 +119,16 @@
     .breakdown-val { font-size: 12px; color: #ccc; }
     .breakdown-val span { color: #7ee83a; font-weight: 600; }
 
-    .material-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 7px; margin-bottom: 10px; }
-    .material-btn { background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 8px; padding: 8px 8px 6px; font-size: 12px; color: #888; cursor: pointer; text-align: center; line-height: 1.3; transition: all 0.15s; }
-    .material-btn span { display: block; font-size: 11px; color: #555; margin-top: 2px; }
-    .material-btn:hover { border-color: #7ee83a; color: #ccc; }
-    .material-btn.active { background: #1a2e0f; border-color: #7ee83a; color: #7ee83a; }
-    .material-btn.active span { color: #4a9a1a; }
-
+    /* Cost breakdown */
     .cost-breakdown-bar { background: #1a1a1a; border: 1px solid #242424; border-radius: 10px; padding: 0.85rem 1rem; margin-bottom: 14px; }
-    .cost-bar-row { display: flex; justify-content: space-between; align-items: center; padding: 5px 0; border-bottom: 1px solid #1e1e1e; }
-    .cost-bar-row:last-child { border-bottom: none; border-top: 1px solid #333; padding-top: 8px; margin-top: 4px; }
+    .cost-bar-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid #1e1e1e; }
+    .cost-bar-row:last-child { border-bottom: none; border-top: 1px solid #333; padding-top: 10px; margin-top: 4px; }
     .cost-bar-label { font-size: 12px; color: #666; }
     .cost-bar-row:last-child .cost-bar-label { font-size: 13px; font-weight: 600; color: #aaa; }
     .cost-bar-val { font-size: 12px; color: #ccc; }
     .green-val { font-size: 15px !important; font-weight: 700; color: #7ee83a !important; }
 
+    /* Sell price */
     .markup-row { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
     .markup-row label { font-size: 13px; color: #aaa; min-width: 160px; }
     .markup-row input[type=range] { flex: 1; accent-color: #7ee83a; }
@@ -165,7 +148,6 @@
       .colour-grid, .cart-grid { grid-template-columns: 1fr; }
       .results { grid-template-columns: 1fr 1fr; }
       .sell-grid { grid-template-columns: 1fr; }
-      .material-grid { grid-template-columns: repeat(2,1fr); }
       .kit-info { gap: 1rem; }
     }
   </style>
@@ -195,59 +177,26 @@
   <!-- SETTINGS -->
   <div class="em-section">
     <p class="em-section-title">Settings</p>
-    <div class="kit-info" id="kitInfo">
-      <div class="kit-stat"><span class="kit-stat-label">6 ink cartridges</span><span class="kit-stat-value" id="kitInkSummary">6 × $42.99 / 100ml</span></div>
-      <div class="kit-stat"><span class="kit-stat-label">Cleaning cartridge</span><span class="kit-stat-value" id="kitCleanSummary">1 × $42.99 / 380ml</span></div>
+    <div class="kit-info">
+      <div class="kit-stat"><span class="kit-stat-label">6 ink cartridges</span><span class="kit-stat-value" id="kitInkSummary">—</span></div>
+      <div class="kit-stat"><span class="kit-stat-label">Cleaning cartridge</span><span class="kit-stat-value" id="kitCleanSummary">—</span></div>
       <div class="kit-stat"><span class="kit-stat-label">Avg cost per ml</span><span class="kit-stat-value" id="kitAvgMl">—</span></div>
     </div>
-
-    <div class="em-field">
-      <label>Your currency</label>
-      <select id="currencySelect" onchange="onCurrencyChange()">
-        <option value="GBP" data-symbol="£"   data-rate="1.29">🇬🇧 GBP — British Pound</option>
-        <option value="USD" data-symbol="$"   data-rate="1.00">🇺🇸 USD — US Dollar</option>
-        <option value="EUR" data-symbol="€"   data-rate="1.08">🇪🇺 EUR — Euro</option>
-        <option value="AUD" data-symbol="A$"  data-rate="0.65">🇦🇺 AUD — Australian Dollar</option>
-        <option value="CAD" data-symbol="C$"  data-rate="0.74">🇨🇦 CAD — Canadian Dollar</option>
-        <option value="NZD" data-symbol="NZ$" data-rate="0.61">🇳🇿 NZD — New Zealand Dollar</option>
-        <option value="CHF" data-symbol="Fr"  data-rate="1.13">🇨🇭 CHF — Swiss Franc</option>
-        <option value="SEK" data-symbol="kr"  data-rate="0.096">🇸🇪 SEK — Swedish Krona</option>
-        <option value="NOK" data-symbol="kr"  data-rate="0.094">🇳🇴 NOK — Norwegian Krone</option>
-        <option value="DKK" data-symbol="kr"  data-rate="0.145">🇩🇰 DKK — Danish Krone</option>
-        <option value="JPY" data-symbol="¥"   data-rate="0.0067">🇯🇵 JPY — Japanese Yen</option>
-        <option value="SGD" data-symbol="S$"  data-rate="0.75">🇸🇬 SGD — Singapore Dollar</option>
-        <option value="ZAR" data-symbol="R"   data-rate="0.055">🇿🇦 ZAR — South African Rand</option>
-      </select>
-    </div>
-
-    <div class="fx-row">
-      <div class="fx-rate-block">
-        <label class="fx-label">Exchange rate <span id="fxLabel">(1 GBP = ? USD)</span></label>
-        <div class="fx-input-row">
-          <input type="number" id="fxRate" value="1.29" min="0.001" max="9999" step="0.001" oninput="calc()" />
-          <span class="fx-symbol" id="fxSymbol">£</span>
-          <span class="fx-per">per $1 USD</span>
-        </div>
-        <p class="fx-source" id="fxSource">Preset rate — click refresh for today's live rate</p>
-      </div>
-      <button class="refresh-btn" id="refreshBtn" onclick="fetchLiveRate()">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
-        Live rate
-      </button>
-    </div>
-    <div class="usd-note" id="usdNote" style="display:none;">
-      <span>🇺🇸</span>&nbsp;You've selected USD — ink prices are already in USD so no conversion needed. All figures show in dollars.
+    <div class="currency-row">
+      <label>Your currency symbol</label>
+      <input type="text" id="currSym" value="£" maxlength="3" class="currency-sym-input" oninput="calc()" />
+      <span class="currency-hint">e.g. £ &nbsp;$ &nbsp;€ &nbsp;A$</span>
     </div>
   </div>
 
   <!-- CARTRIDGE PRICES -->
   <div class="em-section">
-    <p class="em-section-title">Cartridge prices (USD)</p>
-    <p style="font-size:12px;color:#555;margin-bottom:14px;line-height:1.6;">Set a global price then override any individual cartridge if yours cost different — e.g. bought separately or on sale.</p>
-    <div class="global-price-row">
-      <label>Global price — all ink cartridges</label>
+    <p class="em-section-title">Cartridge prices — what you paid</p>
+    <p style="font-size:12px;color:#555;margin-bottom:14px;line-height:1.6;">Enter the price you actually paid. Set a global price for all cartridges then override any individually if needed.</p>
+    <div class="global-row">
+      <label>Global price — all cartridges</label>
       <input type="number" id="globalPrice" value="42.99" min="0" step="0.01" oninput="calc()" />
-      <span class="unit">USD</span>
+      <span class="em-field .sym" id="globalSym" style="font-size:13px;color:#7ee83a;font-weight:600;">£</span>
       <button class="apply-btn" onclick="applyGlobalToAll()">Apply to all</button>
     </div>
     <div class="cart-grid" id="cartGrid"></div>
@@ -283,10 +232,10 @@
           <span class="unit">ml</span>
         </div>
         <div class="avg-row">
-          <label>Avg cost per ml (all cartridges)</label>
+          <label>Avg cost per ml</label>
           <span style="font-size:13px;font-weight:600;color:#eee;" id="avgPerMlDisplay">—</span>
         </div>
-        <div class="avg-breakdown" id="avgBreakdownText">6 ink cartridges × 100ml + 1 cleaning cartridge × 380ml = 980ml total kit.</div>
+        <div class="avg-breakdown" id="avgBreakdownText">Average calculated from your cartridge prices. 6 × 100ml ink + 1 × 380ml cleaner = 980ml total kit.</div>
       </div>
     </div>
   </div>
@@ -296,7 +245,7 @@
     <div class="metric">
       <p class="metric-label">Ink cost</p>
       <p class="metric-value" id="totalLocal">—</p>
-      <p class="metric-sub" id="totalUSD">—</p>
+      <p class="metric-sub">per print</p>
     </div>
     <div class="metric">
       <p class="metric-label">Total ml used</p>
@@ -312,10 +261,10 @@
 
   <!-- PER ITEM -->
   <div class="em-section">
-    <p class="em-section-title">Per item / sticker breakdown</p>
+    <p class="em-section-title">Per item breakdown</p>
     <div class="item-name-row">
       <label>Item name</label>
-      <input type="text" id="itemName" value="Sticker" placeholder="e.g. Sticker, Mug, Phone case..." />
+      <input type="text" id="itemName" value="Sticker" placeholder="e.g. Sticker, Mug, Metal sign..." />
     </div>
     <div class="em-field" style="margin-bottom:14px;">
       <label>Items per print sheet</label>
@@ -326,7 +275,6 @@
       <div class="item-card">
         <p class="item-card-label">Ink cost per item</p>
         <p class="item-card-value" id="inkPerItem">—</p>
-        <p class="item-card-sub" id="inkPerItemUSD">—</p>
       </div>
       <div class="item-card">
         <p class="item-card-label">Ml of ink per item</p>
@@ -340,33 +288,21 @@
     </div>
   </div>
 
-  <!-- MATERIAL COST -->
+  <!-- COSTS -->
   <div class="em-section">
-    <p class="em-section-title">Material cost</p>
-    <p style="font-size:12px;color:#555;margin-bottom:12px;line-height:1.6;">Select a common item or enter your own cost in your chosen currency.</p>
-    <div class="material-grid">
-      <div class="material-btn active" onclick="selectMaterial(this,0)">None</div>
-      <div class="material-btn" onclick="selectMaterial(this,1.50)">Sticker<span>~1.50</span></div>
-      <div class="material-btn" onclick="selectMaterial(this,3.50)">Metal sign A5<span>~3.50</span></div>
-      <div class="material-btn" onclick="selectMaterial(this,5.00)">Metal sign A4<span>~5.00</span></div>
-      <div class="material-btn" onclick="selectMaterial(this,4.00)">Tumbler<span>~4.00</span></div>
-      <div class="material-btn" onclick="selectMaterial(this,3.00)">Mug<span>~3.00</span></div>
-      <div class="material-btn" onclick="selectMaterial(this,6.00)">Phone case<span>~6.00</span></div>
-      <div class="material-btn" onclick="selectMaterial(this,2.50)">Keyring<span>~2.50</span></div>
-      <div class="material-btn" onclick="selectMaterial(this,8.00)">Slate tile<span>~8.00</span></div>
-      <div class="material-btn" onclick="selectMaterial(this,2.00)">Coaster<span>~2.00</span></div>
-    </div>
+    <p class="em-section-title">Additional costs per item</p>
     <div class="em-field">
-      <label>Custom material cost</label>
-      <input type="number" id="materialCost" value="0" min="0" step="0.01" oninput="clearMaterialBtns()" />
-      <span class="unit" id="currSymbolMat">£</span>
+      <label>Material / substrate</label>
+      <input type="number" id="materialCost" value="0" min="0" step="0.01" />
+      <span class="sym" id="symMat">£</span>
     </div>
+    <p style="font-size:11px;color:#444;margin-top:-6px;margin-bottom:12px;padding-left:170px;">Cost of the item you're printing on — mug, slate, metal sign etc.</p>
     <div class="em-field">
-      <label>Other costs per item</label>
+      <label>Other costs</label>
       <input type="number" id="otherCosts" value="0" min="0" step="0.01" />
-      <span class="unit" id="currSymbolOther">£</span>
+      <span class="sym" id="symOther">£</span>
     </div>
-    <p style="font-size:11px;color:#444;margin-top:4px;">Other costs = postage, packaging, labour etc.</p>
+    <p style="font-size:11px;color:#444;margin-top:-6px;padding-left:170px;">Postage, packaging, labour etc.</p>
   </div>
 
   <!-- SELL PRICE -->
@@ -374,7 +310,7 @@
     <p class="em-section-title">Sell price — per <span id="itemNameLabel">item</span></p>
     <div class="cost-breakdown-bar">
       <div class="cost-bar-row"><span class="cost-bar-label">Ink cost</span><span class="cost-bar-val" id="barInk">—</span></div>
-      <div class="cost-bar-row"><span class="cost-bar-label">Material</span><span class="cost-bar-val" id="barMaterial">—</span></div>
+      <div class="cost-bar-row"><span class="cost-bar-label">Material / substrate</span><span class="cost-bar-val" id="barMaterial">—</span></div>
       <div class="cost-bar-row"><span class="cost-bar-label">Other costs</span><span class="cost-bar-val" id="barOther">—</span></div>
       <div class="cost-bar-row"><span class="cost-bar-label">Total cost</span><span class="cost-bar-val green-val" id="barTotal">—</span></div>
     </div>
@@ -405,19 +341,17 @@
 </footer>
 
 <script>
-  const INK_ML    = 100;
-  const CLEAN_ML  = 380;
-  const DEF_PRICE = 42.99;
+  const INK_ML   = 100;
+  const CLEAN_ML = 380;
 
-  // Cartridge definitions — ink channels + cleaner
   const cartridges = [
-    { id:'cyan',    name:'Cyan',    swatch:'#00AEEF', ml: INK_ML },
-    { id:'magenta', name:'Magenta', swatch:'#EC008C', ml: INK_ML },
-    { id:'yellow',  name:'Yellow',  swatch:'#FFD700', ml: INK_ML, sb:true },
-    { id:'black',   name:'Black',   swatch:'#333333', ml: INK_ML, sb:true },
-    { id:'white',   name:'White',   swatch:'#eeeeee', ml: INK_ML, sb:true },
-    { id:'gloss',   name:'Gloss',   swatch:'#7ee83a', ml: INK_ML },
-    { id:'cleaner', name:'Cleaner', swatch:'#444444', ml: CLEAN_ML, sb:true, isCleaner:true },
+    { id:'cyan',    name:'Cyan',    swatch:'#00AEEF', ml:INK_ML },
+    { id:'magenta', name:'Magenta', swatch:'#EC008C', ml:INK_ML },
+    { id:'yellow',  name:'Yellow',  swatch:'#FFD700', ml:INK_ML, sb:true },
+    { id:'black',   name:'Black',   swatch:'#333333', ml:INK_ML, sb:true },
+    { id:'white',   name:'White',   swatch:'#eeeeee', ml:INK_ML, sb:true },
+    { id:'gloss',   name:'Gloss',   swatch:'#7ee83a', ml:INK_ML },
+    { id:'cleaner', name:'Cleaner', swatch:'#444444', ml:CLEAN_ML, sb:true, isCleaner:true },
   ];
 
   // Build cartridge price cards
@@ -433,19 +367,19 @@
           <span class="override-badge" id="badge-${c.id}" style="display:none;">custom</span>
         </div>
         <div class="cart-row">
-          <label>Price (USD)</label>
-          <input type="number" id="price-${c.id}" value="${DEF_PRICE.toFixed(2)}" min="0" step="0.01" oninput="onCartPriceInput('${c.id}')" />
-          <span class="unit">$</span>
+          <label>Price</label>
+          <input type="number" id="price-${c.id}" value="42.99" min="0" step="0.01" oninput="onCartPriceInput('${c.id}')" />
+          <span class="unit" id="csym-${c.id}">£</span>
         </div>
         <div class="cart-row">
           <label>Bottle size</label>
-          <span style="font-size:12px;color:#666;">${mlLabel}</span>
+          <span style="font-size:12px;color:#555;">${mlLabel}</span>
         </div>
         <div class="cart-cpm" id="cpm-${c.id}">—</div>
       </div>`;
   });
 
-  // Build ink usage cards (colour grid — cleaner handled separately)
+  // Build ink usage cards
   const colourGrid = document.getElementById('colourGrid');
   cartridges.filter(c => !c.isCleaner).forEach(c => {
     const b = c.sb ? 'border:1px solid #555;' : '';
@@ -467,113 +401,70 @@
   const $ = id => document.getElementById(id);
   let currentTab = 'detail';
 
-  function getSymbol() {
-    const s = $('currencySelect');
-    return s.options[s.selectedIndex].dataset.symbol || '£';
-  }
-  function isUSD() { return $('currencySelect').value === 'USD'; }
-  function getFX()  { return isUSD() ? 1 : (parseFloat($('fxRate').value) || 1); }
-  function fmt(n)   { return getSymbol() + n.toFixed(2); }
-  const fmtUSD = n => '$' + n.toFixed(2);
-
-  function getCartPrice(id) {
-    return parseFloat($('price-' + id).value) || 0;
-  }
+  function getSym() { return ($('currSym').value || '£').trim() || '£'; }
+  function fmt(n)   { return getSym() + n.toFixed(2); }
+  function getCartPrice(id) { return parseFloat($('price-' + id).value) || 0; }
   function getCartCPM(id) {
     const c = cartridges.find(x => x.id === id);
     return getCartPrice(id) / c.ml;
   }
 
+  function updateAllSymbols() {
+    const sym = getSym();
+    $('globalSym').textContent  = sym;
+    $('symMat').textContent     = sym;
+    $('symOther').textContent   = sym;
+    cartridges.forEach(c => {
+      const el = $('csym-' + c.id);
+      if (el) el.textContent = sym;
+    });
+  }
+
+  function updateKitSummary() {
+    const sym        = getSym();
+    const inkPrices  = cartridges.filter(c => !c.isCleaner).map(c => getCartPrice(c.id));
+    const cleanPrice = getCartPrice('cleaner');
+    const totalMl    = cartridges.reduce((s,c) => s + c.ml, 0);
+    const totalCost  = cartridges.reduce((s,c) => s + getCartPrice(c.id), 0);
+    const avgCpm     = totalMl > 0 ? totalCost / totalMl : 0;
+    const allSame    = inkPrices.every(p => Math.abs(p - inkPrices[0]) < 0.001);
+
+    $('kitInkSummary').textContent   = allSame
+      ? `6 × ${sym}${inkPrices[0].toFixed(2)} / 100ml`
+      : `Mixed prices / 100ml`;
+    $('kitCleanSummary').textContent = `${sym}${cleanPrice.toFixed(2)} / 380ml`;
+    $('kitAvgMl').textContent        = `${sym}${avgCpm.toFixed(4)}/ml`;
+    $('avgPerMlDisplay').textContent = `${sym}${avgCpm.toFixed(4)}`;
+    $('avgBreakdownText').textContent =
+      `Average from your cartridge prices. 6 × 100ml ink + 1 × 380ml cleaner = ${totalMl}ml total kit. Total cost: ${sym}${totalCost.toFixed(2)}`;
+
+    cartridges.forEach(c => {
+      const cpm = getCartCPM(c.id);
+      $('cpm-' + c.id).textContent = `${sym}${cpm.toFixed(4)} per ml`;
+    });
+  }
+
   function onCartPriceInput(id) {
-    const gp = parseFloat($('globalPrice').value) || DEF_PRICE;
+    const gp  = parseFloat($('globalPrice').value) || 0;
     const val = parseFloat($('price-' + id).value) || 0;
     const isCustom = Math.abs(val - gp) > 0.001;
-    $('badge-' + id).style.display = isCustom ? 'inline' : 'none';
-    $('price-' + id).className = isCustom ? 'custom' : '';
-    $('cartcard-' + id).className = isCustom ? 'cart-card overridden' : 'cart-card';
+    $('badge-' + id).style.display   = isCustom ? 'inline' : 'none';
+    $('price-' + id).className       = isCustom ? 'custom' : '';
+    $('cartcard-' + id).className    = isCustom ? 'cart-card overridden' : 'cart-card';
     updateKitSummary();
     calc();
   }
 
   function applyGlobalToAll() {
-    const gp = parseFloat($('globalPrice').value) || DEF_PRICE;
+    const gp = parseFloat($('globalPrice').value) || 0;
     cartridges.forEach(c => {
-      $('price-' + c.id).value = gp.toFixed(2);
-      $('price-' + c.id).className = '';
+      $('price-' + c.id).value         = gp.toFixed(2);
+      $('price-' + c.id).className     = '';
       $('badge-' + c.id).style.display = 'none';
-      $('cartcard-' + c.id).className = 'cart-card';
+      $('cartcard-' + c.id).className  = 'cart-card';
     });
     updateKitSummary();
     calc();
-  }
-
-  function updateKitSummary() {
-    const inkPrice   = cartridges.filter(c=>!c.isCleaner).map(c=>getCartPrice(c.id));
-    const cleanPrice = getCartPrice('cleaner');
-    const totalMl    = cartridges.reduce((s,c) => s + c.ml, 0);
-    const totalCost  = cartridges.reduce((s,c) => s + getCartPrice(c.id), 0);
-    const avgCpm     = totalCost / totalMl;
-
-    // Check if all ink prices same
-    const allSame = inkPrice.every(p => Math.abs(p - inkPrice[0]) < 0.001);
-    $('kitInkSummary').textContent  = allSame
-      ? `6 × $${inkPrice[0].toFixed(2)} / 100ml`
-      : `Mixed prices / 100ml`;
-    $('kitCleanSummary').textContent = `$${cleanPrice.toFixed(2)} / 380ml`;
-    $('kitAvgMl').textContent        = `$${avgCpm.toFixed(4)}/ml`;
-
-    // Update avg mode display
-    $('avgPerMlDisplay').textContent = `$${avgCpm.toFixed(4)}`;
-    $('avgBreakdownText').textContent =
-      `6 ink cartridges (100ml each) + cleaning cartridge (380ml) = ${totalMl}ml total. Total kit cost: $${totalCost.toFixed(2)}`;
-
-    // Update per-cartridge cost-per-ml labels
-    cartridges.forEach(c => {
-      const cpm = getCartCPM(c.id);
-      $('cpm-' + c.id).textContent = `$${cpm.toFixed(4)} per ml`;
-    });
-  }
-
-  function onCurrencyChange() {
-    const s = $('currencySelect');
-    const o = s.options[s.selectedIndex];
-    const code = o.value, sym = o.dataset.symbol;
-    $('fxRate').value = o.dataset.rate;
-    $('fxSymbol').textContent        = sym;
-    $('fxLabel').textContent         = `(1 ${code} = ? USD)`;
-    $('currSymbolMat').textContent   = sym;
-    $('currSymbolOther').textContent = sym;
-    $('fxSource').textContent        = "Preset rate — click refresh for today's live rate";
-    $('fxSource').className          = 'fx-source';
-    const usd = code === 'USD';
-    $('usdNote').style.display = usd ? 'flex' : 'none';
-    $('fxRate').disabled       = usd;
-    $('refreshBtn').disabled   = usd;
-    calc();
-  }
-
-  async function fetchLiveRate() {
-    const code = $('currencySelect').value;
-    if (code === 'USD') return;
-    const btn = $('refreshBtn');
-    btn.classList.add('spinning');
-    $('fxSource').textContent = 'Fetching live rate...';
-    $('fxSource').className   = 'fx-source loading';
-    try {
-      const res  = await fetch('https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/usd.json');
-      const data = await res.json();
-      const rate = data.usd[code.toLowerCase()];
-      if (!rate) throw new Error();
-      $('fxRate').value = rate.toFixed(4);
-      const t = new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
-      $('fxSource').textContent = `Live rate fetched at ${t}`;
-      $('fxSource').className   = 'fx-source live';
-      calc();
-    } catch(e) {
-      $('fxSource').textContent = 'Could not fetch live rate — using preset';
-      $('fxSource').className   = 'fx-source error';
-    }
-    btn.classList.remove('spinning');
   }
 
   function switchTab(tab) {
@@ -586,76 +477,63 @@
   }
 
   function calc() {
-    const fx            = getFX();
-    const usd           = isUSD();
+    updateAllSymbols();
+    updateKitSummary();
+
     const markupPct     = parseFloat($('markup').value)       || 200;
     const materialCost  = parseFloat($('materialCost').value) || 0;
     const otherCosts    = parseFloat($('otherCosts').value)   || 0;
     const itemsPerSheet = Math.max(1, parseInt($('itemsPerSheet').value) || 1);
     const itemName      = $('itemName').value || 'item';
 
-    $('markupOut').textContent    = markupPct + '%';
+    $('markupOut').textContent     = markupPct + '%';
     $('itemNameLabel').textContent = itemName.toLowerCase();
 
-    let totalUSD = 0, totalMl = 0, minPrints = Infinity, channels = [];
+    let totalCost = 0, totalMl = 0, minPrints = Infinity, channels = [];
 
     if (currentTab === 'detail') {
-      // Ink channels
       cartridges.filter(c => !c.isCleaner).forEach(c => {
         const ml   = parseFloat($('ml-' + c.id).value) || 0;
-        const cpm  = getCartCPM(c.id);
-        const cu   = cpm * ml;
-        const cl   = cu * fx;
-        totalUSD  += cu;
-        totalMl   += ml;
+        const cost = getCartCPM(c.id) * ml;
+        totalCost += cost; totalMl += ml;
         if (ml > 0) {
-          $('linecost-' + c.id).textContent = fmt(cl) + (usd ? '' : ' (' + fmtUSD(cu) + ')');
-          channels.push({ name:c.name, swatch:c.swatch, sb:c.sb, ml, cl });
+          $('linecost-' + c.id).textContent = fmt(cost);
+          channels.push({ name:c.name, swatch:c.swatch, sb:c.sb, ml, cost });
           const p = Math.floor(c.ml / ml);
           if (p < minPrints) minPrints = p;
         } else {
           $('linecost-' + c.id).textContent = 'not used';
         }
       });
-      // Cleaner
-      const cleanerC = cartridges.find(c => c.isCleaner);
-      const cml  = parseFloat($('ml-cleaner').value) || 0;
-      const ccpm = getCartCPM('cleaner');
-      const ccu  = ccpm * cml;
-      const ccl  = ccu * fx;
-      totalUSD  += ccu;
-      totalMl   += cml;
+      const cml   = parseFloat($('ml-cleaner').value) || 0;
+      const ccost = getCartCPM('cleaner') * cml;
+      totalCost  += ccost; totalMl += cml;
       if (cml > 0) {
-        $('linecost-cleaner').textContent = fmt(ccl) + (usd ? '' : ' (' + fmtUSD(ccu) + ')');
-        channels.push({ name:'Cleaner', swatch:'#444', sb:true, ml:cml, cl:ccl });
-        const cp = Math.floor(cleanerC.ml / cml);
+        $('linecost-cleaner').textContent = fmt(ccost);
+        channels.push({ name:'Cleaner', swatch:'#444', sb:true, ml:cml, cost:ccost });
+        const cp = Math.floor(CLEAN_ML / cml);
         if (cp < minPrints) minPrints = cp;
       } else {
         $('linecost-cleaner').textContent = 'not used';
       }
       $('printsPerKit').textContent = isFinite(minPrints) ? minPrints : '—';
     } else {
-      // Average mode
       totalMl = parseFloat($('avg-total-ml').value) || 0;
       const totalKitCost = cartridges.reduce((s,c) => s + getCartPrice(c.id), 0);
       const totalKitMl   = cartridges.reduce((s,c) => s + c.ml, 0);
-      const avgCpm       = totalKitCost / totalKitMl;
-      totalUSD = avgCpm * totalMl;
-      channels.push({ name:'All channels (avg)', swatch:'#7ee83a', ml:totalMl, cl:totalUSD * fx });
+      const avgCpm       = totalKitMl > 0 ? totalKitCost / totalKitMl : 0;
+      totalCost = avgCpm * totalMl;
+      channels.push({ name:'All channels (avg)', swatch:'#7ee83a', ml:totalMl, cost:totalCost });
       $('printsPerKit').textContent = totalMl > 0 ? Math.floor(totalKitMl / totalMl) : '—';
     }
 
-    const totalLoc  = totalUSD * fx;
-    $('totalLocal').textContent   = fmt(totalLoc);
-    $('totalUSD').textContent     = usd ? '' : fmtUSD(totalUSD);
-    $('totalMlUsed').textContent  = totalMl.toFixed(2) + 'ml';
+    $('totalLocal').textContent  = fmt(totalCost);
+    $('totalMlUsed').textContent = totalMl.toFixed(2) + 'ml';
 
-    const inkPerItem = totalLoc / itemsPerSheet;
-    const inkUSD     = totalUSD / itemsPerSheet;
+    const inkPerItem = totalCost / itemsPerSheet;
     const mlPerItem  = totalMl  / itemsPerSheet;
-    $('inkPerItem').textContent    = fmt(inkPerItem);
-    $('inkPerItemUSD').textContent = usd ? '' : fmtUSD(inkUSD);
-    $('mlPerItem').textContent     = mlPerItem.toFixed(2) + 'ml';
+    $('inkPerItem').textContent = fmt(inkPerItem);
+    $('mlPerItem').textContent  = mlPerItem.toFixed(2) + 'ml';
 
     let rows = channels.length
       ? ''
@@ -664,33 +542,22 @@
       const b = ch.sb ? 'border:1px solid #666;' : '';
       rows += `<div class="breakdown-row">
         <span class="breakdown-label"><span class="breakdown-dot" style="background:${ch.swatch};${b}"></span>${ch.name}</span>
-        <span class="breakdown-val">${(ch.ml/itemsPerSheet).toFixed(2)}ml &nbsp;<span>${fmt(ch.cl/itemsPerSheet)}</span></span>
+        <span class="breakdown-val">${(ch.ml/itemsPerSheet).toFixed(2)}ml &nbsp;<span>${fmt(ch.cost/itemsPerSheet)}</span></span>
       </div>`;
     });
     $('breakdownRows').innerHTML = rows;
 
-    const totalCost = inkPerItem + materialCost + otherCosts;
-    const sell      = totalCost * (1 + markupPct / 100);
-    const profit    = sell - totalCost;
+    const totalItemCost = inkPerItem + materialCost + otherCosts;
+    const sell          = totalItemCost * (1 + markupPct / 100);
+    const profit        = sell - totalItemCost;
 
     $('barInk').textContent       = fmt(inkPerItem);
     $('barMaterial').textContent  = materialCost > 0 ? fmt(materialCost) : '—';
     $('barOther').textContent     = otherCosts   > 0 ? fmt(otherCosts)   : '—';
-    $('barTotal').textContent     = fmt(totalCost);
+    $('barTotal').textContent     = fmt(totalItemCost);
     $('sellPrice').textContent        = fmt(sell);
     $('profitPerItem').textContent    = fmt(profit);
-    $('totalCostPerItem').textContent = fmt(totalCost);
-  }
-
-  function selectMaterial(el, cost) {
-    document.querySelectorAll('.material-btn').forEach(b => b.classList.remove('active'));
-    el.classList.add('active');
-    $('materialCost').value = cost;
-    calc();
-  }
-  function clearMaterialBtns() {
-    document.querySelectorAll('.material-btn').forEach(b => b.classList.remove('active'));
-    calc();
+    $('totalCostPerItem').textContent = fmt(totalItemCost);
   }
 
   document.querySelectorAll('input').forEach(el => el.addEventListener('input', calc));
