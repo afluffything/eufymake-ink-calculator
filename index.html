@@ -20,20 +20,17 @@
     .em-section { background: #141414; border: 1px solid #222; border-radius: 12px; padding: 1.25rem; margin-bottom: 1rem; }
     .em-section-title { font-size: 10px; font-weight: 600; color: #7ee83a; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 1rem; }
 
-    /* Kit summary bar */
     .kit-info { background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 8px; padding: 0.75rem 1rem; margin-bottom: 1rem; display: flex; gap: 1.5rem; flex-wrap: wrap; }
     .kit-stat { display: flex; flex-direction: column; gap: 2px; }
     .kit-stat-label { font-size: 10px; color: #555; text-transform: uppercase; letter-spacing: 0.05em; }
     .kit-stat-value { font-size: 13px; font-weight: 600; color: #7ee83a; }
 
-    /* Currency row */
     .currency-row { display: flex; align-items: center; gap: 12px; }
     .currency-row label { font-size: 13px; color: #aaa; min-width: 160px; }
     .currency-sym-input { width: 56px; background: #1e1e1e; border: 1px solid #2a2a2a; border-radius: 6px; color: #7ee83a; font-size: 18px; font-weight: 700; padding: 6px 8px; outline: none; text-align: center; }
     .currency-sym-input:focus { border-color: #7ee83a; }
     .currency-hint { font-size: 12px; color: #444; }
 
-    /* Fields */
     .em-field { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
     .em-field:last-child { margin-bottom: 0; }
     .em-field label { font-size: 13px; color: #aaa; min-width: 160px; }
@@ -41,6 +38,14 @@
     .em-field input:focus { border-color: #7ee83a; }
     .em-field .sym { font-size: 13px; color: #7ee83a; font-weight: 600; min-width: 20px; }
     .em-field .unit { font-size: 12px; color: #555; }
+
+    /* Wastage slider */
+    .wastage-row { display: flex; align-items: center; gap: 10px; margin-top: 14px; padding-top: 14px; border-top: 1px solid #222; }
+    .wastage-row label { font-size: 13px; color: #aaa; min-width: 160px; }
+    .wastage-row input[type=range] { flex: 1; accent-color: #e8823a; }
+    .wastage-val { font-size: 13px; font-weight: 600; color: #e8823a; min-width: 40px; text-align: right; }
+    .wastage-note { font-size: 11px; color: #555; margin-top: 6px; line-height: 1.6; }
+    .wastage-note span { color: #e8823a; font-weight: 600; }
 
     /* Cartridge prices */
     .global-row { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; padding-bottom: 14px; border-bottom: 1px solid #222; flex-wrap: wrap; }
@@ -66,7 +71,6 @@
     .cart-row .unit { font-size: 10px; color: #444; }
     .cart-cpm { font-size: 11px; color: #555; margin-top: 6px; padding-top: 6px; border-top: 1px solid #222; }
 
-    /* Ink tabs */
     .em-tabs { display: flex; gap: 6px; margin-bottom: 1rem; }
     .em-tab { flex: 1; padding: 9px; text-align: center; font-size: 12px; font-weight: 500; border: 1px solid #2a2a2a; border-radius: 8px; cursor: pointer; background: #1a1a1a; color: #888; }
     .em-tab.active { background: #7ee83a; color: #0a0a0a; border-color: #7ee83a; font-weight: 700; }
@@ -93,14 +97,29 @@
     .avg-row .unit { font-size: 12px; color: #555; }
     .avg-breakdown { font-size: 11px; color: #555; margin-top: 10px; padding-top: 10px; border-top: 1px solid #222; line-height: 1.9; }
 
-    /* Summary metrics */
+    /* Maintenance section */
+    .maint-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+    .maint-card { background: #1a1a1a; border: 1px solid #242424; border-radius: 10px; padding: 1rem; }
+    .maint-card-title { font-size: 11px; font-weight: 600; color: #aaa; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 10px; }
+    .maint-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+    .maint-row:last-child { margin-bottom: 0; }
+    .maint-row label { font-size: 11px; color: #666; flex: 1; }
+    .maint-row input { width: 60px; background: #111; border: 1px solid #2a2a2a; border-radius: 5px; color: #fff; font-size: 12px; padding: 4px 6px; outline: none; }
+    .maint-row input:focus { border-color: #7ee83a; }
+    .maint-row .unit { font-size: 10px; color: #444; }
+    .maint-results { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 8px; margin-top: 4px; }
+    .maint-metric { background: #111; border: 1px solid #1e1e1e; border-radius: 8px; padding: 0.75rem; }
+    .maint-metric-label { font-size: 10px; color: #444; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+    .maint-metric-value { font-size: 16px; font-weight: 700; color: #e8823a; }
+    .maint-metric-sub { font-size: 10px; color: #333; margin-top: 2px; }
+    .maint-note { font-size: 11px; color: #555; margin-top: 10px; line-height: 1.7; }
+
     .results { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 8px; margin-bottom: 1rem; }
     .metric { background: #141414; border: 1px solid #222; border-radius: 10px; padding: 0.85rem 1rem; }
     .metric-label { font-size: 10px; color: #555; margin: 0 0 4px; text-transform: uppercase; letter-spacing: 0.05em; }
     .metric-value { font-size: 19px; font-weight: 700; color: #7ee83a; margin: 0; }
     .metric-sub { font-size: 10px; color: #444; margin: 2px 0 0; }
 
-    /* Per item */
     .item-name-row { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
     .item-name-row label { font-size: 13px; color: #aaa; min-width: 160px; }
     .item-name-row input { flex: 1; background: #1e1e1e; border: 1px solid #2a2a2a; border-radius: 6px; color: #fff; font-size: 13px; padding: 7px 8px; outline: none; }
@@ -119,7 +138,6 @@
     .breakdown-val { font-size: 12px; color: #ccc; }
     .breakdown-val span { color: #7ee83a; font-weight: 600; }
 
-    /* Cost breakdown */
     .cost-breakdown-bar { background: #1a1a1a; border: 1px solid #242424; border-radius: 10px; padding: 0.85rem 1rem; margin-bottom: 14px; }
     .cost-bar-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid #1e1e1e; }
     .cost-bar-row:last-child { border-bottom: none; border-top: 1px solid #333; padding-top: 10px; margin-top: 4px; }
@@ -128,7 +146,6 @@
     .cost-bar-val { font-size: 12px; color: #ccc; }
     .green-val { font-size: 15px !important; font-weight: 700; color: #7ee83a !important; }
 
-    /* Sell price */
     .markup-row { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
     .markup-row label { font-size: 13px; color: #aaa; min-width: 160px; }
     .markup-row input[type=range] { flex: 1; accent-color: #7ee83a; }
@@ -145,8 +162,8 @@
     .em-footer { text-align: center; padding: 1.5rem; font-size: 11px; color: #333; border-top: 1px solid #1a1a1a; margin-top: 1rem; }
 
     @media (max-width: 480px) {
-      .colour-grid, .cart-grid { grid-template-columns: 1fr; }
-      .results { grid-template-columns: 1fr 1fr; }
+      .colour-grid, .cart-grid, .maint-grid { grid-template-columns: 1fr; }
+      .results, .maint-results { grid-template-columns: 1fr 1fr; }
       .sell-grid { grid-template-columns: 1fr; }
       .kit-info { gap: 1rem; }
     }
@@ -178,25 +195,33 @@
   <div class="em-section">
     <p class="em-section-title">Settings</p>
     <div class="kit-info">
-      <div class="kit-stat"><span class="kit-stat-label">6 ink cartridges</span><span class="kit-stat-value" id="kitInkSummary">—</span></div>
-      <div class="kit-stat"><span class="kit-stat-label">Cleaning cartridge</span><span class="kit-stat-value" id="kitCleanSummary">—</span></div>
-      <div class="kit-stat"><span class="kit-stat-label">Avg cost per ml</span><span class="kit-stat-value" id="kitAvgMl">—</span></div>
+      <div class="kit-stat"><span class="kit-stat-label">6 ink cartridges</span><span class="kit-stat-value" id="kitInkSummary">--</span></div>
+      <div class="kit-stat"><span class="kit-stat-label">Cleaning cartridge</span><span class="kit-stat-value" id="kitCleanSummary">--</span></div>
+      <div class="kit-stat"><span class="kit-stat-label">Usable ml per ink cart.</span><span class="kit-stat-value" id="kitUsableMl">--</span></div>
+      <div class="kit-stat"><span class="kit-stat-label">Avg cost per ml</span><span class="kit-stat-value" id="kitAvgMl">--</span></div>
     </div>
     <div class="currency-row">
       <label>Your currency symbol</label>
       <input type="text" id="currSym" value="£" maxlength="3" class="currency-sym-input" oninput="calc()" />
       <span class="currency-hint">e.g. £ &nbsp;$ &nbsp;€ &nbsp;A$</span>
     </div>
+
+    <div class="wastage-row">
+      <label>Ink cartridge wastage</label>
+      <input type="range" id="wastage" min="0" max="20" value="5" step="1" oninput="calc()" />
+      <span class="wastage-val" id="wastageVal">5%</span>
+    </div>
+    <p class="wastage-note" id="wastageNote">5% wastage applied to ink cartridges only — usable volume per 100ml bottle: <span id="usableMlNote">95ml</span>. Cleaner cartridge not affected.</p>
   </div>
 
   <!-- CARTRIDGE PRICES -->
   <div class="em-section">
     <p class="em-section-title">Cartridge prices — what you paid</p>
-    <p style="font-size:12px;color:#555;margin-bottom:14px;line-height:1.6;">Enter the price you actually paid. Set a global price for all cartridges then override any individually if needed.</p>
+    <p style="font-size:12px;color:#555;margin-bottom:14px;line-height:1.6;">Enter the price you actually paid. Set a global price then override any individually if needed.</p>
     <div class="global-row">
       <label>Global price — all cartridges</label>
       <input type="number" id="globalPrice" value="42.99" min="0" step="0.01" oninput="calc()" />
-      <span class="em-field .sym" id="globalSym" style="font-size:13px;color:#7ee83a;font-weight:600;">£</span>
+      <span id="globalSym" style="font-size:13px;color:#7ee83a;font-weight:600;">£</span>
       <button class="apply-btn" onclick="applyGlobalToAll()">Apply to all</button>
     </div>
     <div class="cart-grid" id="cartGrid"></div>
@@ -214,7 +239,7 @@
       <div class="cleaner-card">
         <div class="colour-header">
           <div class="swatch" style="background:#444;border:1px solid #666;"></div>
-          <span class="colour-name">Cleaning cartridge <span style="font-size:10px;color:#555;font-weight:400;">(380ml bottle)</span></span>
+          <span class="colour-name">Cleaning cartridge <span style="font-size:10px;color:#555;font-weight:400;">(380ml bottle — no wastage applied)</span></span>
         </div>
         <div class="colour-row">
           <label>Used per print</label>
@@ -233,30 +258,76 @@
         </div>
         <div class="avg-row">
           <label>Avg cost per ml</label>
-          <span style="font-size:13px;font-weight:600;color:#eee;" id="avgPerMlDisplay">—</span>
+          <span style="font-size:13px;font-weight:600;color:#eee;" id="avgPerMlDisplay">--</span>
         </div>
-        <div class="avg-breakdown" id="avgBreakdownText">Average calculated from your cartridge prices. 6 × 100ml ink + 1 × 380ml cleaner = 980ml total kit.</div>
+        <div class="avg-breakdown" id="avgBreakdownText">Average calculated from your cartridge prices and wastage setting.</div>
       </div>
     </div>
   </div>
 
-  <!-- SUMMARY METRICS -->
+  <!-- SUMMARY -->
   <div class="results">
     <div class="metric">
       <p class="metric-label">Ink cost</p>
-      <p class="metric-value" id="totalLocal">—</p>
+      <p class="metric-value" id="totalLocal">--</p>
       <p class="metric-sub">per print</p>
     </div>
     <div class="metric">
       <p class="metric-label">Total ml used</p>
-      <p class="metric-value" id="totalMlUsed">—</p>
+      <p class="metric-value" id="totalMlUsed">--</p>
       <p class="metric-sub">per print</p>
     </div>
     <div class="metric">
       <p class="metric-label">Prints / kit</p>
-      <p class="metric-value" id="printsPerKit">—</p>
+      <p class="metric-value" id="printsPerKit">--</p>
       <p class="metric-sub">before a bottle runs out</p>
     </div>
+  </div>
+
+  <!-- MAINTENANCE -->
+  <div class="em-section">
+    <p class="em-section-title">Maintenance costs</p>
+    <p style="font-size:12px;color:#555;margin-bottom:14px;line-height:1.6;">Track what you spend on deep cleans and maintenance cycles. Enter your actual weekly or monthly spend — both default to 0 so leave blank if you don't want to include them. The cost is spread across your prints automatically.</p>
+
+    <div class="em-field">
+      <label>Weekly maintenance cost</label>
+      <input type="number" id="maintWeeklyCost" value="0" min="0" step="0.01" />
+      <span class="sym" id="symMaintW">£</span>
+    </div>
+    <p style="font-size:11px;color:#444;margin-top:-6px;margin-bottom:12px;padding-left:170px;">Total spent on cleans and maintenance per week</p>
+
+    <div class="em-field">
+      <label>Monthly maintenance cost</label>
+      <input type="number" id="maintMonthlyCost" value="0" min="0" step="0.01" />
+      <span class="sym" id="symMaintM">£</span>
+    </div>
+    <p style="font-size:11px;color:#444;margin-top:-6px;margin-bottom:16px;padding-left:170px;">Total spent on cleans and maintenance per month</p>
+
+    <div class="em-field">
+      <label>Prints per week</label>
+      <input type="number" id="printsPerWeek" value="0" min="0" step="1" />
+      <span class="unit">prints</span>
+    </div>
+    <p style="font-size:11px;color:#444;margin-top:-6px;margin-bottom:14px;padding-left:170px;">Used to spread maintenance cost across each print</p>
+
+    <div class="maint-results">
+      <div class="maint-metric">
+        <p class="maint-metric-label">Weekly cost</p>
+        <p class="maint-metric-value" id="maintWeekly">--</p>
+        <p class="maint-metric-sub">as entered</p>
+      </div>
+      <div class="maint-metric">
+        <p class="maint-metric-label">Monthly cost</p>
+        <p class="maint-metric-value" id="maintMonthly">--</p>
+        <p class="maint-metric-sub">as entered</p>
+      </div>
+      <div class="maint-metric">
+        <p class="maint-metric-label">Added per print</p>
+        <p class="maint-metric-value" id="maintPerPrint">--</p>
+        <p class="maint-metric-sub">spread across prints</p>
+      </div>
+    </div>
+    <p style="font-size:11px;color:#555;margin-top:10px;line-height:1.6;">Maintenance cost per print is added automatically to your sell price calculation below. If both weekly and monthly are entered, weekly takes priority.</p>
   </div>
 
   <!-- PER ITEM -->
@@ -274,11 +345,11 @@
     <div class="item-grid">
       <div class="item-card">
         <p class="item-card-label">Ink cost per item</p>
-        <p class="item-card-value" id="inkPerItem">—</p>
+        <p class="item-card-value" id="inkPerItem">--</p>
       </div>
       <div class="item-card">
         <p class="item-card-label">Ml of ink per item</p>
-        <p class="item-card-value" id="mlPerItem">—</p>
+        <p class="item-card-value" id="mlPerItem">--</p>
         <p class="item-card-sub">ml used</p>
       </div>
     </div>
@@ -288,7 +359,7 @@
     </div>
   </div>
 
-  <!-- COSTS -->
+  <!-- ADDITIONAL COSTS -->
   <div class="em-section">
     <p class="em-section-title">Additional costs per item</p>
     <div class="em-field">
@@ -296,7 +367,7 @@
       <input type="number" id="materialCost" value="0" min="0" step="0.01" />
       <span class="sym" id="symMat">£</span>
     </div>
-    <p style="font-size:11px;color:#444;margin-top:-6px;margin-bottom:12px;padding-left:170px;">Cost of the item you're printing on — mug, slate, metal sign etc.</p>
+    <p style="font-size:11px;color:#444;margin-top:-6px;margin-bottom:12px;padding-left:170px;">Cost of the item you are printing on</p>
     <div class="em-field">
       <label>Other costs</label>
       <input type="number" id="otherCosts" value="0" min="0" step="0.01" />
@@ -309,10 +380,11 @@
   <div class="em-section">
     <p class="em-section-title">Sell price — per <span id="itemNameLabel">item</span></p>
     <div class="cost-breakdown-bar">
-      <div class="cost-bar-row"><span class="cost-bar-label">Ink cost</span><span class="cost-bar-val" id="barInk">—</span></div>
-      <div class="cost-bar-row"><span class="cost-bar-label">Material / substrate</span><span class="cost-bar-val" id="barMaterial">—</span></div>
-      <div class="cost-bar-row"><span class="cost-bar-label">Other costs</span><span class="cost-bar-val" id="barOther">—</span></div>
-      <div class="cost-bar-row"><span class="cost-bar-label">Total cost</span><span class="cost-bar-val green-val" id="barTotal">—</span></div>
+      <div class="cost-bar-row"><span class="cost-bar-label">Ink cost</span><span class="cost-bar-val" id="barInk">--</span></div>
+      <div class="cost-bar-row"><span class="cost-bar-label">Maintenance (per print share)</span><span class="cost-bar-val" id="barMaint">--</span></div>
+      <div class="cost-bar-row"><span class="cost-bar-label">Material / substrate</span><span class="cost-bar-val" id="barMaterial">--</span></div>
+      <div class="cost-bar-row"><span class="cost-bar-label">Other costs</span><span class="cost-bar-val" id="barOther">--</span></div>
+      <div class="cost-bar-row"><span class="cost-bar-label">Total cost</span><span class="cost-bar-val green-val" id="barTotal">--</span></div>
     </div>
     <div class="markup-row">
       <label>Markup</label>
@@ -321,15 +393,15 @@
     </div>
     <div class="em-divider"></div>
     <p class="price-label">Suggested sell price</p>
-    <p class="price-big" id="sellPrice">—</p>
+    <p class="price-big" id="sellPrice">--</p>
     <div class="sell-grid">
       <div class="sell-card">
         <p class="sell-card-label">Profit per item</p>
-        <p class="sell-card-value green" id="profitPerItem">—</p>
+        <p class="sell-card-value green" id="profitPerItem">--</p>
       </div>
       <div class="sell-card">
         <p class="sell-card-label">Total cost per item</p>
-        <p class="sell-card-value" id="totalCostPerItem">—</p>
+        <p class="sell-card-value" id="totalCostPerItem">--</p>
       </div>
     </div>
   </div>
@@ -337,7 +409,7 @@
 </main>
 
 <footer class="em-footer">
-  eufyMake E1 Ink Cost Calculator &mdash; not affiliated with Anker / eufyMake &mdash; use figures as a guide only
+  eufyMake E1 Ink Cost Calculator — not affiliated with Anker / eufyMake — use figures as a guide only
 </footer>
 
 <script>
@@ -354,7 +426,6 @@
     { id:'cleaner', name:'Cleaner', swatch:'#444444', ml:CLEAN_ML, sb:true, isCleaner:true },
   ];
 
-  // Build cartridge price cards
   const cartGrid = document.getElementById('cartGrid');
   cartridges.forEach(c => {
     const b = c.sb ? 'border:1px solid #555;' : '';
@@ -375,11 +446,10 @@
           <label>Bottle size</label>
           <span style="font-size:12px;color:#555;">${mlLabel}</span>
         </div>
-        <div class="cart-cpm" id="cpm-${c.id}">—</div>
+        <div class="cart-cpm" id="cpm-${c.id}">--</div>
       </div>`;
   });
 
-  // Build ink usage cards
   const colourGrid = document.getElementById('colourGrid');
   cartridges.filter(c => !c.isCleaner).forEach(c => {
     const b = c.sb ? 'border:1px solid #555;' : '';
@@ -401,12 +471,15 @@
   const $ = id => document.getElementById(id);
   let currentTab = 'detail';
 
-  function getSym() { return ($('currSym').value || '£').trim() || '£'; }
-  function fmt(n)   { return getSym() + n.toFixed(2); }
+  function getSym()  { return ($('currSym').value || '£').trim() || '£'; }
+  function fmt(n)    { return getSym() + n.toFixed(2); }
+  function getWaste(){ return (parseFloat($('wastage').value) || 0) / 100; }
+  function usableMl(){ return INK_ML * (1 - getWaste()); }
   function getCartPrice(id) { return parseFloat($('price-' + id).value) || 0; }
   function getCartCPM(id) {
     const c = cartridges.find(x => x.id === id);
-    return getCartPrice(id) / c.ml;
+    const vol = c.isCleaner ? c.ml : usableMl();
+    return getCartPrice(id) / vol;
   }
 
   function updateAllSymbols() {
@@ -414,6 +487,8 @@
     $('globalSym').textContent  = sym;
     $('symMat').textContent     = sym;
     $('symOther').textContent   = sym;
+    const mw = $('symMaintW'); if (mw) mw.textContent = sym;
+    const mm = $('symMaintM'); if (mm) mm.textContent = sym;
     cartridges.forEach(c => {
       const el = $('csym-' + c.id);
       if (el) el.textContent = sym;
@@ -422,25 +497,28 @@
 
   function updateKitSummary() {
     const sym        = getSym();
+    const waste      = getWaste();
+    const usable     = usableMl();
     const inkPrices  = cartridges.filter(c => !c.isCleaner).map(c => getCartPrice(c.id));
     const cleanPrice = getCartPrice('cleaner');
-    const totalMl    = cartridges.reduce((s,c) => s + c.ml, 0);
     const totalCost  = cartridges.reduce((s,c) => s + getCartPrice(c.id), 0);
+    const totalMl    = cartridges.filter(c=>!c.isCleaner).reduce((s,c)=>s+usable,0) + CLEAN_ML;
     const avgCpm     = totalMl > 0 ? totalCost / totalMl : 0;
     const allSame    = inkPrices.every(p => Math.abs(p - inkPrices[0]) < 0.001);
 
-    $('kitInkSummary').textContent   = allSame
-      ? `6 × ${sym}${inkPrices[0].toFixed(2)} / 100ml`
-      : `Mixed prices / 100ml`;
+    $('kitInkSummary').textContent   = allSame ? `6 x ${sym}${inkPrices[0].toFixed(2)} / 100ml` : `Mixed prices / 100ml`;
     $('kitCleanSummary').textContent = `${sym}${cleanPrice.toFixed(2)} / 380ml`;
+    $('kitUsableMl').textContent     = `${usable.toFixed(1)}ml (${waste*100}% waste)`;
     $('kitAvgMl').textContent        = `${sym}${avgCpm.toFixed(4)}/ml`;
     $('avgPerMlDisplay').textContent = `${sym}${avgCpm.toFixed(4)}`;
-    $('avgBreakdownText').textContent =
-      `Average from your cartridge prices. 6 × 100ml ink + 1 × 380ml cleaner = ${totalMl}ml total kit. Total cost: ${sym}${totalCost.toFixed(2)}`;
+    $('wastageVal').textContent      = `${waste*100}%`;
+    $('wastageNote').innerHTML       = `${waste*100}% wastage applied to ink cartridges only — usable volume per 100ml bottle: <span id="usableMlNote">${usable.toFixed(1)}ml</span>. Cleaner cartridge not affected.`;
+    $('avgBreakdownText').textContent = `Average from your prices with ${waste*100}% wastage applied to ink. Total usable: ${totalMl.toFixed(0)}ml. Kit cost: ${sym}${totalCost.toFixed(2)}`;
 
     cartridges.forEach(c => {
       const cpm = getCartCPM(c.id);
-      $('cpm-' + c.id).textContent = `${sym}${cpm.toFixed(4)} per ml`;
+      const vol = c.isCleaner ? '380ml' : `${usable.toFixed(1)}ml usable`;
+      $('cpm-' + c.id).textContent = `${sym}${cpm.toFixed(4)}/ml (${vol})`;
     });
   }
 
@@ -448,9 +526,9 @@
     const gp  = parseFloat($('globalPrice').value) || 0;
     const val = parseFloat($('price-' + id).value) || 0;
     const isCustom = Math.abs(val - gp) > 0.001;
-    $('badge-' + id).style.display   = isCustom ? 'inline' : 'none';
-    $('price-' + id).className       = isCustom ? 'custom' : '';
-    $('cartcard-' + id).className    = isCustom ? 'cart-card overridden' : 'cart-card';
+    $('badge-' + id).style.display  = isCustom ? 'inline' : 'none';
+    $('price-' + id).className      = isCustom ? 'custom' : '';
+    $('cartcard-' + id).className   = isCustom ? 'cart-card overridden' : 'cart-card';
     updateKitSummary();
     calc();
   }
@@ -476,10 +554,33 @@
     calc();
   }
 
+  function calcMaintenance() {
+    const weeklyCost   = parseFloat($('maintWeeklyCost').value)  || 0;
+    const monthlyCost  = parseFloat($('maintMonthlyCost').value) || 0;
+    const printsPerWk  = Math.max(1, parseFloat($('printsPerWeek').value) || 1);
+
+    // Weekly takes priority if entered, otherwise convert monthly to weekly
+    const effectiveWeekly  = weeklyCost > 0 ? weeklyCost : monthlyCost / 4.33;
+    const effectiveMonthly = weeklyCost > 0 ? weeklyCost * 4.33 : monthlyCost;
+    const perPrint         = effectiveWeekly / printsPerWk;
+
+    $('maintWeekly').textContent   = fmt(effectiveWeekly);
+    $('maintMonthly').textContent  = fmt(effectiveMonthly);
+    $('maintPerPrint').textContent = fmt(perPrint);
+
+    // update currency symbols
+    const sym = getSym();
+    const mw = $('symMaintW'); if (mw) mw.textContent = sym;
+    const mm = $('symMaintM'); if (mm) mm.textContent = sym;
+
+    return perPrint;
+  }
+
   function calc() {
     updateAllSymbols();
     updateKitSummary();
 
+    const maintPerPrint = calcMaintenance();
     const markupPct     = parseFloat($('markup').value)       || 200;
     const materialCost  = parseFloat($('materialCost').value) || 0;
     const otherCosts    = parseFloat($('otherCosts').value)   || 0;
@@ -499,7 +600,7 @@
         if (ml > 0) {
           $('linecost-' + c.id).textContent = fmt(cost);
           channels.push({ name:c.name, swatch:c.swatch, sb:c.sb, ml, cost });
-          const p = Math.floor(c.ml / ml);
+          const p = Math.floor(usableMl() / ml);
           if (p < minPrints) minPrints = p;
         } else {
           $('linecost-' + c.id).textContent = 'not used';
@@ -516,22 +617,24 @@
       } else {
         $('linecost-cleaner').textContent = 'not used';
       }
-      $('printsPerKit').textContent = isFinite(minPrints) ? minPrints : '—';
+      $('printsPerKit').textContent = isFinite(minPrints) ? minPrints : '--';
     } else {
       totalMl = parseFloat($('avg-total-ml').value) || 0;
       const totalKitCost = cartridges.reduce((s,c) => s + getCartPrice(c.id), 0);
-      const totalKitMl   = cartridges.reduce((s,c) => s + c.ml, 0);
+      const totalKitMl   = cartridges.filter(c=>!c.isCleaner).reduce((s,c)=>s+usableMl(),0) + CLEAN_ML;
       const avgCpm       = totalKitMl > 0 ? totalKitCost / totalKitMl : 0;
       totalCost = avgCpm * totalMl;
       channels.push({ name:'All channels (avg)', swatch:'#7ee83a', ml:totalMl, cost:totalCost });
-      $('printsPerKit').textContent = totalMl > 0 ? Math.floor(totalKitMl / totalMl) : '—';
+      $('printsPerKit').textContent = totalMl > 0 ? Math.floor(totalKitMl / totalMl) : '--';
     }
 
     $('totalLocal').textContent  = fmt(totalCost);
     $('totalMlUsed').textContent = totalMl.toFixed(2) + 'ml';
 
-    const inkPerItem = totalCost / itemsPerSheet;
-    const mlPerItem  = totalMl  / itemsPerSheet;
+    const inkPerItem   = totalCost / itemsPerSheet;
+    const mlPerItem    = totalMl  / itemsPerSheet;
+    const maintPerItem = maintPerPrint / itemsPerSheet;
+
     $('inkPerItem').textContent = fmt(inkPerItem);
     $('mlPerItem').textContent  = mlPerItem.toFixed(2) + 'ml';
 
@@ -547,14 +650,15 @@
     });
     $('breakdownRows').innerHTML = rows;
 
-    const totalItemCost = inkPerItem + materialCost + otherCosts;
+    const totalItemCost = inkPerItem + maintPerItem + materialCost + otherCosts;
     const sell          = totalItemCost * (1 + markupPct / 100);
     const profit        = sell - totalItemCost;
 
-    $('barInk').textContent       = fmt(inkPerItem);
-    $('barMaterial').textContent  = materialCost > 0 ? fmt(materialCost) : '—';
-    $('barOther').textContent     = otherCosts   > 0 ? fmt(otherCosts)   : '—';
-    $('barTotal').textContent     = fmt(totalItemCost);
+    $('barInk').textContent      = fmt(inkPerItem);
+    $('barMaint').textContent    = maintPerPrint > 0 ? fmt(maintPerItem) : '--';
+    $('barMaterial').textContent = materialCost > 0 ? fmt(materialCost) : '--';
+    $('barOther').textContent    = otherCosts   > 0 ? fmt(otherCosts)   : '--';
+    $('barTotal').textContent    = fmt(totalItemCost);
     $('sellPrice').textContent        = fmt(sell);
     $('profitPerItem').textContent    = fmt(profit);
     $('totalCostPerItem').textContent = fmt(totalItemCost);
