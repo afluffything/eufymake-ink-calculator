@@ -161,6 +161,36 @@
 
     .em-footer { text-align: center; padding: 1.5rem; font-size: 11px; color: #333; border-top: 1px solid #1a1a1a; margin-top: 1rem; }
 
+    /* Action buttons */
+    .action-btn { display: flex; align-items: center; gap: 7px; background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 8px; color: #aaa; font-size: 13px; font-weight: 500; padding: 10px 16px; cursor: pointer; transition: all 0.15s; white-space: nowrap; }
+    .action-btn:hover { border-color: #7ee83a; color: #7ee83a; }
+    .save-btn:hover { border-color: #7ee83a; color: #7ee83a; }
+    .clear-btn:hover { border-color: #e8823a; color: #e8823a; }
+
+    /* Print styles */
+    @media print {
+      body { background: #fff !important; color: #000 !important; }
+      .em-header { position: static !important; background: #fff !important; border-bottom: 2px solid #000 !important; }
+      .em-logo-brand, .em-logo-sub { color: #000 !important; }
+      .em-badge { background: #000 !important; color: #fff !important; }
+      .em-section { background: #fff !important; border: 1px solid #ccc !important; break-inside: avoid; }
+      .em-section-title { color: #000 !important; }
+      .kit-info, .avg-card, .colour-card, .cart-card, .cleaner-card, .item-card, .item-breakdown, .cost-breakdown-bar, .sell-card, .maint-metric { background: #f9f9f9 !important; border: 1px solid #ddd !important; }
+      .metric { background: #f9f9f9 !important; border: 1px solid #ddd !important; }
+      .metric-value, .item-card-value, .price-big, .sell-card-value.green, .wastage-val, .maint-metric-value { color: #000 !important; }
+      .green-val { color: #000 !important; }
+      .kit-stat-value, .cart-cpm, .colour-cost, .avg-breakdown { color: #333 !important; }
+      .breakdown-val span { color: #000 !important; }
+      label, .colour-row label, .cart-row label, .colour-name, .cart-name, .cost-bar-label, .sell-card-label, .metric-label { color: #333 !important; }
+      input, select { border: 1px solid #ccc !important; background: #fff !important; color: #000 !important; }
+      input[type=range] { display: none; }
+      .wastage-val { display: inline !important; }
+      .action-btn, #saveMsg { display: none !important; }
+      .em-footer { color: #999 !important; border-top: 1px solid #ddd !important; }
+      .em-tabs { display: none !important; }
+      #panel-detail, #panel-avg { display: block !important; }
+    }
+
     @media (max-width: 480px) {
       .colour-grid, .cart-grid, .maint-grid { grid-template-columns: 1fr; }
       .results, .maint-results { grid-template-columns: 1fr 1fr; }
@@ -404,7 +434,22 @@
         <p class="sell-card-value" id="totalCostPerItem">--</p>
       </div>
     </div>
+  <!-- PRINT / SAVE -->
+  <div style="display:flex; gap:10px; margin-bottom:1rem; flex-wrap:wrap;">
+    <button class="action-btn" onclick="printResults()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+      Print / Save as PDF
+    </button>
+    <button class="action-btn save-btn" onclick="saveSettings()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+      Save my settings
+    </button>
+    <button class="action-btn clear-btn" onclick="clearSettings()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+      Clear saved settings
+    </button>
   </div>
+  <p id="saveMsg" style="font-size:12px;color:#4a9a1a;margin-bottom:1rem;display:none;padding-left:4px;"></p>
 
 </main>
 
@@ -664,7 +709,90 @@
     $('totalCostPerItem').textContent = fmt(totalItemCost);
   }
 
+  // ── SAVE / LOAD SETTINGS ──
+  const SAVE_KEY = 'eufymake_calc_settings';
+
+  function gatherSettings() {
+    const s = {
+      currSym:       $('currSym').value,
+      wastage:       $('wastage').value,
+      globalPrice:   $('globalPrice').value,
+      itemName:      $('itemName').value,
+      itemsPerSheet: $('itemsPerSheet').value,
+      materialCost:  $('materialCost').value,
+      otherCosts:    $('otherCosts').value,
+      markup:        $('markup').value,
+      maintWeekly:   $('maintWeeklyCost').value,
+      maintMonthly:  $('maintMonthlyCost').value,
+      printsPerWeek: $('printsPerWeek').value,
+    };
+    cartridges.forEach(c => { s['price_' + c.id] = $('price-' + c.id).value; });
+    cartridges.filter(c => !c.isCleaner).forEach(c => { s['ml_' + c.id] = $('ml-' + c.id).value; });
+    s['ml_cleaner'] = $('ml-cleaner').value;
+    return s;
+  }
+
+  function applySettings(s) {
+    if (!s) return;
+    if (s.currSym)       $('currSym').value       = s.currSym;
+    if (s.wastage)       $('wastage').value        = s.wastage;
+    if (s.globalPrice)   $('globalPrice').value    = s.globalPrice;
+    if (s.itemName)      $('itemName').value       = s.itemName;
+    if (s.itemsPerSheet) $('itemsPerSheet').value  = s.itemsPerSheet;
+    if (s.materialCost)  $('materialCost').value   = s.materialCost;
+    if (s.otherCosts)    $('otherCosts').value     = s.otherCosts;
+    if (s.markup)        $('markup').value         = s.markup;
+    if (s.maintWeekly)   $('maintWeeklyCost').value  = s.maintWeekly;
+    if (s.maintMonthly)  $('maintMonthlyCost').value = s.maintMonthly;
+    if (s.printsPerWeek) $('printsPerWeek').value  = s.printsPerWeek;
+    cartridges.forEach(c => { if (s['price_' + c.id]) $('price-' + c.id).value = s['price_' + c.id]; });
+    cartridges.filter(c => !c.isCleaner).forEach(c => { if (s['ml_' + c.id]) $('ml-' + c.id).value = s['ml_' + c.id]; });
+    if (s['ml_cleaner']) $('ml-cleaner').value = s['ml_cleaner'];
+  }
+
+  function saveSettings() {
+    try {
+      localStorage.setItem(SAVE_KEY, JSON.stringify(gatherSettings()));
+      const msg = $('saveMsg');
+      msg.textContent = 'Settings saved! They will load automatically next time you open the calculator.';
+      msg.style.display = 'block';
+      setTimeout(() => { msg.style.display = 'none'; }, 4000);
+    } catch(e) {
+      alert('Could not save settings — your browser may have storage disabled.');
+    }
+  }
+
+  function clearSettings() {
+    try {
+      localStorage.removeItem(SAVE_KEY);
+      const msg = $('saveMsg');
+      msg.textContent = 'Saved settings cleared.';
+      msg.style.color = '#e8823a';
+      msg.style.display = 'block';
+      setTimeout(() => { msg.style.display = 'none'; msg.style.color = '#4a9a1a'; }, 3000);
+    } catch(e) {}
+  }
+
+  function loadSavedSettings() {
+    try {
+      const raw = localStorage.getItem(SAVE_KEY);
+      if (raw) {
+        applySettings(JSON.parse(raw));
+        const msg = $('saveMsg');
+        msg.textContent = 'Your saved settings have been loaded.';
+        msg.style.display = 'block';
+        setTimeout(() => { msg.style.display = 'none'; }, 3000);
+      }
+    } catch(e) {}
+  }
+
+  // ── PRINT ──
+  function printResults() {
+    window.print();
+  }
+
   document.querySelectorAll('input').forEach(el => el.addEventListener('input', calc));
+  loadSavedSettings();
   updateKitSummary();
   calc();
 </script>
