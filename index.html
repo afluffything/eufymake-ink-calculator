@@ -1,222 +1,273 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>eufyMake E1 — Ink Cost Calculator</title>
   <meta name="description" content="Free ink cost calculator for the eufyMake E1 UV printer. Calculate cost per print, per item, and suggested sell price." />
   <style>
+    :root[data-theme="dark"] {
+      --bg:        #0a0a0a;
+      --bg2:       #141414;
+      --bg3:       #1a1a1a;
+      --bg4:       #1e1e1e;
+      --bg5:       #111111;
+      --border:    #222222;
+      --border2:   #2a2a2a;
+      --border3:   #242424;
+      --text:      #ffffff;
+      --text2:     #eeeeee;
+      --text3:     #aaaaaa;
+      --text4:     #666666;
+      --text5:     #444444;
+      --text6:     #555555;
+      --green:     #7ee83a;
+      --green-bg:  #1a2e0f;
+      --green-dim: #4a9a1a;
+      --orange:    #e8823a;
+      --input-bg:  #111111;
+      --header-border: #1e1e1e;
+    }
+    :root[data-theme="light"] {
+      --bg:        #f5f5f5;
+      --bg2:       #ffffff;
+      --bg3:       #f0f0f0;
+      --bg4:       #fafafa;
+      --bg5:       #e8e8e8;
+      --border:    #dddddd;
+      --border2:   #cccccc;
+      --border3:   #e0e0e0;
+      --text:      #111111;
+      --text2:     #222222;
+      --text3:     #444444;
+      --text4:     #666666;
+      --text5:     #888888;
+      --text6:     #777777;
+      --green:     #3a9e0a;
+      --green-bg:  #eaf5e0;
+      --green-dim: #5aaa2a;
+      --orange:    #c05010;
+      --input-bg:  #ffffff;
+      --header-border: #dddddd;
+    }
+
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { background: #0a0a0a; color: #fff; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; min-height: 100vh; }
+    body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; min-height: 100vh; transition: background 0.2s, color 0.2s; }
 
-    .em-header { background: #0a0a0a; border-bottom: 1px solid #1e1e1e; padding: 1.25rem 1.5rem; display: flex; align-items: center; gap: 14px; position: sticky; top: 0; z-index: 10; }
-    .em-logo-mark { width: 38px; height: 38px; background: #7ee83a; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    /* Header */
+    .em-header { background: var(--bg); border-bottom: 1px solid var(--header-border); padding: 1rem 1.5rem; display: flex; align-items: center; gap: 14px; position: sticky; top: 0; z-index: 10; }
+    .em-logo-mark { width: 36px; height: 36px; background: var(--green); border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
     .em-logo-text { display: flex; flex-direction: column; line-height: 1.1; }
-    .em-logo-brand { font-size: 15px; font-weight: 700; color: #fff; letter-spacing: -0.01em; }
-    .em-logo-sub { font-size: 11px; color: #7ee83a; font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; }
-    .em-badge { margin-left: auto; background: #7ee83a; color: #0a0a0a; font-size: 10px; font-weight: 700; padding: 3px 10px; border-radius: 20px; letter-spacing: 0.06em; text-transform: uppercase; }
+    .em-logo-brand { font-size: 15px; font-weight: 700; color: var(--text); letter-spacing: -0.01em; }
+    .em-logo-sub { font-size: 10px; color: var(--green); font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; }
+    .em-badge { background: var(--green); color: var(--bg); font-size: 10px; font-weight: 700; padding: 3px 10px; border-radius: 20px; letter-spacing: 0.06em; text-transform: uppercase; }
+    .header-right { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+    .theme-btn { background: var(--bg3); border: 1px solid var(--border2); border-radius: 20px; color: var(--text3); font-size: 12px; padding: 5px 12px; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.15s; white-space: nowrap; }
+    .theme-btn:hover { border-color: var(--green); color: var(--green); }
 
+    /* Presets bar */
+    .presets-bar { background: var(--bg2); border-bottom: 1px solid var(--border); padding: 0.6rem 1.5rem; display: flex; align-items: center; gap: 8px; overflow-x: auto; }
+    .preset-label { font-size: 11px; color: var(--text5); white-space: nowrap; margin-right: 4px; }
+    .preset-btn { background: var(--bg3); border: 1px solid var(--border2); border-radius: 6px; color: var(--text3); font-size: 11px; padding: 5px 10px; cursor: pointer; white-space: nowrap; transition: all 0.15s; display: flex; align-items: center; gap: 5px; }
+    .preset-btn:hover { border-color: var(--green); color: var(--green); }
+    .preset-btn.active { background: var(--green-bg); border-color: var(--green); color: var(--green); font-weight: 600; }
+    .preset-save-btn { background: var(--green-bg); border: 1px solid var(--green); border-radius: 6px; color: var(--green); font-size: 11px; padding: 5px 10px; cursor: pointer; white-space: nowrap; font-weight: 600; }
+    .preset-save-btn:hover { background: var(--green); color: var(--bg); }
+
+    /* Body */
     .em-body { padding: 1.25rem 1.5rem 3rem; max-width: 640px; margin: 0 auto; }
-    .em-section { background: #141414; border: 1px solid #222; border-radius: 12px; padding: 1.25rem; margin-bottom: 1rem; }
-    .em-section-title { font-size: 10px; font-weight: 600; color: #7ee83a; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 1rem; }
+    .em-section { background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; padding: 1.25rem; margin-bottom: 1rem; }
+    .em-section-title { font-size: 10px; font-weight: 600; color: var(--green); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 1rem; }
 
-    .kit-info { background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 8px; padding: 0.75rem 1rem; margin-bottom: 1rem; display: flex; gap: 1.5rem; flex-wrap: wrap; }
+    .kit-info { background: var(--bg3); border: 1px solid var(--border2); border-radius: 8px; padding: 0.75rem 1rem; margin-bottom: 1rem; display: flex; gap: 1.5rem; flex-wrap: wrap; }
     .kit-stat { display: flex; flex-direction: column; gap: 2px; }
-    .kit-stat-label { font-size: 10px; color: #555; text-transform: uppercase; letter-spacing: 0.05em; }
-    .kit-stat-value { font-size: 13px; font-weight: 600; color: #7ee83a; }
+    .kit-stat-label { font-size: 10px; color: var(--text5); text-transform: uppercase; letter-spacing: 0.05em; }
+    .kit-stat-value { font-size: 13px; font-weight: 600; color: var(--green); }
 
     .currency-row { display: flex; align-items: center; gap: 12px; }
-    .currency-row label { font-size: 13px; color: #aaa; min-width: 160px; }
-    .currency-sym-input { width: 56px; background: #1e1e1e; border: 1px solid #2a2a2a; border-radius: 6px; color: #7ee83a; font-size: 18px; font-weight: 700; padding: 6px 8px; outline: none; text-align: center; }
-    .currency-sym-input:focus { border-color: #7ee83a; }
-    .currency-hint { font-size: 12px; color: #444; }
+    .currency-row label { font-size: 13px; color: var(--text3); min-width: 160px; }
+    .currency-sym-input { width: 56px; background: var(--bg4); border: 1px solid var(--border2); border-radius: 6px; color: var(--green); font-size: 18px; font-weight: 700; padding: 6px 8px; outline: none; text-align: center; }
+    .currency-sym-input:focus { border-color: var(--green); }
+    .currency-hint { font-size: 12px; color: var(--text5); }
 
     .em-field { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
     .em-field:last-child { margin-bottom: 0; }
-    .em-field label { font-size: 13px; color: #aaa; min-width: 160px; }
-    .em-field input[type=number], .em-field input[type=text] { width: 100px; background: #1e1e1e; border: 1px solid #2a2a2a; border-radius: 6px; color: #fff; font-size: 13px; padding: 7px 8px; outline: none; }
-    .em-field input:focus { border-color: #7ee83a; }
-    .em-field .sym { font-size: 13px; color: #7ee83a; font-weight: 600; min-width: 20px; }
-    .em-field .unit { font-size: 12px; color: #555; }
+    .em-field label { font-size: 13px; color: var(--text3); min-width: 160px; }
+    .em-field input[type=number], .em-field input[type=text] { width: 100px; background: var(--bg4); border: 1px solid var(--border2); border-radius: 6px; color: var(--text); font-size: 13px; padding: 7px 8px; outline: none; }
+    .em-field input:focus { border-color: var(--green); }
+    .em-field .sym { font-size: 13px; color: var(--green); font-weight: 600; min-width: 20px; }
+    .em-field .unit { font-size: 12px; color: var(--text5); }
+    .em-field select { flex: 1; background: var(--bg4); border: 1px solid var(--border2); border-radius: 6px; color: var(--text); font-size: 13px; padding: 7px 8px; outline: none; cursor: pointer; }
+    .em-field select:focus { border-color: var(--green); }
 
-    /* Wastage slider */
-    .wastage-row { display: flex; align-items: center; gap: 10px; margin-top: 14px; padding-top: 14px; border-top: 1px solid #222; }
-    .wastage-row label { font-size: 13px; color: #aaa; min-width: 160px; }
-    .wastage-row input[type=range] { flex: 1; accent-color: #e8823a; }
-    .wastage-val { font-size: 13px; font-weight: 600; color: #e8823a; min-width: 40px; text-align: right; }
-    .wastage-note { font-size: 11px; color: #555; margin-top: 6px; line-height: 1.6; }
-    .wastage-note span { color: #e8823a; font-weight: 600; }
+    .wastage-row { display: flex; align-items: center; gap: 10px; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border); }
+    .wastage-row label { font-size: 13px; color: var(--text3); min-width: 160px; }
+    .wastage-row input[type=range] { flex: 1; accent-color: var(--orange); }
+    .wastage-val { font-size: 13px; font-weight: 600; color: var(--orange); min-width: 40px; text-align: right; }
+    .wastage-note { font-size: 11px; color: var(--text5); margin-top: 6px; line-height: 1.6; }
+    .wastage-note span { color: var(--orange); font-weight: 600; }
 
-    /* Cartridge prices */
-    .global-row { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; padding-bottom: 14px; border-bottom: 1px solid #222; flex-wrap: wrap; }
-    .global-row label { font-size: 13px; color: #aaa; flex: 1; min-width: 140px; }
-    .global-row input { width: 100px; background: #1e1e1e; border: 1px solid #2a2a2a; border-radius: 6px; color: #fff; font-size: 14px; font-weight: 600; padding: 7px 8px; outline: none; }
-    .global-row input:focus { border-color: #7ee83a; }
-    .apply-btn { background: #1a2e0f; border: 1px solid #7ee83a; border-radius: 6px; color: #7ee83a; font-size: 12px; font-weight: 600; padding: 7px 14px; cursor: pointer; white-space: nowrap; transition: all 0.15s; }
-    .apply-btn:hover { background: #7ee83a; color: #0a0a0a; }
+    .global-row { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; padding-bottom: 14px; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+    .global-row label { font-size: 13px; color: var(--text3); flex: 1; min-width: 140px; }
+    .global-row input { width: 100px; background: var(--bg4); border: 1px solid var(--border2); border-radius: 6px; color: var(--text); font-size: 14px; font-weight: 600; padding: 7px 8px; outline: none; }
+    .global-row input:focus { border-color: var(--green); }
+    .apply-btn { background: var(--green-bg); border: 1px solid var(--green); border-radius: 6px; color: var(--green); font-size: 12px; font-weight: 600; padding: 7px 14px; cursor: pointer; white-space: nowrap; transition: all 0.15s; }
+    .apply-btn:hover { background: var(--green); color: var(--bg); }
 
     .cart-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-    .cart-card { background: #1a1a1a; border: 1px solid #242424; border-radius: 10px; padding: 0.75rem; }
-    .cart-card.overridden { border-color: #3a5a2a; }
+    .cart-card { background: var(--bg3); border: 1px solid var(--border3); border-radius: 10px; padding: 0.75rem; }
+    .cart-card.overridden { border-color: var(--green-dim); }
     .cart-header { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
     .cart-swatch { width: 11px; height: 11px; border-radius: 50%; flex-shrink: 0; }
-    .cart-name { font-size: 12px; font-weight: 600; color: #eee; flex: 1; }
-    .override-badge { font-size: 9px; color: #7ee83a; background: #1a2e0f; border: 1px solid #3a6a2a; border-radius: 4px; padding: 1px 5px; }
+    .cart-name { font-size: 12px; font-weight: 600; color: var(--text2); flex: 1; }
+    .override-badge { font-size: 9px; color: var(--green); background: var(--green-bg); border: 1px solid var(--green-dim); border-radius: 4px; padding: 1px 5px; }
     .cart-row { display: flex; align-items: center; gap: 6px; margin-bottom: 5px; }
     .cart-row:last-child { margin-bottom: 0; }
-    .cart-row label { font-size: 11px; color: #666; flex: 1; }
-    .cart-row input { width: 80px; background: #111; border: 1px solid #2a2a2a; border-radius: 5px; color: #fff; font-size: 12px; padding: 4px 6px; outline: none; }
-    .cart-row input:focus { border-color: #7ee83a; }
-    .cart-row input.custom { border-color: #7ee83a; background: #0d1a08; color: #7ee83a; }
-    .cart-row .unit { font-size: 10px; color: #444; }
-    .cart-cpm { font-size: 11px; color: #555; margin-top: 6px; padding-top: 6px; border-top: 1px solid #222; }
+    .cart-row label { font-size: 11px; color: var(--text4); flex: 1; }
+    .cart-row input { width: 80px; background: var(--input-bg); border: 1px solid var(--border2); border-radius: 5px; color: var(--text); font-size: 12px; padding: 4px 6px; outline: none; }
+    .cart-row input:focus { border-color: var(--green); }
+    .cart-row input.custom { border-color: var(--green); background: var(--green-bg); color: var(--green); }
+    .cart-row .unit { font-size: 10px; color: var(--text5); }
+    .cart-cpm { font-size: 11px; color: var(--text5); margin-top: 6px; padding-top: 6px; border-top: 1px solid var(--border); }
 
     .em-tabs { display: flex; gap: 6px; margin-bottom: 1rem; }
-    .em-tab { flex: 1; padding: 9px; text-align: center; font-size: 12px; font-weight: 500; border: 1px solid #2a2a2a; border-radius: 8px; cursor: pointer; background: #1a1a1a; color: #888; }
-    .em-tab.active { background: #7ee83a; color: #0a0a0a; border-color: #7ee83a; font-weight: 700; }
+    .em-tab { flex: 1; padding: 9px; text-align: center; font-size: 12px; font-weight: 500; border: 1px solid var(--border2); border-radius: 8px; cursor: pointer; background: var(--bg3); color: var(--text4); }
+    .em-tab.active { background: var(--green); color: var(--bg); border-color: var(--green); font-weight: 700; }
 
     .colour-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-    .colour-card { background: #1a1a1a; border: 1px solid #242424; border-radius: 10px; padding: 0.75rem; }
+    .colour-card { background: var(--bg3); border: 1px solid var(--border3); border-radius: 10px; padding: 0.75rem; }
     .colour-header { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
     .swatch { width: 11px; height: 11px; border-radius: 50%; flex-shrink: 0; }
-    .colour-name { font-size: 12px; font-weight: 600; color: #eee; }
+    .colour-name { font-size: 12px; font-weight: 600; color: var(--text2); }
     .colour-row { display: flex; align-items: center; gap: 6px; margin-bottom: 5px; }
     .colour-row:last-child { margin-bottom: 0; }
-    .colour-row label { font-size: 11px; color: #666; flex: 1; }
-    .colour-row input { width: 64px; background: #111; border: 1px solid #2a2a2a; border-radius: 5px; color: #fff; font-size: 12px; padding: 4px 6px; outline: none; }
-    .colour-row input:focus { border-color: #7ee83a; }
-    .colour-row .unit { font-size: 10px; color: #444; min-width: 16px; }
-    .colour-cost { font-size: 11px; color: #7ee83a; margin-top: 6px; padding-top: 6px; border-top: 1px solid #222; }
-    .cleaner-card { background: #1a1a1a; border: 1px solid #242424; border-radius: 10px; padding: 0.75rem; margin-top: 8px; }
-    .avg-card { background: #1a1a1a; border: 1px solid #242424; border-radius: 10px; padding: 1rem; }
+    .colour-row label { font-size: 11px; color: var(--text4); flex: 1; }
+    .colour-row input { width: 64px; background: var(--input-bg); border: 1px solid var(--border2); border-radius: 5px; color: var(--text); font-size: 12px; padding: 4px 6px; outline: none; }
+    .colour-row input:focus { border-color: var(--green); }
+    .colour-row .unit { font-size: 10px; color: var(--text5); min-width: 16px; }
+    .colour-cost { font-size: 11px; color: var(--green); margin-top: 6px; padding-top: 6px; border-top: 1px solid var(--border); }
+    .cleaner-card { background: var(--bg3); border: 1px solid var(--border3); border-radius: 10px; padding: 0.75rem; margin-top: 8px; }
+    .avg-card { background: var(--bg3); border: 1px solid var(--border3); border-radius: 10px; padding: 1rem; }
     .avg-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
     .avg-row:last-child { margin-bottom: 0; }
-    .avg-row label { font-size: 13px; color: #aaa; flex: 1; }
-    .avg-row input { width: 80px; background: #111; border: 1px solid #2a2a2a; border-radius: 6px; color: #fff; font-size: 13px; padding: 6px 8px; outline: none; }
-    .avg-row input:focus { border-color: #7ee83a; }
-    .avg-row .unit { font-size: 12px; color: #555; }
-    .avg-breakdown { font-size: 11px; color: #555; margin-top: 10px; padding-top: 10px; border-top: 1px solid #222; line-height: 1.9; }
+    .avg-row label { font-size: 13px; color: var(--text3); flex: 1; }
+    .avg-row input { width: 80px; background: var(--input-bg); border: 1px solid var(--border2); border-radius: 6px; color: var(--text); font-size: 13px; padding: 6px 8px; outline: none; }
+    .avg-row input:focus { border-color: var(--green); }
+    .avg-row .unit { font-size: 12px; color: var(--text5); }
+    .avg-breakdown { font-size: 11px; color: var(--text5); margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border); line-height: 1.9; }
 
-    /* Maintenance section */
-    .maint-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
-    .maint-card { background: #1a1a1a; border: 1px solid #242424; border-radius: 10px; padding: 1rem; }
-    .maint-card-title { font-size: 11px; font-weight: 600; color: #aaa; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 10px; }
-    .maint-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
-    .maint-row:last-child { margin-bottom: 0; }
-    .maint-row label { font-size: 11px; color: #666; flex: 1; }
-    .maint-row input { width: 60px; background: #111; border: 1px solid #2a2a2a; border-radius: 5px; color: #fff; font-size: 12px; padding: 4px 6px; outline: none; }
-    .maint-row input:focus { border-color: #7ee83a; }
-    .maint-row .unit { font-size: 10px; color: #444; }
     .maint-results { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 8px; margin-top: 4px; }
-    .maint-metric { background: #111; border: 1px solid #1e1e1e; border-radius: 8px; padding: 0.75rem; }
-    .maint-metric-label { font-size: 10px; color: #444; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
-    .maint-metric-value { font-size: 16px; font-weight: 700; color: #e8823a; }
-    .maint-metric-sub { font-size: 10px; color: #333; margin-top: 2px; }
-    .maint-note { font-size: 11px; color: #555; margin-top: 10px; line-height: 1.7; }
+    .maint-metric { background: var(--input-bg); border: 1px solid var(--border); border-radius: 8px; padding: 0.75rem; }
+    .maint-metric-label { font-size: 10px; color: var(--text5); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+    .maint-metric-value { font-size: 16px; font-weight: 700; color: var(--orange); }
 
     .results { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 8px; margin-bottom: 1rem; }
-    .metric { background: #141414; border: 1px solid #222; border-radius: 10px; padding: 0.85rem 1rem; }
-    .metric-label { font-size: 10px; color: #555; margin: 0 0 4px; text-transform: uppercase; letter-spacing: 0.05em; }
-    .metric-value { font-size: 19px; font-weight: 700; color: #7ee83a; margin: 0; }
-    .metric-sub { font-size: 10px; color: #444; margin: 2px 0 0; }
+    .metric { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 0.85rem 1rem; }
+    .metric-label { font-size: 10px; color: var(--text5); margin: 0 0 4px; text-transform: uppercase; letter-spacing: 0.05em; }
+    .metric-value { font-size: 19px; font-weight: 700; color: var(--green); margin: 0; }
+    .metric-sub { font-size: 10px; color: var(--text5); margin: 2px 0 0; }
 
     .item-name-row { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
-    .item-name-row label { font-size: 13px; color: #aaa; min-width: 160px; }
-    .item-name-row input { flex: 1; background: #1e1e1e; border: 1px solid #2a2a2a; border-radius: 6px; color: #fff; font-size: 13px; padding: 7px 8px; outline: none; }
-    .item-name-row input:focus { border-color: #7ee83a; }
+    .item-name-row label { font-size: 13px; color: var(--text3); min-width: 160px; }
+    .item-name-row input { flex: 1; background: var(--bg4); border: 1px solid var(--border2); border-radius: 6px; color: var(--text); font-size: 13px; padding: 7px 8px; outline: none; }
+    .item-name-row input:focus { border-color: var(--green); }
     .item-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; }
-    .item-card { background: #1e1e1e; border: 1px solid #2a2a2a; border-radius: 10px; padding: 1rem; }
-    .item-card-label { font-size: 10px; color: #555; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; }
-    .item-card-value { font-size: 22px; font-weight: 700; color: #7ee83a; }
-    .item-card-sub { font-size: 11px; color: #444; margin-top: 2px; }
-    .item-breakdown { background: #1a1a1a; border: 1px solid #242424; border-radius: 10px; padding: 1rem; }
-    .item-breakdown-title { font-size: 11px; color: #555; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 10px; }
-    .breakdown-row { display: flex; justify-content: space-between; align-items: center; padding: 5px 0; border-bottom: 1px solid #1e1e1e; }
+    .item-card { background: var(--bg4); border: 1px solid var(--border2); border-radius: 10px; padding: 1rem; }
+    .item-card-label { font-size: 10px; color: var(--text5); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; }
+    .item-card-value { font-size: 22px; font-weight: 700; color: var(--green); }
+    .item-card-sub { font-size: 11px; color: var(--text5); margin-top: 2px; }
+    .item-breakdown { background: var(--bg3); border: 1px solid var(--border3); border-radius: 10px; padding: 1rem; }
+    .item-breakdown-title { font-size: 11px; color: var(--text5); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 10px; }
+    .breakdown-row { display: flex; justify-content: space-between; align-items: center; padding: 5px 0; border-bottom: 1px solid var(--border); }
     .breakdown-row:last-child { border-bottom: none; }
-    .breakdown-label { font-size: 12px; color: #888; display: flex; align-items: center; gap: 6px; }
+    .breakdown-label { font-size: 12px; color: var(--text4); display: flex; align-items: center; gap: 6px; }
     .breakdown-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-    .breakdown-val { font-size: 12px; color: #ccc; }
-    .breakdown-val span { color: #7ee83a; font-weight: 600; }
+    .breakdown-val { font-size: 12px; color: var(--text3); }
+    .breakdown-val span { color: var(--green); font-weight: 600; }
 
-    .cost-breakdown-bar { background: #1a1a1a; border: 1px solid #242424; border-radius: 10px; padding: 0.85rem 1rem; margin-bottom: 14px; }
-    .cost-bar-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid #1e1e1e; }
-    .cost-bar-row:last-child { border-bottom: none; border-top: 1px solid #333; padding-top: 10px; margin-top: 4px; }
-    .cost-bar-label { font-size: 12px; color: #666; }
-    .cost-bar-row:last-child .cost-bar-label { font-size: 13px; font-weight: 600; color: #aaa; }
-    .cost-bar-val { font-size: 12px; color: #ccc; }
-    .green-val { font-size: 15px !important; font-weight: 700; color: #7ee83a !important; }
+    /* Platform fees */
+    .platform-tabs { display: flex; gap: 6px; margin-bottom: 1rem; }
+    .platform-tab { flex: 1; padding: 9px; text-align: center; font-size: 12px; font-weight: 500; border: 1px solid var(--border2); border-radius: 8px; cursor: pointer; background: var(--bg3); color: var(--text4); }
+    .platform-tab.active { background: var(--green); color: var(--bg); border-color: var(--green); font-weight: 700; }
+    .platform-fee-breakdown { background: var(--bg3); border: 1px solid var(--border3); border-radius: 10px; padding: 0.85rem 1rem; margin-top: 12px; }
+    .pfee-row { display: flex; justify-content: space-between; align-items: center; padding: 5px 0; border-bottom: 1px solid var(--border); }
+    .pfee-row:last-child { border-bottom: none; }
+    .pfee-row.pfee-total { border-top: 1px solid var(--border2); padding-top: 8px; margin-top: 4px; border-bottom: none; }
+    .pfee-label { font-size: 12px; color: var(--text4); }
+    .pfee-row.pfee-total .pfee-label { font-size: 13px; font-weight: 600; color: var(--text3); }
+    .pfee-val { font-size: 12px; color: var(--orange); }
+    .pfee-row.pfee-total .pfee-val { font-size: 14px; font-weight: 700; color: var(--orange); }
 
+    /* Sell price */
+    .cost-breakdown-bar { background: var(--bg3); border: 1px solid var(--border3); border-radius: 10px; padding: 0.85rem 1rem; margin-bottom: 14px; }
+    .cost-bar-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid var(--border); }
+    .cost-bar-row:last-child { border-bottom: none; border-top: 1px solid var(--border2); padding-top: 10px; margin-top: 4px; }
+    .cost-bar-label { font-size: 12px; color: var(--text4); }
+    .cost-bar-row:last-child .cost-bar-label { font-size: 13px; font-weight: 600; color: var(--text3); }
+    .cost-bar-val { font-size: 12px; color: var(--text3); }
+    .green-val { font-size: 15px !important; font-weight: 700; color: var(--green) !important; }
     .markup-row { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
-    .markup-row label { font-size: 13px; color: #aaa; min-width: 160px; }
-    .markup-row input[type=range] { flex: 1; accent-color: #7ee83a; }
-    .markup-val { font-size: 13px; font-weight: 600; color: #7ee83a; min-width: 44px; text-align: right; }
-    .em-divider { border: none; border-top: 1px solid #1e1e1e; margin: 1rem 0; }
-    .price-label { font-size: 11px; color: #555; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px; }
-    .price-big { font-size: 36px; font-weight: 700; color: #7ee83a; margin-bottom: 10px; }
-    .sell-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-    .sell-card { background: #1e1e1e; border: 1px solid #2a2a2a; border-radius: 10px; padding: 1rem; }
-    .sell-card-label { font-size: 10px; color: #555; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px; }
-    .sell-card-value { font-size: 20px; font-weight: 700; color: #fff; }
-    .sell-card-value.green { color: #7ee83a; }
+    .markup-row label { font-size: 13px; color: var(--text3); min-width: 160px; }
+    .markup-row input[type=range] { flex: 1; accent-color: var(--green); }
+    .markup-val { font-size: 13px; font-weight: 600; color: var(--green); min-width: 44px; text-align: right; }
+    .em-divider { border: none; border-top: 1px solid var(--border); margin: 1rem 0; }
+    .price-label { font-size: 11px; color: var(--text5); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px; }
+    .price-big { font-size: 36px; font-weight: 700; color: var(--green); margin-bottom: 6px; }
 
-    .em-footer { text-align: center; padding: 1.5rem; font-size: 11px; color: #333; border-top: 1px solid #1a1a1a; margin-top: 1rem; }
+    .price-meta-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 8px; margin-bottom: 10px; }
+    .price-meta-card { background: var(--bg3); border: 1px solid var(--border3); border-radius: 10px; padding: 0.85rem; }
+    .price-meta-label { font-size: 10px; color: var(--text5); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+    .price-meta-value { font-size: 18px; font-weight: 700; color: var(--text); }
+    .price-meta-value.profit { color: var(--green); }
+    .price-meta-value.orange { color: var(--orange); }
+
+    .mvp-bar { background: var(--bg3); border: 1px solid var(--border3); border-radius: 10px; padding: 0.85rem 1rem; margin-top: 10px; display: flex; justify-content: space-between; align-items: center; }
+    .mvp-label { font-size: 12px; color: var(--text4); }
+    .mvp-val { font-size: 16px; font-weight: 700; color: var(--orange); }
+    .mvp-sub { font-size: 10px; color: var(--text5); margin-top: 2px; }
+
+    .sell-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .sell-card { background: var(--bg4); border: 1px solid var(--border2); border-radius: 10px; padding: 1rem; }
+    .sell-card-label { font-size: 10px; color: var(--text5); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px; }
+    .sell-card-value { font-size: 20px; font-weight: 700; color: var(--text); }
+    .sell-card-value.green { color: var(--green); }
 
     /* Action buttons */
-    .action-btn { display: flex; align-items: center; gap: 7px; background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 8px; color: #aaa; font-size: 13px; font-weight: 500; padding: 10px 16px; cursor: pointer; transition: all 0.15s; white-space: nowrap; }
-    .action-btn:hover { border-color: #7ee83a; color: #7ee83a; }
-    .save-btn:hover { border-color: #7ee83a; color: #7ee83a; }
-    .clear-btn:hover { border-color: #e8823a; color: #e8823a; }
+    .action-btn { display: flex; align-items: center; gap: 7px; background: var(--bg3); border: 1px solid var(--border2); border-radius: 8px; color: var(--text3); font-size: 13px; font-weight: 500; padding: 10px 16px; cursor: pointer; transition: all 0.15s; white-space: nowrap; }
+    .action-btn:hover { border-color: var(--green); color: var(--green); }
+    .clear-btn:hover { border-color: var(--orange) !important; color: var(--orange) !important; }
 
-    /* Print styles */
+    .em-footer { text-align: center; padding: 1.5rem; font-size: 11px; color: var(--text5); border-top: 1px solid var(--border); margin-top: 1rem; }
+
+
     @media print {
       body { background: #fff !important; color: #000 !important; }
       .em-header { position: static !important; background: #fff !important; border-bottom: 2px solid #000 !important; }
-      .em-logo-brand, .em-logo-sub { color: #000 !important; }
-      .em-badge { background: #000 !important; color: #fff !important; }
-      .em-section { background: #fff !important; border: 1px solid #ccc !important; break-inside: avoid; }
-      .em-section-title { color: #000 !important; }
-      .kit-info, .avg-card, .colour-card, .cart-card, .cleaner-card, .item-card, .item-breakdown, .cost-breakdown-bar, .sell-card, .maint-metric { background: #f9f9f9 !important; border: 1px solid #ddd !important; }
-      .metric { background: #f9f9f9 !important; border: 1px solid #ddd !important; }
-      .metric-value, .item-card-value, .price-big, .sell-card-value.green, .wastage-val, .maint-metric-value { color: #000 !important; }
+      .em-logo-brand { color: #000 !important; }
+      .presets-bar, .action-btn, #saveMsg, .theme-btn { display: none !important; }
+      .em-section, .metric, .item-card, .item-breakdown, .cost-breakdown-bar, .sell-card, .maint-metric, .platform-fee-breakdown, .price-meta-card, .mvp-bar { background: #f9f9f9 !important; border: 1px solid #ddd !important; }
+      .metric-value, .item-card-value, .price-big, .sell-card-value.green, .price-meta-value.profit { color: #000 !important; }
       .green-val { color: #000 !important; }
-      .kit-stat-value, .cart-cpm, .colour-cost, .avg-breakdown { color: #333 !important; }
-      .breakdown-val span { color: #000 !important; }
-      label, .colour-row label, .cart-row label, .colour-name, .cart-name, .cost-bar-label, .sell-card-label, .metric-label { color: #333 !important; }
-      input, select { border: 1px solid #ccc !important; background: #fff !important; color: #000 !important; }
-      input[type=range] { display: none; }
-      .wastage-val { display: inline !important; }
-      .action-btn, #saveMsg { display: none !important; }
-      .em-footer { color: #999 !important; border-top: 1px solid #ddd !important; }
-      .em-tabs { display: none !important; }
+      input[type=range] { display: none !important; }
+      .wastage-val, .markup-val { display: inline !important; }
+      .em-tabs, .platform-tabs { display: none !important; }
       #panel-detail, #panel-avg { display: block !important; }
     }
 
     @media (max-width: 480px) {
-      .colour-grid, .cart-grid, .maint-grid { grid-template-columns: 1fr; }
-      .results, .maint-results { grid-template-columns: 1fr 1fr; }
+      .colour-grid, .cart-grid { grid-template-columns: 1fr; }
+      .results, .maint-results, .price-meta-grid { grid-template-columns: 1fr 1fr; }
       .sell-grid { grid-template-columns: 1fr; }
       .kit-info { gap: 1rem; }
+      .em-body { padding: 1rem 1rem 3rem; }
     }
-
-    /* Platform fees */
-    .platform-tabs { display: flex; gap: 6px; margin-bottom: 1rem; }
-    .platform-tab { flex: 1; padding: 9px; text-align: center; font-size: 12px; font-weight: 500; border: 1px solid #2a2a2a; border-radius: 8px; cursor: pointer; background: #1a1a1a; color: #888; transition: all 0.15s; }
-    .platform-tab.active { background: #7ee83a; color: #0a0a0a; border-color: #7ee83a; font-weight: 700; }
-    .platform-fee-breakdown { background: #1a1a1a; border: 1px solid #242424; border-radius: 10px; padding: 0.85rem 1rem; margin-top: 12px; }
-    .pfee-row { display: flex; justify-content: space-between; align-items: center; padding: 5px 0; border-bottom: 1px solid #1e1e1e; }
-    .pfee-row:last-child { border-bottom: none; }
-    .pfee-row.pfee-total { border-top: 1px solid #333; padding-top: 8px; margin-top: 4px; border-bottom: none; }
-    .pfee-label { font-size: 12px; color: #666; }
-    .pfee-row.pfee-total .pfee-label { font-size: 13px; font-weight: 600; color: #aaa; }
-    .pfee-val { font-size: 12px; color: #e8823a; }
-    .pfee-row.pfee-total .pfee-val { font-size: 14px; font-weight: 700; color: #e8823a; }
   </style>
 </head>
 <body>
 
 <header class="em-header">
   <div class="em-logo-mark">
-    <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+    <svg width="20" height="20" viewBox="0 0 22 22" fill="none">
       <circle cx="11" cy="11" r="4.5" fill="#0a0a0a"/>
       <path d="M11 2 L13 8 L11 7 L9 8 Z" fill="#0a0a0a"/>
       <path d="M11 20 L13 14 L11 15 L9 14 Z" fill="#0a0a0a"/>
@@ -229,8 +280,36 @@
     <span class="em-logo-brand">eufyMake</span>
     <span class="em-logo-sub">Ink Cost Calculator</span>
   </div>
-  <span class="em-badge">E1</span>
+  <div class="header-right">
+    <span class="em-badge">E1</span>
+    <button class="theme-btn" onclick="toggleTheme()" id="themeBtn">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      Light mode
+    </button>
+  </div>
 </header>
+
+<!-- PRESETS BAR -->
+<div class="presets-bar">
+  <span class="preset-label">Presets:</span>
+  <button class="preset-btn active" id="preset-0" onclick="loadPreset(0)">Default</button>
+  <button class="preset-btn" id="preset-1" onclick="loadPreset(1)">
+    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+    Save as preset 1
+  </button>
+  <button class="preset-btn" id="preset-2" onclick="loadPreset(2)">
+    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+    Save as preset 2
+  </button>
+  <button class="preset-btn" id="preset-3" onclick="loadPreset(3)">
+    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+    Save as preset 3
+  </button>
+  <button class="preset-btn" id="preset-4" onclick="loadPreset(4)">
+    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+    Save as preset 4
+  </button>
+</div>
 
 <main class="em-body">
 
@@ -248,23 +327,22 @@
       <input type="text" id="currSym" value="£" maxlength="3" class="currency-sym-input" oninput="calc()" />
       <span class="currency-hint">e.g. £ &nbsp;$ &nbsp;€ &nbsp;A$</span>
     </div>
-
     <div class="wastage-row">
       <label>Ink cartridge wastage</label>
       <input type="range" id="wastage" min="0" max="20" value="5" step="1" oninput="calc()" />
       <span class="wastage-val" id="wastageVal">5%</span>
     </div>
-    <p class="wastage-note" id="wastageNote">5% wastage applied to ink cartridges only — usable volume per 100ml bottle: <span id="usableMlNote">95ml</span>. Cleaner cartridge not affected.</p>
+    <p class="wastage-note" id="wastageNote">5% wastage on ink cartridges only. Cleaner not affected.</p>
   </div>
 
   <!-- CARTRIDGE PRICES -->
   <div class="em-section">
     <p class="em-section-title">Cartridge prices — what you paid</p>
-    <p style="font-size:12px;color:#555;margin-bottom:14px;line-height:1.6;">Enter the price you actually paid. Set a global price then override any individually if needed.</p>
+    <p style="font-size:12px;color:var(--text5);margin-bottom:14px;line-height:1.6;">Enter the price you actually paid. Set a global price then override any individually if needed.</p>
     <div class="global-row">
       <label>Global price — all cartridges</label>
       <input type="number" id="globalPrice" value="42.99" min="0" step="0.01" oninput="calc()" />
-      <span id="globalSym" style="font-size:13px;color:#7ee83a;font-weight:600;">£</span>
+      <span id="globalSym" style="font-size:13px;color:var(--green);font-weight:600;">£</span>
       <button class="apply-btn" onclick="applyGlobalToAll()">Apply to all</button>
     </div>
     <div class="cart-grid" id="cartGrid"></div>
@@ -281,8 +359,8 @@
       <div class="colour-grid" id="colourGrid"></div>
       <div class="cleaner-card">
         <div class="colour-header">
-          <div class="swatch" style="background:#444;border:1px solid #666;"></div>
-          <span class="colour-name">Cleaning cartridge <span style="font-size:10px;color:#555;font-weight:400;">(380ml bottle — no wastage applied)</span></span>
+          <div class="swatch" style="background:#666;border:1px solid #888;"></div>
+          <span class="colour-name">Cleaning cartridge <span style="font-size:10px;color:var(--text5);font-weight:400;">(380ml — no wastage applied)</span></span>
         </div>
         <div class="colour-row">
           <label>Used per print</label>
@@ -299,78 +377,45 @@
           <input type="number" id="avg-total-ml" value="12" min="0" step="0.1" />
           <span class="unit">ml</span>
         </div>
-        <div class="avg-row">
-          <label>Avg cost per ml</label>
-          <span style="font-size:13px;font-weight:600;color:#eee;" id="avgPerMlDisplay">--</span>
-        </div>
-        <div class="avg-breakdown" id="avgBreakdownText">Average calculated from your cartridge prices and wastage setting.</div>
+        <div class="avg-row"><label>Avg cost per ml</label><span style="font-size:13px;font-weight:600;color:var(--text2);" id="avgPerMlDisplay">--</span></div>
+        <div class="avg-breakdown" id="avgBreakdownText">Average from your cartridge prices with wastage applied.</div>
       </div>
     </div>
   </div>
 
   <!-- SUMMARY -->
   <div class="results">
-    <div class="metric">
-      <p class="metric-label">Ink cost</p>
-      <p class="metric-value" id="totalLocal">--</p>
-      <p class="metric-sub">per print</p>
-    </div>
-    <div class="metric">
-      <p class="metric-label">Total ml used</p>
-      <p class="metric-value" id="totalMlUsed">--</p>
-      <p class="metric-sub">per print</p>
-    </div>
-    <div class="metric">
-      <p class="metric-label">Prints / kit</p>
-      <p class="metric-value" id="printsPerKit">--</p>
-      <p class="metric-sub">before a bottle runs out</p>
-    </div>
+    <div class="metric"><p class="metric-label">Ink cost</p><p class="metric-value" id="totalLocal">--</p><p class="metric-sub">per print</p></div>
+    <div class="metric"><p class="metric-label">Total ml used</p><p class="metric-value" id="totalMlUsed">--</p><p class="metric-sub">per print</p></div>
+    <div class="metric"><p class="metric-label">Prints / kit</p><p class="metric-value" id="printsPerKit">--</p><p class="metric-sub">before a bottle runs out</p></div>
   </div>
 
   <!-- MAINTENANCE -->
   <div class="em-section">
     <p class="em-section-title">Maintenance costs</p>
-    <p style="font-size:12px;color:#555;margin-bottom:14px;line-height:1.6;">Track what you spend on deep cleans and maintenance cycles. Enter your actual weekly or monthly spend — both default to 0 so leave blank if you don't want to include them. The cost is spread across your prints automatically.</p>
-
+    <p style="font-size:12px;color:var(--text5);margin-bottom:14px;line-height:1.6;">Enter what you spend on deep cleans and maintenance per week or month. Leave at 0 to exclude. Cost is spread across your prints automatically.</p>
     <div class="em-field">
       <label>Weekly maintenance cost</label>
       <input type="number" id="maintWeeklyCost" value="0" min="0" step="0.01" />
       <span class="sym" id="symMaintW">£</span>
     </div>
-    <p style="font-size:11px;color:#444;margin-top:-6px;margin-bottom:12px;padding-left:170px;">Total spent on cleans and maintenance per week</p>
-
+    <p style="font-size:11px;color:var(--text5);margin-top:-6px;margin-bottom:10px;padding-left:170px;">Total spent on cleans per week</p>
     <div class="em-field">
       <label>Monthly maintenance cost</label>
       <input type="number" id="maintMonthlyCost" value="0" min="0" step="0.01" />
       <span class="sym" id="symMaintM">£</span>
     </div>
-    <p style="font-size:11px;color:#444;margin-top:-6px;margin-bottom:16px;padding-left:170px;">Total spent on cleans and maintenance per month</p>
-
+    <p style="font-size:11px;color:var(--text5);margin-top:-6px;margin-bottom:14px;padding-left:170px;">Total spent on cleans per month (weekly takes priority if both entered)</p>
     <div class="em-field">
       <label>Prints per week</label>
       <input type="number" id="printsPerWeek" value="0" min="0" step="1" />
       <span class="unit">prints</span>
     </div>
-    <p style="font-size:11px;color:#444;margin-top:-6px;margin-bottom:14px;padding-left:170px;">Used to spread maintenance cost across each print</p>
-
-    <div class="maint-results">
-      <div class="maint-metric">
-        <p class="maint-metric-label">Weekly cost</p>
-        <p class="maint-metric-value" id="maintWeekly">--</p>
-        <p class="maint-metric-sub">as entered</p>
-      </div>
-      <div class="maint-metric">
-        <p class="maint-metric-label">Monthly cost</p>
-        <p class="maint-metric-value" id="maintMonthly">--</p>
-        <p class="maint-metric-sub">as entered</p>
-      </div>
-      <div class="maint-metric">
-        <p class="maint-metric-label">Added per print</p>
-        <p class="maint-metric-value" id="maintPerPrint">--</p>
-        <p class="maint-metric-sub">spread across prints</p>
-      </div>
+    <div class="maint-results" style="margin-top:14px;">
+      <div class="maint-metric"><p class="maint-metric-label">Weekly cost</p><p class="maint-metric-value" id="maintWeekly">--</p></div>
+      <div class="maint-metric"><p class="maint-metric-label">Monthly cost</p><p class="maint-metric-value" id="maintMonthly">--</p></div>
+      <div class="maint-metric"><p class="maint-metric-label">Added per print</p><p class="maint-metric-value" id="maintPerPrint">--</p></div>
     </div>
-    <p style="font-size:11px;color:#555;margin-top:10px;line-height:1.6;">Maintenance cost per print is added automatically to your sell price calculation below. If both weekly and monthly are entered, weekly takes priority.</p>
   </div>
 
   <!-- PER ITEM -->
@@ -386,15 +431,8 @@
       <span class="unit">items</span>
     </div>
     <div class="item-grid">
-      <div class="item-card">
-        <p class="item-card-label">Ink cost per item</p>
-        <p class="item-card-value" id="inkPerItem">--</p>
-      </div>
-      <div class="item-card">
-        <p class="item-card-label">Ml of ink per item</p>
-        <p class="item-card-value" id="mlPerItem">--</p>
-        <p class="item-card-sub">ml used</p>
-      </div>
+      <div class="item-card"><p class="item-card-label">Ink cost per item</p><p class="item-card-value" id="inkPerItem">--</p></div>
+      <div class="item-card"><p class="item-card-label">Ml of ink per item</p><p class="item-card-value" id="mlPerItem">--</p><p class="item-card-sub">ml used</p></div>
     </div>
     <div class="item-breakdown" style="margin-top:10px;">
       <p class="item-breakdown-title">Ink breakdown per item</p>
@@ -410,78 +448,57 @@
       <input type="number" id="materialCost" value="0" min="0" step="0.01" />
       <span class="sym" id="symMat">£</span>
     </div>
-    <p style="font-size:11px;color:#444;margin-top:-6px;margin-bottom:12px;padding-left:170px;">Cost of the item you are printing on</p>
+    <p style="font-size:11px;color:var(--text5);margin-top:-6px;margin-bottom:12px;padding-left:170px;">Cost of the item you are printing on</p>
+    <div class="em-field">
+      <label>Postage / shipping</label>
+      <input type="number" id="postageCost" value="0" min="0" step="0.01" />
+      <span class="sym" id="symPostage">£</span>
+    </div>
+    <p style="font-size:11px;color:var(--text5);margin-top:-6px;margin-bottom:12px;padding-left:170px;">What it costs you to ship the item</p>
     <div class="em-field">
       <label>Other costs</label>
       <input type="number" id="otherCosts" value="0" min="0" step="0.01" />
       <span class="sym" id="symOther">£</span>
     </div>
-    <p style="font-size:11px;color:#444;margin-top:-6px;padding-left:170px;">Postage, packaging, labour etc.</p>
+    <p style="font-size:11px;color:var(--text5);margin-top:-6px;margin-bottom:14px;padding-left:170px;">Packaging, labour etc.</p>
+    <div class="em-field">
+      <label>VAT / sales tax rate</label>
+      <input type="number" id="vatRate" value="0" min="0" max="50" step="0.1" />
+      <span class="unit">%</span>
+    </div>
+    <p style="font-size:11px;color:var(--text5);margin-top:-6px;padding-left:170px;">Enter your tax rate e.g. 20 for UK VAT, 21 for EU, or your local sales tax. Set to 0 if not applicable. Tax is added on top of your sell price.</p>
   </div>
 
   <!-- PLATFORM FEES -->
   <div class="em-section">
     <p class="em-section-title">Platform selling fees</p>
-    <p style="font-size:12px;color:#555;margin-bottom:14px;line-height:1.6;">Select which platform you are selling on to see fees deducted from your sell price and your true profit after platform costs. All fees are based on current published rates.</p>
-
+    <p style="font-size:12px;color:var(--text5);margin-bottom:14px;line-height:1.6;">Select your selling platform to see fees and your true take-home profit after all deductions.</p>
     <div class="platform-tabs">
       <div class="platform-tab active" id="ptab-none" onclick="setPlatform('none')">None</div>
       <div class="platform-tab" id="ptab-etsy" onclick="setPlatform('etsy')">Etsy</div>
       <div class="platform-tab" id="ptab-ebay" onclick="setPlatform('ebay')">eBay</div>
     </div>
-
-    <!-- ETSY OPTIONS -->
     <div id="platform-etsy" style="display:none;">
-      <div class="em-field">
-        <label>Seller location</label>
-        <select id="etsyRegion" onchange="calc()" style="flex:1;background:#1e1e1e;border:1px solid #2a2a2a;border-radius:6px;color:#fff;font-size:13px;padding:7px 8px;outline:none;">
-          <option value="uk">UK seller</option>
-          <option value="us">US seller</option>
-        </select>
-      </div>
-      <div class="em-field">
-        <label>Offsite ads</label>
-        <select id="etsyAds" onchange="calc()" style="flex:1;background:#1e1e1e;border:1px solid #2a2a2a;border-radius:6px;color:#fff;font-size:13px;padding:7px 8px;outline:none;">
-          <option value="none">Not using offsite ads</option>
-          <option value="optional">Using offsite ads (optional — under $10k/year)</option>
-          <option value="mandatory">Mandatory offsite ads (over $10k/year)</option>
-        </select>
-      </div>
+      <div class="em-field"><label>Seller location</label><select id="etsyRegion" onchange="calc()"><option value="uk">UK seller</option><option value="us">US seller</option></select></div>
+      <div class="em-field"><label>Offsite ads</label><select id="etsyAds" onchange="calc()"><option value="none">Not using offsite ads</option><option value="optional">Using offsite ads (under $10k/year — 15%)</option><option value="mandatory">Mandatory offsite ads (over $10k/year — 15%)</option></select></div>
       <div class="platform-fee-breakdown" id="etsyBreakdown">
         <div class="pfee-row"><span class="pfee-label">Listing fee</span><span class="pfee-val" id="ef-listing">--</span></div>
         <div class="pfee-row"><span class="pfee-label">Transaction fee (6.5%)</span><span class="pfee-val" id="ef-transaction">--</span></div>
         <div class="pfee-row"><span class="pfee-label">Payment processing</span><span class="pfee-val" id="ef-processing">--</span></div>
-        <div class="pfee-row" id="ef-reg-row"><span class="pfee-label">Regulatory fee (0.32%)</span><span class="pfee-val" id="ef-regulatory">--</span></div>
+        <div class="pfee-row" id="ef-reg-row"><span class="pfee-label">Regulatory fee (0.32% — UK)</span><span class="pfee-val" id="ef-regulatory">--</span></div>
         <div class="pfee-row" id="ef-ads-row" style="display:none;"><span class="pfee-label">Offsite ads fee (15%)</span><span class="pfee-val" id="ef-ads">--</span></div>
         <div class="pfee-row pfee-total"><span class="pfee-label">Total Etsy fees</span><span class="pfee-val" id="ef-total">--</span></div>
       </div>
     </div>
-
-    <!-- EBAY OPTIONS -->
     <div id="platform-ebay" style="display:none;">
-      <div class="em-field">
-        <label>Seller type</label>
-        <select id="ebayType" onchange="calc()" style="flex:1;background:#1e1e1e;border:1px solid #2a2a2a;border-radius:6px;color:#fff;font-size:13px;padding:7px 8px;outline:none;">
-          <option value="uk-private">UK private seller</option>
-          <option value="uk-business">UK business seller</option>
-          <option value="us">US seller</option>
-        </select>
-      </div>
-      <div class="em-field" id="ebayCatRow">
-        <label>Category fee rate</label>
-        <select id="ebayCat" onchange="calc()" style="flex:1;background:#1e1e1e;border:1px solid #2a2a2a;border-radius:6px;color:#fff;font-size:13px;padding:7px 8px;outline:none;">
-          <option value="10.9">Most categories (10.9%)</option>
-          <option value="9.9">Music / DVDs / Games (9.9%)</option>
-          <option value="12.9">Clothing / Shoes (12.9%)</option>
-          <option value="6.9">Motors parts (6.9%)</option>
-        </select>
-      </div>
+      <div class="em-field"><label>Seller type</label><select id="ebayType" onchange="calc()"><option value="uk-private">UK private seller</option><option value="uk-business">UK business seller</option><option value="us">US seller</option></select></div>
+      <div class="em-field" id="ebayCatRow"><label>Category fee rate</label><select id="ebayCat" onchange="calc()"><option value="10.9">Most categories (10.9%)</option><option value="9.9">Music / DVDs / Games (9.9%)</option><option value="12.9">Clothing / Shoes (12.9%)</option><option value="6.9">Motors parts (6.9%)</option></select></div>
       <div class="em-field">
         <label>Promoted listings rate</label>
         <input type="number" id="ebayPromo" value="0" min="0" max="20" step="0.1" />
         <span class="unit">%</span>
       </div>
-      <p style="font-size:11px;color:#444;margin-top:-6px;margin-bottom:12px;padding-left:170px;">Set to 0 if not using promoted listings. Typical rate is 3-8%.</p>
+      <p style="font-size:11px;color:var(--text5);margin-top:-6px;margin-bottom:12px;padding-left:170px;">Set to 0 if not using promoted listings. Typical rate is 3-8%.</p>
       <div class="platform-fee-breakdown">
         <div class="pfee-row"><span class="pfee-label">Final value fee</span><span class="pfee-val" id="ebf-fvf">--</span></div>
         <div class="pfee-row" id="ebf-vat-row"><span class="pfee-label">VAT on fees (20% — UK business)</span><span class="pfee-val" id="ebf-vat">--</span></div>
@@ -491,26 +508,12 @@
         <div class="pfee-row pfee-total"><span class="pfee-label">Total eBay fees</span><span class="pfee-val" id="ebf-total">--</span></div>
       </div>
     </div>
-
     <div id="platform-results" style="display:none;margin-top:12px;">
       <div class="results">
-        <div class="metric">
-          <p class="metric-label">Platform fees</p>
-          <p class="metric-value" id="platFeeTotal">--</p>
-          <p class="metric-sub">deducted from sale</p>
-        </div>
-        <div class="metric">
-          <p class="metric-label">You receive</p>
-          <p class="metric-value" id="platReceive">--</p>
-          <p class="metric-sub">after fees</p>
-        </div>
-        <div class="metric">
-          <p class="metric-label">True profit</p>
-          <p class="metric-value" id="platProfit">--</p>
-          <p class="metric-sub">after all costs + fees</p>
-        </div>
+        <div class="metric"><p class="metric-label">Platform fees</p><p class="metric-value" style="color:var(--orange);" id="platFeeTotal">--</p><p class="metric-sub">deducted from sale</p></div>
+        <div class="metric"><p class="metric-label">You receive</p><p class="metric-value" id="platReceive">--</p><p class="metric-sub">after platform fees</p></div>
+        <div class="metric"><p class="metric-label">True profit</p><p class="metric-value" id="platProfit">--</p><p class="metric-sub">after all costs + fees</p></div>
       </div>
-      <p style="font-size:11px;color:#555;margin-top:6px;line-height:1.6;">True profit = sell price minus all your costs minus platform fees. Use "you receive" as your actual take-home per sale.</p>
     </div>
   </div>
 
@@ -521,8 +524,9 @@
       <div class="cost-bar-row"><span class="cost-bar-label">Ink cost</span><span class="cost-bar-val" id="barInk">--</span></div>
       <div class="cost-bar-row"><span class="cost-bar-label">Maintenance (per print share)</span><span class="cost-bar-val" id="barMaint">--</span></div>
       <div class="cost-bar-row"><span class="cost-bar-label">Material / substrate</span><span class="cost-bar-val" id="barMaterial">--</span></div>
+      <div class="cost-bar-row"><span class="cost-bar-label">Postage / shipping</span><span class="cost-bar-val" id="barPostage">--</span></div>
       <div class="cost-bar-row"><span class="cost-bar-label">Other costs</span><span class="cost-bar-val" id="barOther">--</span></div>
-      <div class="cost-bar-row"><span class="cost-bar-label">Total cost</span><span class="cost-bar-val green-val" id="barTotal">--</span></div>
+      <div class="cost-bar-row"><span class="cost-bar-label">Total cost (ex VAT)</span><span class="cost-bar-val green-val" id="barTotal">--</span></div>
     </div>
     <div class="markup-row">
       <label>Markup</label>
@@ -530,21 +534,39 @@
       <span class="markup-val" id="markupOut">200%</span>
     </div>
     <div class="em-divider"></div>
-    <p class="price-label">Suggested sell price</p>
+    <p class="price-label">Suggested sell price <span id="vatLabel" style="display:none;font-size:10px;color:var(--orange);">(inc. tax)</span></p>
     <p class="price-big" id="sellPrice">--</p>
-    <div class="sell-grid">
-      <div class="sell-card">
-        <p class="sell-card-label">Profit per item</p>
-        <p class="sell-card-value green" id="profitPerItem">--</p>
+
+    <div class="price-meta-grid">
+      <div class="price-meta-card">
+        <p class="price-meta-label">Profit</p>
+        <p class="price-meta-value profit" id="profitPerItem">--</p>
       </div>
-      <div class="sell-card">
-        <p class="sell-card-label">Total cost per item</p>
-        <p class="sell-card-value" id="totalCostPerItem">--</p>
+      <div class="price-meta-card">
+        <p class="price-meta-label">Profit margin</p>
+        <p class="price-meta-value profit" id="profitMargin">--%</p>
+      </div>
+      <div class="price-meta-card">
+        <p class="price-meta-label">Total cost</p>
+        <p class="price-meta-value" id="totalCostPerItem">--</p>
       </div>
     </div>
+
+    <div class="mvp-bar">
+      <div>
+        <p class="mvp-label">Minimum viable price (break even)</p>
+        <p class="mvp-sub">Lowest price you can charge and cover all costs</p>
+      </div>
+      <div style="text-align:right;">
+        <p class="mvp-val" id="mvpPrice">--</p>
+        <p class="mvp-sub" id="mvpVat" style="display:none;color:var(--orange);">-- inc. VAT</p>
+      </div>
+    </div>
+  </div>
+
   <!-- PRINT / SAVE -->
   <div style="display:flex; gap:10px; margin-bottom:1rem; flex-wrap:wrap;">
-    <button class="action-btn" onclick="printResults()">
+    <button class="action-btn" onclick="window.print()">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
       Print / Save as PDF
     </button>
@@ -557,7 +579,7 @@
       Clear saved settings
     </button>
   </div>
-  <p id="saveMsg" style="font-size:12px;color:#4a9a1a;margin-bottom:1rem;display:none;padding-left:4px;"></p>
+  <p id="saveMsg" style="font-size:12px;color:var(--green-dim);margin-bottom:1rem;display:none;padding-left:4px;"></p>
 
 </main>
 
@@ -568,7 +590,7 @@
 <script>
   const INK_ML   = 100;
   const CLEAN_ML = 380;
-
+  const SAVE_KEY = 'eufymake_calc_v2';
   const cartridges = [
     { id:'cyan',    name:'Cyan',    swatch:'#00AEEF', ml:INK_ML },
     { id:'magenta', name:'Magenta', swatch:'#EC008C', ml:INK_ML },
@@ -576,13 +598,13 @@
     { id:'black',   name:'Black',   swatch:'#333333', ml:INK_ML, sb:true },
     { id:'white',   name:'White',   swatch:'#eeeeee', ml:INK_ML, sb:true },
     { id:'gloss',   name:'Gloss',   swatch:'#7ee83a', ml:INK_ML },
-    { id:'cleaner', name:'Cleaner', swatch:'#444444', ml:CLEAN_ML, sb:true, isCleaner:true },
+    { id:'cleaner', name:'Cleaner', swatch:'#666666', ml:CLEAN_ML, sb:true, isCleaner:true },
   ];
 
+  // Build cartridge cards
   const cartGrid = document.getElementById('cartGrid');
   cartridges.forEach(c => {
-    const b = c.sb ? 'border:1px solid #555;' : '';
-    const mlLabel = c.isCleaner ? '380ml bottle' : '100ml bottle';
+    const b = c.sb ? 'border:1px solid #666;' : '';
     cartGrid.innerHTML += `
       <div class="cart-card" id="cartcard-${c.id}">
         <div class="cart-header">
@@ -590,88 +612,79 @@
           <span class="cart-name">${c.name}</span>
           <span class="override-badge" id="badge-${c.id}" style="display:none;">custom</span>
         </div>
-        <div class="cart-row">
-          <label>Price</label>
-          <input type="number" id="price-${c.id}" value="42.99" min="0" step="0.01" oninput="onCartPriceInput('${c.id}')" />
-          <span class="unit" id="csym-${c.id}">£</span>
-        </div>
-        <div class="cart-row">
-          <label>Bottle size</label>
-          <span style="font-size:12px;color:#555;">${mlLabel}</span>
-        </div>
+        <div class="cart-row"><label>Price</label><input type="number" id="price-${c.id}" value="42.99" min="0" step="0.01" oninput="onCartPriceInput('${c.id}')" /><span class="unit" id="csym-${c.id}">£</span></div>
+        <div class="cart-row"><label>Bottle size</label><span style="font-size:12px;color:var(--text5);">${c.isCleaner ? '380ml' : '100ml'}</span></div>
         <div class="cart-cpm" id="cpm-${c.id}">--</div>
       </div>`;
   });
 
+  // Build colour cards
   const colourGrid = document.getElementById('colourGrid');
   cartridges.filter(c => !c.isCleaner).forEach(c => {
-    const b = c.sb ? 'border:1px solid #555;' : '';
+    const b = c.sb ? 'border:1px solid #666;' : '';
     colourGrid.innerHTML += `
       <div class="colour-card">
-        <div class="colour-header">
-          <div class="swatch" style="background:${c.swatch};${b}"></div>
-          <span class="colour-name">${c.name}</span>
-        </div>
-        <div class="colour-row">
-          <label>Used per print</label>
-          <input type="number" id="ml-${c.id}" value="0" min="0" step="0.1" />
-          <span class="unit">ml</span>
-        </div>
+        <div class="colour-header"><div class="swatch" style="background:${c.swatch};${b}"></div><span class="colour-name">${c.name}</span></div>
+        <div class="colour-row"><label>Used per print</label><input type="number" id="ml-${c.id}" value="0" min="0" step="0.1" /><span class="unit">ml</span></div>
         <div class="colour-cost" id="linecost-${c.id}">not used</div>
       </div>`;
   });
 
   const $ = id => document.getElementById(id);
-  let currentTab = 'detail';
+  let currentTab     = 'detail';
+  let currentPlatform = 'none';
+  let currentPreset  = 0;
 
-  function getSym()  { return ($('currSym').value || '£').trim() || '£'; }
-  function fmt(n)    { return getSym() + n.toFixed(2); }
-  function getWaste(){ return (parseFloat($('wastage').value) || 0) / 100; }
-  function usableMl(){ return INK_ML * (1 - getWaste()); }
+  // Theme
+  function toggleTheme() {
+    const html  = document.documentElement;
+    const isDark = html.dataset.theme === 'dark';
+    html.dataset.theme = isDark ? 'light' : 'dark';
+    $('themeBtn').innerHTML = isDark
+      ? `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg> Dark mode`
+      : `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg> Light mode`;
+    try { localStorage.setItem('eufymake_theme', html.dataset.theme); } catch(e) {}
+  }
+
+  function getSym()   { return ($('currSym').value || '£').trim() || '£'; }
+  function fmt(n)     { return getSym() + n.toFixed(2); }
+  function getWaste() { return (parseFloat($('wastage').value) || 0) / 100; }
+  function usableMl() { return INK_ML * (1 - getWaste()); }
   function getCartPrice(id) { return parseFloat($('price-' + id).value) || 0; }
   function getCartCPM(id) {
     const c = cartridges.find(x => x.id === id);
-    const vol = c.isCleaner ? c.ml : usableMl();
-    return getCartPrice(id) / vol;
+    return getCartPrice(id) / (c.isCleaner ? c.ml : usableMl());
   }
 
   function updateAllSymbols() {
     const sym = getSym();
-    $('globalSym').textContent  = sym;
-    $('symMat').textContent     = sym;
-    $('symOther').textContent   = sym;
-    const mw = $('symMaintW'); if (mw) mw.textContent = sym;
-    const mm = $('symMaintM'); if (mm) mm.textContent = sym;
-    cartridges.forEach(c => {
-      const el = $('csym-' + c.id);
-      if (el) el.textContent = sym;
+    ['globalSym','symMaintW','symMaintM','symMat','symPostage','symOther'].forEach(id => {
+      const el = $(id); if (el) el.textContent = sym;
     });
+    cartridges.forEach(c => { const el = $('csym-' + c.id); if (el) el.textContent = sym; });
   }
 
   function updateKitSummary() {
-    const sym        = getSym();
-    const waste      = getWaste();
-    const usable     = usableMl();
-    const inkPrices  = cartridges.filter(c => !c.isCleaner).map(c => getCartPrice(c.id));
+    const sym      = getSym();
+    const waste    = getWaste();
+    const usable   = usableMl();
+    const inkPrices = cartridges.filter(c=>!c.isCleaner).map(c=>getCartPrice(c.id));
     const cleanPrice = getCartPrice('cleaner');
-    const totalCost  = cartridges.reduce((s,c) => s + getCartPrice(c.id), 0);
-    const totalMl    = cartridges.filter(c=>!c.isCleaner).reduce((s,c)=>s+usable,0) + CLEAN_ML;
+    const totalCost  = cartridges.reduce((s,c) => s+getCartPrice(c.id), 0);
+    const totalMl    = cartridges.filter(c=>!c.isCleaner).length * usable + CLEAN_ML;
     const avgCpm     = totalMl > 0 ? totalCost / totalMl : 0;
     const allSame    = inkPrices.every(p => Math.abs(p - inkPrices[0]) < 0.001);
-
-    $('kitInkSummary').textContent   = allSame ? `6 x ${sym}${inkPrices[0].toFixed(2)} / 100ml` : `Mixed prices / 100ml`;
+    $('kitInkSummary').textContent   = allSame ? `6 x ${sym}${inkPrices[0].toFixed(2)} / 100ml` : 'Mixed prices';
     $('kitCleanSummary').textContent = `${sym}${cleanPrice.toFixed(2)} / 380ml`;
-    $('kitUsableMl').textContent     = `${usable.toFixed(1)}ml (${waste*100}% waste)`;
+    $('kitUsableMl').textContent     = `${usable.toFixed(1)}ml (${(waste*100).toFixed(0)}% waste)`;
     $('kitAvgMl').textContent        = `${sym}${avgCpm.toFixed(4)}/ml`;
     $('avgPerMlDisplay').textContent = `${sym}${avgCpm.toFixed(4)}`;
-    $('wastageVal').textContent      = `${waste*100}%`;
-    $('wastageNote').innerHTML       = `${waste*100}% wastage applied to ink cartridges only — usable volume per 100ml bottle: <span id="usableMlNote">${usable.toFixed(1)}ml</span>. Cleaner cartridge not affected.`;
-    $('avgBreakdownText').textContent = `Average from your prices with ${waste*100}% wastage applied to ink. Total usable: ${totalMl.toFixed(0)}ml. Kit cost: ${sym}${totalCost.toFixed(2)}`;
-
+    $('wastageVal').textContent      = `${(waste*100).toFixed(0)}%`;
+    $('wastageNote').textContent     = `${(waste*100).toFixed(0)}% wastage on ink cartridges only. Usable: ${usable.toFixed(1)}ml per bottle. Cleaner not affected.`;
+    $('avgBreakdownText').textContent = `Average from your prices with ${(waste*100).toFixed(0)}% wastage. Total usable: ${totalMl.toFixed(0)}ml. Kit cost: ${sym}${totalCost.toFixed(2)}`;
     cartridges.forEach(c => {
-      const cpm = getCartCPM(c.id);
-      const vol = c.isCleaner ? '380ml' : `${usable.toFixed(1)}ml usable`;
-      $('cpm-' + c.id).textContent = `${sym}${cpm.toFixed(4)}/ml (${vol})`;
+      const vol = c.isCleaner ? '380ml' : `${usable.toFixed(1)}ml`;
+      $('cpm-' + c.id).textContent = `${sym}${getCartCPM(c.id).toFixed(4)}/ml (${vol})`;
     });
   }
 
@@ -682,20 +695,18 @@
     $('badge-' + id).style.display  = isCustom ? 'inline' : 'none';
     $('price-' + id).className      = isCustom ? 'custom' : '';
     $('cartcard-' + id).className   = isCustom ? 'cart-card overridden' : 'cart-card';
-    updateKitSummary();
-    calc();
+    updateKitSummary(); calc();
   }
 
   function applyGlobalToAll() {
     const gp = parseFloat($('globalPrice').value) || 0;
     cartridges.forEach(c => {
-      $('price-' + c.id).value         = gp.toFixed(2);
-      $('price-' + c.id).className     = '';
+      $('price-' + c.id).value = gp.toFixed(2);
+      $('price-' + c.id).className = '';
       $('badge-' + c.id).style.display = 'none';
-      $('cartcard-' + c.id).className  = 'cart-card';
+      $('cartcard-' + c.id).className = 'cart-card';
     });
-    updateKitSummary();
-    calc();
+    updateKitSummary(); calc();
   }
 
   function switchTab(tab) {
@@ -707,134 +718,9 @@
     calc();
   }
 
-  function calcMaintenance() {
-    const weeklyCost   = parseFloat($('maintWeeklyCost').value)  || 0;
-    const monthlyCost  = parseFloat($('maintMonthlyCost').value) || 0;
-    const printsPerWk  = Math.max(1, parseFloat($('printsPerWeek').value) || 1);
-
-    // Weekly takes priority if entered, otherwise convert monthly to weekly
-    const effectiveWeekly  = weeklyCost > 0 ? weeklyCost : monthlyCost / 4.33;
-    const effectiveMonthly = weeklyCost > 0 ? weeklyCost * 4.33 : monthlyCost;
-    const perPrint         = effectiveWeekly / printsPerWk;
-
-    $('maintWeekly').textContent   = fmt(effectiveWeekly);
-    $('maintMonthly').textContent  = fmt(effectiveMonthly);
-    $('maintPerPrint').textContent = fmt(perPrint);
-
-    // update currency symbols
-    const sym = getSym();
-    const mw = $('symMaintW'); if (mw) mw.textContent = sym;
-    const mm = $('symMaintM'); if (mm) mm.textContent = sym;
-
-    return perPrint;
-  }
-
-  function calc() {
-    updateAllSymbols();
-    updateKitSummary();
-
-    const maintPerPrint = calcMaintenance();
-    const markupPct     = parseFloat($('markup').value)       || 200;
-    const materialCost  = parseFloat($('materialCost').value) || 0;
-    const otherCosts    = parseFloat($('otherCosts').value)   || 0;
-    const itemsPerSheet = Math.max(1, parseInt($('itemsPerSheet').value) || 1);
-    const itemName      = $('itemName').value || 'item';
-
-    $('markupOut').textContent     = markupPct + '%';
-    $('itemNameLabel').textContent = itemName.toLowerCase();
-
-    let totalCost = 0, totalMl = 0, minPrints = Infinity, channels = [];
-
-    if (currentTab === 'detail') {
-      cartridges.filter(c => !c.isCleaner).forEach(c => {
-        const ml   = parseFloat($('ml-' + c.id).value) || 0;
-        const cost = getCartCPM(c.id) * ml;
-        totalCost += cost; totalMl += ml;
-        if (ml > 0) {
-          $('linecost-' + c.id).textContent = fmt(cost);
-          channels.push({ name:c.name, swatch:c.swatch, sb:c.sb, ml, cost });
-          const p = Math.floor(usableMl() / ml);
-          if (p < minPrints) minPrints = p;
-        } else {
-          $('linecost-' + c.id).textContent = 'not used';
-        }
-      });
-      const cml   = parseFloat($('ml-cleaner').value) || 0;
-      const ccost = getCartCPM('cleaner') * cml;
-      totalCost  += ccost; totalMl += cml;
-      if (cml > 0) {
-        $('linecost-cleaner').textContent = fmt(ccost);
-        channels.push({ name:'Cleaner', swatch:'#444', sb:true, ml:cml, cost:ccost });
-        const cp = Math.floor(CLEAN_ML / cml);
-        if (cp < minPrints) minPrints = cp;
-      } else {
-        $('linecost-cleaner').textContent = 'not used';
-      }
-      $('printsPerKit').textContent = isFinite(minPrints) ? minPrints : '--';
-    } else {
-      totalMl = parseFloat($('avg-total-ml').value) || 0;
-      const totalKitCost = cartridges.reduce((s,c) => s + getCartPrice(c.id), 0);
-      const totalKitMl   = cartridges.filter(c=>!c.isCleaner).reduce((s,c)=>s+usableMl(),0) + CLEAN_ML;
-      const avgCpm       = totalKitMl > 0 ? totalKitCost / totalKitMl : 0;
-      totalCost = avgCpm * totalMl;
-      channels.push({ name:'All channels (avg)', swatch:'#7ee83a', ml:totalMl, cost:totalCost });
-      $('printsPerKit').textContent = totalMl > 0 ? Math.floor(totalKitMl / totalMl) : '--';
-    }
-
-    $('totalLocal').textContent  = fmt(totalCost);
-    $('totalMlUsed').textContent = totalMl.toFixed(2) + 'ml';
-
-    const inkPerItem   = totalCost / itemsPerSheet;
-    const mlPerItem    = totalMl  / itemsPerSheet;
-    const maintPerItem = maintPerPrint / itemsPerSheet;
-
-    $('inkPerItem').textContent = fmt(inkPerItem);
-    $('mlPerItem').textContent  = mlPerItem.toFixed(2) + 'ml';
-
-    let rows = channels.length
-      ? ''
-      : '<div style="font-size:12px;color:#444;padding:4px 0;">Enter ml values above to see breakdown</div>';
-    channels.forEach(ch => {
-      const b = ch.sb ? 'border:1px solid #666;' : '';
-      rows += `<div class="breakdown-row">
-        <span class="breakdown-label"><span class="breakdown-dot" style="background:${ch.swatch};${b}"></span>${ch.name}</span>
-        <span class="breakdown-val">${(ch.ml/itemsPerSheet).toFixed(2)}ml &nbsp;<span>${fmt(ch.cost/itemsPerSheet)}</span></span>
-      </div>`;
-    });
-    $('breakdownRows').innerHTML = rows;
-
-    const totalItemCost = inkPerItem + maintPerItem + materialCost + otherCosts;
-    const sell          = totalItemCost * (1 + markupPct / 100);
-    const profit        = sell - totalItemCost;
-
-    $('barInk').textContent      = fmt(inkPerItem);
-    $('barMaint').textContent    = maintPerPrint > 0 ? fmt(maintPerItem) : '--';
-    $('barMaterial').textContent = materialCost > 0 ? fmt(materialCost) : '--';
-    $('barOther').textContent    = otherCosts   > 0 ? fmt(otherCosts)   : '--';
-    $('barTotal').textContent    = fmt(totalItemCost);
-    $('sellPrice').textContent        = fmt(sell);
-    $('profitPerItem').textContent    = fmt(profit);
-    $('totalCostPerItem').textContent = fmt(totalItemCost);
-
-    // Platform fees
-    const platFees   = calcPlatformFees(sell);
-    const receive    = sell - platFees;
-    const trueProfit = receive - totalItemCost;
-    if (currentPlatform !== 'none') {
-      $('platFeeTotal').textContent = fmt(platFees);
-      $('platReceive').textContent  = fmt(receive);
-      $('platProfit').textContent   = fmt(trueProfit);
-    }
-  }
-
-  // ── PLATFORM FEES ──
-  let currentPlatform = 'none';
-
   function setPlatform(p) {
     currentPlatform = p;
-    ['none','etsy','ebay'].forEach(x => {
-      $('ptab-' + x).classList.toggle('active', x === p);
-    });
+    ['none','etsy','ebay'].forEach(x => $('ptab-' + x).classList.toggle('active', x === p));
     $('platform-etsy').style.display    = p === 'etsy' ? '' : 'none';
     $('platform-ebay').style.display    = p === 'ebay' ? '' : 'none';
     $('platform-results').style.display = p !== 'none' ? '' : 'none';
@@ -842,20 +728,15 @@
   }
 
   function calcPlatformFees(sellPrice) {
-    const sym = getSym();
     if (currentPlatform === 'none') return 0;
-
     if (currentPlatform === 'etsy') {
-      const region  = $('etsyRegion').value;
-      const ads     = $('etsyAds').value;
+      const region = $('etsyRegion').value;
+      const ads    = $('etsyAds').value;
       const listing = region === 'uk' ? 0.15 : 0.20;
       const trans   = sellPrice * 0.065;
-      const procPct = region === 'uk' ? 0.04 : 0.03;
-      const procFix = region === 'uk' ? 0.20 : 0.25;
-      const proc    = (sellPrice * procPct) + procFix;
+      const proc    = (sellPrice * (region === 'uk' ? 0.04 : 0.03)) + (region === 'uk' ? 0.20 : 0.25);
       const reg     = region === 'uk' ? sellPrice * 0.0032 : 0;
       const adsFee  = ads !== 'none' ? sellPrice * 0.15 : 0;
-
       $('ef-listing').textContent     = fmt(listing);
       $('ef-transaction').textContent = fmt(trans);
       $('ef-processing').textContent  = fmt(proc);
@@ -867,21 +748,16 @@
       $('ef-total').textContent = fmt(total);
       return total;
     }
-
     if (currentPlatform === 'ebay') {
-      const type    = $('ebayType').value;
-      const catRate = parseFloat($('ebayCat').value) / 100;
+      const type     = $('ebayType').value;
+      const catRate  = parseFloat($('ebayCat').value) / 100;
       const promoRate = parseFloat($('ebayPromo').value) / 100 || 0;
-      const isUKBiz = type === 'uk-business';
-      const isUS    = type === 'us';
-
-      let fvf = sellPrice * catRate;
-      let vat = 0;
-      if (isUKBiz) { vat = fvf * 0.20; }
-      const orderFee = isUS ? 0.40 : 0.40;
+      const isUKBiz  = type === 'uk-business';
+      const fvf      = sellPrice * catRate;
+      const vat      = isUKBiz ? fvf * 0.20 : 0;
+      const orderFee = 0.40;
       const reg      = sellPrice * 0.0035;
       const promo    = sellPrice * promoRate;
-
       $('ebf-fvf').textContent  = fmt(fvf);
       $('ebf-vat-row').style.display = isUKBiz ? '' : 'none';
       $('ebf-vat').textContent  = fmt(vat);
@@ -889,8 +765,7 @@
       $('ebf-reg').textContent  = fmt(reg);
       $('ebf-promo-row').style.display = promoRate > 0 ? '' : 'none';
       $('ebf-promo').textContent = fmt(promo);
-      $('ebayCatRow').style.display = isUKBiz ? '' : 'none';
-
+      $('ebayCatRow').style.display = type !== 'uk-private' ? '' : 'none';
       const total = fvf + vat + orderFee + reg + promo;
       $('ebf-total').textContent = fmt(total);
       return total;
@@ -898,90 +773,245 @@
     return 0;
   }
 
-  // ── SAVE / LOAD SETTINGS ──
-  const SAVE_KEY = 'eufymake_calc_settings';
+  function calcMaintenance() {
+    const weekly   = parseFloat($('maintWeeklyCost').value)  || 0;
+    const monthly  = parseFloat($('maintMonthlyCost').value) || 0;
+    const prints   = Math.max(1, parseFloat($('printsPerWeek').value) || 1);
+    const effW     = weekly > 0 ? weekly : monthly / 4.33;
+    const effM     = weekly > 0 ? weekly * 4.33 : monthly;
+    const perPrint = effW / prints;
+    $('maintWeekly').textContent   = fmt(effW);
+    $('maintMonthly').textContent  = fmt(effM);
+    $('maintPerPrint').textContent = fmt(perPrint);
+    return perPrint;
+  }
+
+  function calc() {
+    updateAllSymbols();
+    updateKitSummary();
+    const maintPerPrint = calcMaintenance();
+    const markupPct     = parseFloat($('markup').value)       || 200;
+    const materialCost  = parseFloat($('materialCost').value) || 0;
+    const postageCost   = parseFloat($('postageCost').value)  || 0;
+    const otherCosts    = parseFloat($('otherCosts').value)   || 0;
+    const itemsPerSheet = Math.max(1, parseInt($('itemsPerSheet').value) || 1);
+    const itemName      = $('itemName').value || 'item';
+    const vatRate       = parseFloat($('vatRate').value) || 0;
+    const vatMult       = 1 + (vatRate / 100);
+    $('markupOut').textContent     = markupPct + '%';
+    $('itemNameLabel').textContent = itemName.toLowerCase();
+    $('vatLabel').style.display    = vatRate > 0 ? 'inline' : 'none';
+
+    let totalCost = 0, totalMl = 0, minPrints = Infinity, channels = [];
+    if (currentTab === 'detail') {
+      cartridges.filter(c=>!c.isCleaner).forEach(c => {
+        const ml   = parseFloat($('ml-' + c.id).value) || 0;
+        const cost = getCartCPM(c.id) * ml;
+        totalCost += cost; totalMl += ml;
+        if (ml > 0) {
+          $('linecost-' + c.id).textContent = fmt(cost);
+          channels.push({ name:c.name, swatch:c.swatch, sb:c.sb, ml, cost });
+          const p = Math.floor(usableMl() / ml);
+          if (p < minPrints) minPrints = p;
+        } else { $('linecost-' + c.id).textContent = 'not used'; }
+      });
+      const cml   = parseFloat($('ml-cleaner').value) || 0;
+      const ccost = getCartCPM('cleaner') * cml;
+      totalCost += ccost; totalMl += cml;
+      if (cml > 0) {
+        $('linecost-cleaner').textContent = fmt(ccost);
+        channels.push({ name:'Cleaner', swatch:'#666', sb:true, ml:cml, cost:ccost });
+        const cp = Math.floor(CLEAN_ML / cml);
+        if (cp < minPrints) minPrints = cp;
+      } else { $('linecost-cleaner').textContent = 'not used'; }
+      $('printsPerKit').textContent = isFinite(minPrints) ? minPrints : '--';
+    } else {
+      totalMl = parseFloat($('avg-total-ml').value) || 0;
+      const tkc = cartridges.reduce((s,c)=>s+getCartPrice(c.id),0);
+      const tkm = cartridges.filter(c=>!c.isCleaner).length * usableMl() + CLEAN_ML;
+      totalCost = (tkm > 0 ? tkc/tkm : 0) * totalMl;
+      channels.push({ name:'All channels (avg)', swatch:'#7ee83a', ml:totalMl, cost:totalCost });
+      $('printsPerKit').textContent = totalMl > 0 ? Math.floor(tkm/totalMl) : '--';
+    }
+
+    $('totalLocal').textContent  = fmt(totalCost);
+    $('totalMlUsed').textContent = totalMl.toFixed(2) + 'ml';
+    const inkPerItem   = totalCost / itemsPerSheet;
+    const maintPerItem = maintPerPrint / itemsPerSheet;
+    const mlPerItem    = totalMl / itemsPerSheet;
+    $('inkPerItem').textContent = fmt(inkPerItem);
+    $('mlPerItem').textContent  = mlPerItem.toFixed(2) + 'ml';
+
+    let rows = channels.length ? '' : '<div style="font-size:12px;color:var(--text5);padding:4px 0;">Enter ml values above to see breakdown</div>';
+    channels.forEach(ch => {
+      const b = ch.sb ? 'border:1px solid #666;' : '';
+      rows += `<div class="breakdown-row"><span class="breakdown-label"><span class="breakdown-dot" style="background:${ch.swatch};${b}"></span>${ch.name}</span><span class="breakdown-val">${(ch.ml/itemsPerSheet).toFixed(2)}ml &nbsp;<span>${fmt(ch.cost/itemsPerSheet)}</span></span></div>`;
+    });
+    $('breakdownRows').innerHTML = rows;
+
+    const totalItemCost = inkPerItem + maintPerItem + materialCost + postageCost + otherCosts;
+    const sellExVat     = totalItemCost * (1 + markupPct / 100);
+    const sell          = vatRate > 0 ? sellExVat * vatMult : sellExVat;
+    const profit        = sellExVat - totalItemCost;
+    const marginPct     = sellExVat > 0 ? (profit / sellExVat) * 100 : 0;
+    const mvp           = totalItemCost;
+    const mvpVat        = vatRate > 0 ? mvp * vatMult : null;
+
+    $('barInk').textContent      = fmt(inkPerItem);
+    $('barMaint').textContent    = maintPerItem > 0 ? fmt(maintPerItem) : '--';
+    $('barMaterial').textContent = materialCost > 0 ? fmt(materialCost) : '--';
+    $('barPostage').textContent  = postageCost  > 0 ? fmt(postageCost)  : '--';
+    $('barOther').textContent    = otherCosts   > 0 ? fmt(otherCosts)   : '--';
+    $('barTotal').textContent    = fmt(totalItemCost);
+    $('sellPrice').textContent        = fmt(sell);
+    $('profitPerItem').textContent    = fmt(profit);
+    $('profitMargin').textContent     = marginPct.toFixed(1) + '%';
+    $('totalCostPerItem').textContent = fmt(totalItemCost);
+    $('mvpPrice').textContent         = fmt(mvp);
+    $('mvpVat').style.display         = vatRate > 0 ? '' : 'none';
+    if (vatRate > 0) $('mvpVat').textContent = fmt(mvpVat) + ' inc. ' + vatRate.toFixed(0) + '% tax';
+
+    const platFees   = calcPlatformFees(sell);
+    const receive    = sell - platFees;
+    const trueProfit = receive - totalItemCost;
+    if (currentPlatform !== 'none') {
+      $('platFeeTotal').textContent = fmt(platFees);
+      $('platReceive').textContent  = fmt(receive);
+      $('platProfit').textContent   = fmt(trueProfit);
+    }
+  }
+
+  // Presets
+  const PRESET_KEY = 'eufymake_presets';
+  let presets = [{}, null, null, null, null];
 
   function gatherSettings() {
-    const s = {
-      currSym:       $('currSym').value,
-      wastage:       $('wastage').value,
-      globalPrice:   $('globalPrice').value,
-      itemName:      $('itemName').value,
-      itemsPerSheet: $('itemsPerSheet').value,
-      materialCost:  $('materialCost').value,
-      otherCosts:    $('otherCosts').value,
-      markup:        $('markup').value,
-      maintWeekly:   $('maintWeeklyCost').value,
-      maintMonthly:  $('maintMonthlyCost').value,
-      printsPerWeek: $('printsPerWeek').value,
-    };
-    cartridges.forEach(c => { s['price_' + c.id] = $('price-' + c.id).value; });
-    cartridges.filter(c => !c.isCleaner).forEach(c => { s['ml_' + c.id] = $('ml-' + c.id).value; });
+    const s = { currSym:$('currSym').value, wastage:$('wastage').value, globalPrice:$('globalPrice').value,
+      itemName:$('itemName').value, itemsPerSheet:$('itemsPerSheet').value, materialCost:$('materialCost').value,
+      postageCost:$('postageCost').value, otherCosts:$('otherCosts').value, markup:$('markup').value,
+      maintWeekly:$('maintWeeklyCost').value, maintMonthly:$('maintMonthlyCost').value, printsPerWeek:$('printsPerWeek').value,
+      vatRate:$('vatRate').value, tab:currentTab, platform:currentPlatform };
+    cartridges.forEach(c => { s['price_'+c.id] = $('price-'+c.id).value; });
+    cartridges.filter(c=>!c.isCleaner).forEach(c => { s['ml_'+c.id] = $('ml-'+c.id).value; });
     s['ml_cleaner'] = $('ml-cleaner').value;
     return s;
   }
 
   function applySettings(s) {
     if (!s) return;
-    if (s.currSym)       $('currSym').value       = s.currSym;
-    if (s.wastage)       $('wastage').value        = s.wastage;
-    if (s.globalPrice)   $('globalPrice').value    = s.globalPrice;
-    if (s.itemName)      $('itemName').value       = s.itemName;
-    if (s.itemsPerSheet) $('itemsPerSheet').value  = s.itemsPerSheet;
-    if (s.materialCost)  $('materialCost').value   = s.materialCost;
-    if (s.otherCosts)    $('otherCosts').value     = s.otherCosts;
-    if (s.markup)        $('markup').value         = s.markup;
-    if (s.maintWeekly)   $('maintWeeklyCost').value  = s.maintWeekly;
-    if (s.maintMonthly)  $('maintMonthlyCost').value = s.maintMonthly;
-    if (s.printsPerWeek) $('printsPerWeek').value  = s.printsPerWeek;
-    cartridges.forEach(c => { if (s['price_' + c.id]) $('price-' + c.id).value = s['price_' + c.id]; });
-    cartridges.filter(c => !c.isCleaner).forEach(c => { if (s['ml_' + c.id]) $('ml-' + c.id).value = s['ml_' + c.id]; });
-    if (s['ml_cleaner']) $('ml-cleaner').value = s['ml_cleaner'];
+    if (s.currSym)       $('currSym').value          = s.currSym;
+    if (s.wastage)       $('wastage').value           = s.wastage;
+    if (s.globalPrice)   $('globalPrice').value       = s.globalPrice;
+    if (s.itemName)      $('itemName').value          = s.itemName;
+    if (s.itemsPerSheet) $('itemsPerSheet').value     = s.itemsPerSheet;
+    if (s.materialCost)  $('materialCost').value      = s.materialCost;
+    if (s.postageCost)   $('postageCost').value       = s.postageCost;
+    if (s.otherCosts)    $('otherCosts').value        = s.otherCosts;
+    if (s.markup)        $('markup').value            = s.markup;
+    if (s.maintWeekly)   $('maintWeeklyCost').value   = s.maintWeekly;
+    if (s.maintMonthly)  $('maintMonthlyCost').value  = s.maintMonthly;
+    if (s.printsPerWeek) $('printsPerWeek').value     = s.printsPerWeek;
+    if (s.vatRate !== undefined) $('vatRate').value = s.vatRate;
+    cartridges.forEach(c => { if (s['price_'+c.id]) $('price-'+c.id).value = s['price_'+c.id]; });
+    cartridges.filter(c=>!c.isCleaner).forEach(c => { if (s['ml_'+c.id]) $('ml-'+c.id).value = s['ml_'+c.id]; });
+    if (s.ml_cleaner) $('ml-cleaner').value = s.ml_cleaner;
+    if (s.tab)      switchTab(s.tab);
+    if (s.platform) setPlatform(s.platform);
+  }
+
+  function loadPreset(idx) {
+    if (idx === 0) {
+      // Always saveable — do nothing if empty, load if has data
+      if (presets[0] && Object.keys(presets[0]).length > 0) {
+        applySettings(presets[0]);
+        setActivePreset(0);
+        calc();
+      }
+      return;
+    }
+    if (!presets[idx]) {
+      // Save current settings into this slot
+      presets[idx] = gatherSettings();
+      const name = $('itemName').value || 'Preset ' + idx;
+      presets[idx]._name = name;
+      savePresetsToStorage();
+      updatePresetBtns();
+      showMsg('Saved as "' + name + '" in preset slot ' + idx);
+    } else {
+      applySettings(presets[idx]);
+      setActivePreset(idx);
+      calc();
+    }
+  }
+
+  function setActivePreset(idx) {
+    currentPreset = idx;
+    for (let i = 0; i <= 4; i++) {
+      const btn = $('preset-' + i);
+      if (btn) btn.classList.toggle('active', i === idx);
+    }
+  }
+
+  function updatePresetBtns() {
+    for (let i = 1; i <= 4; i++) {
+      const btn = $('preset-' + i);
+      if (!btn) continue;
+      if (presets[i]) {
+        btn.innerHTML = presets[i]._name || 'Preset ' + i;
+      } else {
+        btn.innerHTML = `<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> Save as preset ${i}`;
+      }
+    }
+  }
+
+  function savePresetsToStorage() {
+    try { localStorage.setItem(PRESET_KEY, JSON.stringify(presets)); } catch(e) {}
   }
 
   function saveSettings() {
     try {
-      localStorage.setItem(SAVE_KEY, JSON.stringify(gatherSettings()));
-      const msg = $('saveMsg');
-      msg.textContent = 'Settings saved! They will load automatically next time you open the calculator.';
-      msg.style.display = 'block';
-      setTimeout(() => { msg.style.display = 'none'; }, 4000);
-    } catch(e) {
-      alert('Could not save settings — your browser may have storage disabled.');
-    }
+      presets[0] = gatherSettings();
+      localStorage.setItem(SAVE_KEY, JSON.stringify(presets[0]));
+      savePresetsToStorage();
+      showMsg('Settings saved! They will load automatically next time.');
+    } catch(e) { alert('Could not save — storage may be disabled.'); }
   }
 
   function clearSettings() {
     try {
       localStorage.removeItem(SAVE_KEY);
-      const msg = $('saveMsg');
-      msg.textContent = 'Saved settings cleared.';
-      msg.style.color = '#e8823a';
-      msg.style.display = 'block';
-      setTimeout(() => { msg.style.display = 'none'; msg.style.color = '#4a9a1a'; }, 3000);
+      showMsg('Saved settings cleared.', true);
     } catch(e) {}
   }
 
-  function loadSavedSettings() {
-    try {
-      const raw = localStorage.getItem(SAVE_KEY);
-      if (raw) {
-        applySettings(JSON.parse(raw));
-        const msg = $('saveMsg');
-        msg.textContent = 'Your saved settings have been loaded.';
-        msg.style.display = 'block';
-        setTimeout(() => { msg.style.display = 'none'; }, 3000);
-      }
-    } catch(e) {}
+  function showMsg(txt, warn) {
+    const msg = $('saveMsg');
+    msg.textContent = txt;
+    msg.style.color = warn ? 'var(--orange)' : 'var(--green-dim)';
+    msg.style.display = 'block';
+    setTimeout(() => { msg.style.display = 'none'; }, 4000);
   }
 
-  // ── PRINT ──
-  function printResults() {
-    window.print();
-  }
-
+  // Init
   document.querySelectorAll('input').forEach(el => el.addEventListener('input', calc));
-  loadSavedSettings();
+
+  // Load theme
+  try {
+    const t = localStorage.getItem('eufymake_theme');
+    if (t) {
+      document.documentElement.dataset.theme = t;
+      if (t === 'light') $('themeBtn').innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg> Dark mode`;
+    }
+  } catch(e) {}
+
+  // Load saved settings
+  try {
+    const raw = localStorage.getItem(SAVE_KEY);
+    if (raw) { applySettings(JSON.parse(raw)); showMsg('Your saved settings have been loaded.'); }
+    const rawP = localStorage.getItem(PRESET_KEY);
+    if (rawP) { presets = JSON.parse(rawP); updatePresetBtns(); }
+  } catch(e) {}
+
   updateKitSummary();
   calc();
 </script>
