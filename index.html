@@ -197,6 +197,19 @@
       .sell-grid { grid-template-columns: 1fr; }
       .kit-info { gap: 1rem; }
     }
+
+    /* Platform fees */
+    .platform-tabs { display: flex; gap: 6px; margin-bottom: 1rem; }
+    .platform-tab { flex: 1; padding: 9px; text-align: center; font-size: 12px; font-weight: 500; border: 1px solid #2a2a2a; border-radius: 8px; cursor: pointer; background: #1a1a1a; color: #888; transition: all 0.15s; }
+    .platform-tab.active { background: #7ee83a; color: #0a0a0a; border-color: #7ee83a; font-weight: 700; }
+    .platform-fee-breakdown { background: #1a1a1a; border: 1px solid #242424; border-radius: 10px; padding: 0.85rem 1rem; margin-top: 12px; }
+    .pfee-row { display: flex; justify-content: space-between; align-items: center; padding: 5px 0; border-bottom: 1px solid #1e1e1e; }
+    .pfee-row:last-child { border-bottom: none; }
+    .pfee-row.pfee-total { border-top: 1px solid #333; padding-top: 8px; margin-top: 4px; border-bottom: none; }
+    .pfee-label { font-size: 12px; color: #666; }
+    .pfee-row.pfee-total .pfee-label { font-size: 13px; font-weight: 600; color: #aaa; }
+    .pfee-val { font-size: 12px; color: #e8823a; }
+    .pfee-row.pfee-total .pfee-val { font-size: 14px; font-weight: 700; color: #e8823a; }
   </style>
 </head>
 <body>
@@ -404,6 +417,101 @@
       <span class="sym" id="symOther">£</span>
     </div>
     <p style="font-size:11px;color:#444;margin-top:-6px;padding-left:170px;">Postage, packaging, labour etc.</p>
+  </div>
+
+  <!-- PLATFORM FEES -->
+  <div class="em-section">
+    <p class="em-section-title">Platform selling fees</p>
+    <p style="font-size:12px;color:#555;margin-bottom:14px;line-height:1.6;">Select which platform you are selling on to see fees deducted from your sell price and your true profit after platform costs. All fees are based on current published rates.</p>
+
+    <div class="platform-tabs">
+      <div class="platform-tab active" id="ptab-none" onclick="setPlatform('none')">None</div>
+      <div class="platform-tab" id="ptab-etsy" onclick="setPlatform('etsy')">Etsy</div>
+      <div class="platform-tab" id="ptab-ebay" onclick="setPlatform('ebay')">eBay</div>
+    </div>
+
+    <!-- ETSY OPTIONS -->
+    <div id="platform-etsy" style="display:none;">
+      <div class="em-field">
+        <label>Seller location</label>
+        <select id="etsyRegion" onchange="calc()" style="flex:1;background:#1e1e1e;border:1px solid #2a2a2a;border-radius:6px;color:#fff;font-size:13px;padding:7px 8px;outline:none;">
+          <option value="uk">UK seller</option>
+          <option value="us">US seller</option>
+        </select>
+      </div>
+      <div class="em-field">
+        <label>Offsite ads</label>
+        <select id="etsyAds" onchange="calc()" style="flex:1;background:#1e1e1e;border:1px solid #2a2a2a;border-radius:6px;color:#fff;font-size:13px;padding:7px 8px;outline:none;">
+          <option value="none">Not using offsite ads</option>
+          <option value="optional">Using offsite ads (optional — under $10k/year)</option>
+          <option value="mandatory">Mandatory offsite ads (over $10k/year)</option>
+        </select>
+      </div>
+      <div class="platform-fee-breakdown" id="etsyBreakdown">
+        <div class="pfee-row"><span class="pfee-label">Listing fee</span><span class="pfee-val" id="ef-listing">--</span></div>
+        <div class="pfee-row"><span class="pfee-label">Transaction fee (6.5%)</span><span class="pfee-val" id="ef-transaction">--</span></div>
+        <div class="pfee-row"><span class="pfee-label">Payment processing</span><span class="pfee-val" id="ef-processing">--</span></div>
+        <div class="pfee-row" id="ef-reg-row"><span class="pfee-label">Regulatory fee (0.32%)</span><span class="pfee-val" id="ef-regulatory">--</span></div>
+        <div class="pfee-row" id="ef-ads-row" style="display:none;"><span class="pfee-label">Offsite ads fee (15%)</span><span class="pfee-val" id="ef-ads">--</span></div>
+        <div class="pfee-row pfee-total"><span class="pfee-label">Total Etsy fees</span><span class="pfee-val" id="ef-total">--</span></div>
+      </div>
+    </div>
+
+    <!-- EBAY OPTIONS -->
+    <div id="platform-ebay" style="display:none;">
+      <div class="em-field">
+        <label>Seller type</label>
+        <select id="ebayType" onchange="calc()" style="flex:1;background:#1e1e1e;border:1px solid #2a2a2a;border-radius:6px;color:#fff;font-size:13px;padding:7px 8px;outline:none;">
+          <option value="uk-private">UK private seller</option>
+          <option value="uk-business">UK business seller</option>
+          <option value="us">US seller</option>
+        </select>
+      </div>
+      <div class="em-field" id="ebayCatRow">
+        <label>Category fee rate</label>
+        <select id="ebayCat" onchange="calc()" style="flex:1;background:#1e1e1e;border:1px solid #2a2a2a;border-radius:6px;color:#fff;font-size:13px;padding:7px 8px;outline:none;">
+          <option value="10.9">Most categories (10.9%)</option>
+          <option value="9.9">Music / DVDs / Games (9.9%)</option>
+          <option value="12.9">Clothing / Shoes (12.9%)</option>
+          <option value="6.9">Motors parts (6.9%)</option>
+        </select>
+      </div>
+      <div class="em-field">
+        <label>Promoted listings rate</label>
+        <input type="number" id="ebayPromo" value="0" min="0" max="20" step="0.1" />
+        <span class="unit">%</span>
+      </div>
+      <p style="font-size:11px;color:#444;margin-top:-6px;margin-bottom:12px;padding-left:170px;">Set to 0 if not using promoted listings. Typical rate is 3-8%.</p>
+      <div class="platform-fee-breakdown">
+        <div class="pfee-row"><span class="pfee-label">Final value fee</span><span class="pfee-val" id="ebf-fvf">--</span></div>
+        <div class="pfee-row" id="ebf-vat-row"><span class="pfee-label">VAT on fees (20% — UK business)</span><span class="pfee-val" id="ebf-vat">--</span></div>
+        <div class="pfee-row"><span class="pfee-label">Per order fee</span><span class="pfee-val" id="ebf-order">--</span></div>
+        <div class="pfee-row"><span class="pfee-label">Regulatory fee (0.35%)</span><span class="pfee-val" id="ebf-reg">--</span></div>
+        <div class="pfee-row" id="ebf-promo-row" style="display:none;"><span class="pfee-label">Promoted listings fee</span><span class="pfee-val" id="ebf-promo">--</span></div>
+        <div class="pfee-row pfee-total"><span class="pfee-label">Total eBay fees</span><span class="pfee-val" id="ebf-total">--</span></div>
+      </div>
+    </div>
+
+    <div id="platform-results" style="display:none;margin-top:12px;">
+      <div class="results">
+        <div class="metric">
+          <p class="metric-label">Platform fees</p>
+          <p class="metric-value" id="platFeeTotal">--</p>
+          <p class="metric-sub">deducted from sale</p>
+        </div>
+        <div class="metric">
+          <p class="metric-label">You receive</p>
+          <p class="metric-value" id="platReceive">--</p>
+          <p class="metric-sub">after fees</p>
+        </div>
+        <div class="metric">
+          <p class="metric-label">True profit</p>
+          <p class="metric-value" id="platProfit">--</p>
+          <p class="metric-sub">after all costs + fees</p>
+        </div>
+      </div>
+      <p style="font-size:11px;color:#555;margin-top:6px;line-height:1.6;">True profit = sell price minus all your costs minus platform fees. Use "you receive" as your actual take-home per sale.</p>
+    </div>
   </div>
 
   <!-- SELL PRICE -->
@@ -707,6 +815,87 @@
     $('sellPrice').textContent        = fmt(sell);
     $('profitPerItem').textContent    = fmt(profit);
     $('totalCostPerItem').textContent = fmt(totalItemCost);
+
+    // Platform fees
+    const platFees   = calcPlatformFees(sell);
+    const receive    = sell - platFees;
+    const trueProfit = receive - totalItemCost;
+    if (currentPlatform !== 'none') {
+      $('platFeeTotal').textContent = fmt(platFees);
+      $('platReceive').textContent  = fmt(receive);
+      $('platProfit').textContent   = fmt(trueProfit);
+    }
+  }
+
+  // ── PLATFORM FEES ──
+  let currentPlatform = 'none';
+
+  function setPlatform(p) {
+    currentPlatform = p;
+    ['none','etsy','ebay'].forEach(x => {
+      $('ptab-' + x).classList.toggle('active', x === p);
+    });
+    $('platform-etsy').style.display    = p === 'etsy' ? '' : 'none';
+    $('platform-ebay').style.display    = p === 'ebay' ? '' : 'none';
+    $('platform-results').style.display = p !== 'none' ? '' : 'none';
+    calc();
+  }
+
+  function calcPlatformFees(sellPrice) {
+    const sym = getSym();
+    if (currentPlatform === 'none') return 0;
+
+    if (currentPlatform === 'etsy') {
+      const region  = $('etsyRegion').value;
+      const ads     = $('etsyAds').value;
+      const listing = region === 'uk' ? 0.15 : 0.20;
+      const trans   = sellPrice * 0.065;
+      const procPct = region === 'uk' ? 0.04 : 0.03;
+      const procFix = region === 'uk' ? 0.20 : 0.25;
+      const proc    = (sellPrice * procPct) + procFix;
+      const reg     = region === 'uk' ? sellPrice * 0.0032 : 0;
+      const adsFee  = ads !== 'none' ? sellPrice * 0.15 : 0;
+
+      $('ef-listing').textContent     = fmt(listing);
+      $('ef-transaction').textContent = fmt(trans);
+      $('ef-processing').textContent  = fmt(proc);
+      $('ef-reg-row').style.display   = region === 'uk' ? '' : 'none';
+      $('ef-regulatory').textContent  = fmt(reg);
+      $('ef-ads-row').style.display   = ads !== 'none' ? '' : 'none';
+      $('ef-ads').textContent         = fmt(adsFee);
+      const total = listing + trans + proc + reg + adsFee;
+      $('ef-total').textContent = fmt(total);
+      return total;
+    }
+
+    if (currentPlatform === 'ebay') {
+      const type    = $('ebayType').value;
+      const catRate = parseFloat($('ebayCat').value) / 100;
+      const promoRate = parseFloat($('ebayPromo').value) / 100 || 0;
+      const isUKBiz = type === 'uk-business';
+      const isUS    = type === 'us';
+
+      let fvf = sellPrice * catRate;
+      let vat = 0;
+      if (isUKBiz) { vat = fvf * 0.20; }
+      const orderFee = isUS ? 0.40 : 0.40;
+      const reg      = sellPrice * 0.0035;
+      const promo    = sellPrice * promoRate;
+
+      $('ebf-fvf').textContent  = fmt(fvf);
+      $('ebf-vat-row').style.display = isUKBiz ? '' : 'none';
+      $('ebf-vat').textContent  = fmt(vat);
+      $('ebf-order').textContent = fmt(orderFee);
+      $('ebf-reg').textContent  = fmt(reg);
+      $('ebf-promo-row').style.display = promoRate > 0 ? '' : 'none';
+      $('ebf-promo').textContent = fmt(promo);
+      $('ebayCatRow').style.display = isUKBiz ? '' : 'none';
+
+      const total = fvf + vat + orderFee + reg + promo;
+      $('ebf-total').textContent = fmt(total);
+      return total;
+    }
+    return 0;
   }
 
   // ── SAVE / LOAD SETTINGS ──
